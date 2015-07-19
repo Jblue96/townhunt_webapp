@@ -1,6 +1,5 @@
 <template>
-  <div class="">
-  Footer
+  <div class="footer_wrap">
   </div>
 </template>
 

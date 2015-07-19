@@ -1,18 +1,19 @@
 <template>
   <div class="page__top">
-      <div>Welcome to Tokyo!</div>
-      <div>
-        <component-categories></component-categories>
-        Categories
+      <div class="top_title">
+        Welcome to Tokyo!
       </div>
-      <div>
+      <div class="top_nav">
+        <component-categories></component-categories>
+      </div>
+      <div class="top_filter">
           <select>
             <option value="popular">Popular</option>
             <option value="price">Price</option>
             <option value="time">Limited Time Offer</option>
           </select>
       </div>
-      <div>
+      <div class="top_main">
         <component-card v-repeat="items"></component-card>
       </div>
   </div>

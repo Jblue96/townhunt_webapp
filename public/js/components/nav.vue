@@ -10,7 +10,7 @@
       <li><a href="#">Settings</a></li>
     </ul>
   </div>
-  <div>
+  <div class="nav_bookings">
     <div>My Bookings</div>
     <div v-repeat="bookings"></div>
   </div>

@@ -27,11 +27,12 @@ module.exports = new Vue({
     routes: {
         '/': {
             componentId: 'page-top',
+            afterUpdate: 'closeMenu',
             isDefault: true
         },
-        '/detail/:item': {
-            componentId: 'page-detial'
-            // afterUpdate: 'refresh'
+        '/detail/:id': {
+            componentId: 'page-detail',
+            afterUpdate: 'closeMenu'
         },
         options: {
             hashbang: true
@@ -45,5 +46,8 @@ module.exports = new Vue({
     },
 
     methods: {
+        closeMenu() {
+            util.getSlideOut().close()
+        }
     }
 })
