@@ -2,7 +2,7 @@
     <div class="header_wrap">
         <button class="button_left" v-on="click: toggleMenu">Menu</button>
         <div class="header_title">Booked</div>
-        <button class="button_right" v-on="click: toggleMenu">Login</button>
+        <button class="button_right" v-on="click: login">Login</button>
     </div>
 </template>
 
@@ -20,6 +20,10 @@ export default {
   methods: {
     toggleMenu() {
         util.getSlideOut().toggle()
+    },
+
+    login() {
+      location.href = "/auth/facebook"
     }
   }
 }

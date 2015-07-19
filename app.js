@@ -53,7 +53,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/css', express.static(__dirname + '/public/css'));
+app.use('/dist', express.static(__dirname + '/public/dist'));
+app.use('/img', express.static(__dirname + '/public/img'));
+
+// TODO: temp to be removed
+app.use('/api', express.static(__dirname + '/public/api'));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', routes);
@@ -75,6 +81,7 @@ if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
+            loginUser: req.user,
             message: err.message,
             error: err
         });
@@ -86,6 +93,7 @@ if (app.get('env') === 'development') {
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
+        loginUser: req.user,
         message: err.message,
         error: {}
     });

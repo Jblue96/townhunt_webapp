@@ -3,8 +3,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+    // TODO: set uesr info
     res.render('index', { 
-        title: 'Booked'
+        loginUser: req.user
     });
 });
 
