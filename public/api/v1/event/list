@@ -1,0 +1,20 @@
+[
+    {
+        "title": "Tokyo City View from Ropppongi Hills Tower",
+        "description": "",
+        "place": "Roppongi",
+        "categories": ["Viewing Deck"],
+        "imageUrl": "",
+        "price": "$15",
+        "favorited": false
+    },
+    {
+        "title": "Robot Restaurant",
+        "description": "",
+        "place": "Shinjuku",
+        "categories": ["Shows", "Food & Drink"],
+        "imageUrl": "",
+        "price": "$45",
+        "favorited": true
+    }
+]
