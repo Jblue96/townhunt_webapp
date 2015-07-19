@@ -1,44 +1,48 @@
 import Vue from 'vue'
-import $ from 'npm-zepto'
+import route from 'vue-route'
 import util from './common/util'
-import vueDrawer from './components/drawer.vue'
+import componentHeader from './components/header.vue'
+import componentNav from './components/nav.vue'
+import componentFooter from './components/footer.vue'
+import pageTop from './pages/top.vue'
+import pageDetail from './pages/detail.vue'
 
+// setup Vue
 Vue.config.debug = OPTION.debug
+Vue.use(route)
 
 module.exports = new Vue({
 
     el: '#app',
 
     components: {
-        "vue-drawer": vueDrawer
+        'component-header': componentHeader,
+        'component-nav': componentNav,
+        'component-footer': componentFooter,
+        'page-top': pageTop,
+        'page-detail': pageDetail
+    },
+
+    routes: {
+        '/': {
+            componentId: 'page-top',
+            afterUpdate: 'refresh',
+            isDefault: true
+        },
+        '/detail/:item': {
+            componentId: 'page-detial'
+        },
+        options: {
+            hashbang: true
+        }
     },
 
     data: {
-        items: [],
-        drawerOpened: false,
-        initialized: false
     },
 
-    created: function() {
-        this.$on("onDrawerClose", () => {
-        })
-        this.refresh()
+    created() {
     },
 
     methods: {
-        refresh: function() {
-            $.ajax({
-                type: "GET",
-                url: "./api/v1/event/list",
-                dataType: "json",
-                cache: false,
-                success: (res) => {
-                    this.initialized = true
-                },
-                error: () => {
-                    this.initialized = true
-                }
-            })
-        }
     }
 })
