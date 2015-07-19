@@ -1,0 +1,30 @@
+.component__map
+    position relative
+    
+    .component__map_item
+        position absolute
+        opacity .2
+        z-index 1
+
+        img
+            max-width 140px
+            trans_1(.2s)
+
+        &.selected
+            opacity 1
+            z-index 10
+            
+            img
+                max-width 160px
+        
+        
+      
+@media (max-width: 768px)
+  .component__map
+    .component__map_item
+        img
+            max-width 60px
+        
+        &.selected
+            img
+                max-width 80px

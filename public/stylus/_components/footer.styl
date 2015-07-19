@@ -1,0 +1,139 @@
+/*
+  Footer
+*/
+
+$height = 78px
+$margin-top = 24px
+
+.component__footer
+  clearfix()
+  position fixed //absolute
+  left 0
+  bottom 0
+  width 100%
+  height $height
+  z-index $z-index_middle
+  background #fff
+  border-top 1px solid #1e2d2c
+
+  .servive-name
+    padding 0
+    font-family robot
+    font-weight bold
+    color #484a65
+    margin-top $margin-top
+    margin-left 40px
+    margin-right 40px
+    fontsize 18px
+    letter-spacing .2em
+    float left
+    display block
+    width 210px
+    height 30px
+
+  .footer_navigations
+    float left
+    clearfix()
+    margin-top $margin-top + 6
+    width 340px
+    a
+      @extend .navigation-hover
+    .nav_item
+      letter-spacing .1em
+      float left
+      inline-block(.2)
+      font-size 14px
+      font-weight bold
+      margin-right 30px
+      color #5f5f5f
+      
+      &.deactive
+        opacity .2
+      &:last-child
+        margin-right 0
+  
+  .copyright
+    position absolute
+    right 27px
+    top 44px
+    width 240px
+    fontsize 11px
+    color #b4b3b3
+    font-family robot
+    letter-spacing .1em
+    text-align right
+    a
+      trans_1(.2s)
+      color #5f5f5f
+      text-decoration none
+    
+  .footer_menu
+    display none
+    a
+      trans_1(.2s)
+      color #5f5f5f
+      text-decoration none
+      fontsize 16px
+      font-weight bold
+
+      &:hover
+        color #1c94c1
+  
+  .social_container
+    position absolute
+    right 32px
+    top 18px
+
+    .social_item
+      display inline-block
+      margin 0 8px
+      &.twitter
+        position relative
+        top -2px
+      &.github
+        width 80px
+        position relative
+        top -2px
+      
+@media (max-width: 768px)
+  .component__footer
+    height $height
+
+    .servive-name
+      /*margin 20px
+      width 140px
+      height 20px*/
+      display none
+
+    .footer_navigations
+      width 170px
+      margin-top 0px
+      float none
+      position absolute
+      top 32px
+      left 18px
+
+      .nav_item
+        margin-right 0
+        font-size 12px
+
+      .deactive
+        display none
+
+    .copyright
+      float left
+      position absolute
+      top 40px
+      right 12px
+      width 120px
+      font-size 8px
+      margin 0
+    
+    .footer_menu
+      display block
+      position absolute
+      top 12px
+      right 16px
+      
+    .social_container
+      display none      
