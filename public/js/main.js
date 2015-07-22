@@ -5,9 +5,16 @@ import util from './common/util'
 import componentHeader from './components/header.vue'
 import componentNav from './components/nav.vue'
 import componentFooter from './components/footer.vue'
-import pageTop from './pages/top.vue'
 import pageDetail from './pages/detail.vue'
-import pageMypage from './pages/mypage.vue'
+import pageLogin from './pages/login.vue'
+import pageTop from './pages/top.vue'
+import pageWishlist from './pages/wishlist.vue'
+import pageMypageTop from './pages/mypage/top.vue'
+import pageMypageEdit from './pages/mypage/edit.vue'
+import pagePaymentOrder from './pages/payment/order.vue'
+import pagePaymentSuccess from './pages/payment/success.vue'
+import pageRequestList from './pages/request/list.vue'
+import pageRequestDetail from './pages/request/detail.vue'
 
 // setup Vue
 Vue.config.debug = config.debug
@@ -21,9 +28,16 @@ module.exports = new Vue({
         'component-header': componentHeader,
         'component-nav': componentNav,
         'component-footer': componentFooter,
-        'page-top': pageTop,
         'page-detail': pageDetail,
-        'page-mypage': pageMypage
+        'page-login': pageLogin,
+        'page-top': pageTop,
+        'page-wishlist': pageWishlist,
+        'page-mypage-top': pageMypageTop,
+        'page-mypage-edit': pageMypageEdit,
+        'page-payment-order': pagePaymentOrder,
+        'page-payment-succsss': pagePaymentSuccess,
+        'page-request-list': pageRequestList,
+        'page-request-detail': pageRequestDetail
     },
 
     routes: {
@@ -32,8 +46,8 @@ module.exports = new Vue({
             afterUpdate: function() {
                 this.updateHeader()
                 this.closeMenu()
-            },
-            isDefault: true
+            }
+            // isDefault: true
         },
         '/detail/:id': {
             componentId: 'page-detail',
@@ -43,7 +57,7 @@ module.exports = new Vue({
             }
         },
         '/mypage': {
-            componentId: 'page-mypage',
+            componentId: 'page-mypage-top',
             afterUpdate:  function() {
                 this.updateHeader()
                 this.closeMenu()
@@ -55,6 +69,7 @@ module.exports = new Vue({
     },
 
     data: {
+        // currentView: ''
         headerOptions: {}
     },
 

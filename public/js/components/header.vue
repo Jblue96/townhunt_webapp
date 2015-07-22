@@ -71,6 +71,13 @@ export default {
             link: '/mypage'
           }
           break
+        case 'mypageEdit':
+          action = {
+            label: 'edit',
+            callback: function(){},
+            link: '/mypage/edit'
+          }
+          break
         default:
           action = {
             label: '',
@@ -95,10 +102,6 @@ export default {
 
     login() {
       location.href = "/auth/facebook"
-    },
-
-    mypage() {
-      location.href = "/#!/mypage"
     },
 
     back() {
