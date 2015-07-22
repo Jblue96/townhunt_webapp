@@ -7,6 +7,7 @@ import componentNav from './components/nav.vue'
 import componentFooter from './components/footer.vue'
 import pageTop from './pages/top.vue'
 import pageDetail from './pages/detail.vue'
+import pageMypage from './pages/mypage.vue'
 
 // setup Vue
 Vue.config.debug = config.debug
@@ -21,18 +22,32 @@ module.exports = new Vue({
         'component-nav': componentNav,
         'component-footer': componentFooter,
         'page-top': pageTop,
-        'page-detail': pageDetail
+        'page-detail': pageDetail,
+        'page-mypage': pageMypage
     },
 
     routes: {
         '/': {
             componentId: 'page-top',
-            afterUpdate: 'closeMenu',
+            afterUpdate: function() {
+                this.updateHeader()
+                this.closeMenu()
+            },
             isDefault: true
         },
         '/detail/:id': {
             componentId: 'page-detail',
-            afterUpdate: 'closeMenu'
+            afterUpdate:  function() {
+                this.updateHeader()
+                this.closeMenu()
+            }
+        },
+        '/mypage': {
+            componentId: 'page-mypage',
+            afterUpdate:  function() {
+                this.updateHeader()
+                this.closeMenu()
+            }
         },
         options: {
             hashbang: true
@@ -40,6 +55,7 @@ module.exports = new Vue({
     },
 
     data: {
+        headerOptions: {}
     },
 
     created() {
@@ -48,6 +64,25 @@ module.exports = new Vue({
     methods: {
         closeMenu() {
             util.getSlideOut().close()
+        },
+
+        updateHeader(type, title='') {
+            switch(type){
+                case 'back':
+                    this.headerOptions = {
+                        title: title,
+                        leftType: 'back',
+                        rightType: 'none'
+                    }
+                    break
+                default:
+                    this.headerOptions = {
+                        title: title,
+                        leftType: 'menu',
+                        rightType: config.isLoggedIn ? 'mypage' : 'login'
+                    }
+                    break
+            }
         }
     }
 })
