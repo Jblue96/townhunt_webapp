@@ -47,6 +47,7 @@
 import $ from 'npm-zepto'
 
 export default {
+
     data() {
         return {
             initialized: false,
@@ -56,12 +57,16 @@ export default {
     },
 
     created() {
-      this.refresh()
+      this.$on('onRoute', (params) => {
+        // TODO: check exisiting item
+ 
+        // if item does not exist, load an item
+        this.refresh(params.id)
+      })
     },
 
     methods: {
-        refresh: function() {
-            var id = this.$data.$routeParams.id
+        refresh: function(id) {
             if(!id) {
               return
             }

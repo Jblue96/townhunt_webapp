@@ -68,14 +68,14 @@ export default {
           action = {
             label: 'mypage',
             callback: function(){},
-            link: '/mypage'
+            link: '#/mypage'
           }
           break
         case 'mypageEdit':
           action = {
             label: 'edit',
             callback: function(){},
-            link: '/mypage/edit'
+            link: '#/mypage/edit'
           }
           break
         default:

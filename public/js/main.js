@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import route from 'vue-route'
+import {Router} from 'director'
 import config from './common/config'
 import util from './common/util'
 import componentHeader from './components/header.vue'
@@ -18,9 +18,8 @@ import pageRequestDetail from './pages/request/detail.vue'
 
 // setup Vue
 Vue.config.debug = config.debug
-Vue.use(route)
 
-module.exports = new Vue({
+var app = new Vue({
 
     el: '#app',
 
@@ -40,36 +39,8 @@ module.exports = new Vue({
         'page-request-detail': pageRequestDetail
     },
 
-    routes: {
-        '/': {
-            componentId: 'page-top',
-            afterUpdate: function() {
-                this.updateHeader()
-                this.closeMenu()
-            }
-            // isDefault: true
-        },
-        '/detail/:id': {
-            componentId: 'page-detail',
-            afterUpdate:  function() {
-                this.updateHeader()
-                this.closeMenu()
-            }
-        },
-        '/mypage': {
-            componentId: 'page-mypage-top',
-            afterUpdate:  function() {
-                this.updateHeader()
-                this.closeMenu()
-            }
-        },
-        options: {
-            hashbang: true
-        }
-    },
-
     data: {
-        // currentView: ''
+        currentView: 'page-top',
         headerOptions: {}
     },
 
@@ -101,3 +72,30 @@ module.exports = new Vue({
         }
     }
 })
+
+var onRoute = (componentId, params, headerType) => {
+    app.currentView = componentId
+    app.updateHeader(headerType)
+    // temp
+    setTimeout(() => {
+        app.$broadcast('onRoute', params)
+    }, 25)
+}
+
+// setup router
+var routes = {
+    '/': function() {
+        onRoute('page-top')
+    },
+    '/detail/:id': function(id) {
+        onRoute('page-detail', {id: id})
+    },
+    '/mypage': function() {
+        onRoute('page-mypage-top')
+    }
+}
+
+var router = Router(routes)
+router.init('/')
+
+module.exports = app

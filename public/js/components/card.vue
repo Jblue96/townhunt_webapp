@@ -1,5 +1,5 @@
 <template>
-    <a v-attr="href: '/detail/' + id" class="component__card">
+    <a v-attr="href: '#/detail/' + id" class="component__card">
         <div class="card_bg" v-style="background-image: 'url(' + imageUrl + ')'">
             <div class="card_wrap">
                 <div class="card_main">
