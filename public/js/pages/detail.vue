@@ -37,7 +37,7 @@
             <p class="detail_description">{{{item.description}}}</p>
         </div>
         <div class="detail_footer">
-            <div class="detail_btn" v-on="click: onClickPayment">GET TICKET {{item.price}}</div>
+            <div class="detail_btn btn_large" v-on="click: onClickPayment">GET TICKET {{item.price}}</div>
         </div>
     </div>
   </div>

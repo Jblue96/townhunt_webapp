@@ -45,7 +45,10 @@ var app = new Vue({
         // API response cache
         cache: {
             detail: null,
-            me: null
+            me: null,
+            request: {
+                detail: null
+            }
         }
     },
 
@@ -80,7 +83,7 @@ var app = new Vue({
             return new Promise((resolve, reject) => {
                 // not loggedIn
                 if(!config.isLoggedIn){
-                    reject()
+                    resolve()
                     return
                 }
                 // already loaded
@@ -91,7 +94,10 @@ var app = new Vue({
                 // initial load
                 util.request({
                     url: './api/v1/user/me'
-                }).then(resolve, reject)
+                }).then((data) => {
+                    this.$root.cache.me = data
+                    resolve(data)
+                }, reject)
             })
         }
     }

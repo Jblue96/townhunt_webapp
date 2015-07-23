@@ -1,6 +1,7 @@
 <template>
   <div class="page__payment">
       <h2>Payment</h2>
+      <div class="btn_large" v-on="click: onClickSubmit">Submit</div>
   </div>
 </template>
 
@@ -18,16 +19,19 @@ export default {
 
     created() {
         var cache = this.$root.cache.detail
-        if(cache){
-            this.item = cache
-        }else{
-          alert('An error occurs')
-          // move to top page
+        if(!cache){
+          console.log('anonymous access to payment/order')
           location.href = '#/'
+          return
         }
+        this.item = cache
     },
 
     methods: {
+
+      onClickSubmit() {
+        
+      }
     }
 }
 </script>

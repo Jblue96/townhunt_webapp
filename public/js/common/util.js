@@ -7,6 +7,14 @@ export default {
       return text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     },
 
+    // filter an item from list by id prop
+    getItemById(items, targetId, idProp) {
+      var results = $.grep(items, (item) => {
+        return item['id' || idProp] === targetId
+      })
+      return (results && results[0]) || null
+    },
+
     getSlideOut: (() => {
       // setup slideout at initialization
       var slideout = new Slideout({

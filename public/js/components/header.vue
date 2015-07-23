@@ -55,7 +55,7 @@ export default {
         case 'login':
           action = {
             label: 'Login',
-            callback: this.login
+            link: '#/login'
           }
           break
         case 'back':
@@ -67,14 +67,12 @@ export default {
         case 'mypage':
           action = {
             label: 'mypage',
-            callback: function(){},
             link: '#/mypage/top'
           }
           break
         case 'mypageEdit':
           action = {
             label: 'edit',
-            callback: function(){},
             link: '#/mypage/edit'
           }
           break
@@ -89,19 +87,17 @@ export default {
     },
 
     leftCallback() {
-      this.getAction(this.leftType).callback()
+      var action = this.getAction(this.leftType)
+      action.callback && action.callback()
     },
 
     rightCallback() {
-      this.getAction(this.rightType).callback()
+      var action = this.getAction(this.rightType)
+      action.callback && action.callback()
     },
 
     toggleMenu() {
         util.getSlideOut().toggle()
-    },
-
-    login() {
-      location.href = "/auth/facebook"
     },
 
     back() {

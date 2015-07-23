@@ -1,11 +1,7 @@
 <template>
     <div class="component__categories">
         <ul>
-            <li v-class="selected: selectedType == '1'"><a href="javascript:;" v-on="click: onClickType('1')">Food</a></li>
-            <li v-class="selected: selectedType == '2'"><a href="javascript:;" v-on="click: onClickType('2')">Shows</a></li>
-            <li v-class="selected: selectedType == '3'"><a href="javascript:;" v-on="click: onClickType('3')">Wifi</a></li>
-            <li v-class="selected: selectedType == '4'"><a href="javascript:;" v-on="click: onClickType('4')">Park</a></li>
-            <li v-class="selected: selectedType == '5'"><a href="javascript:;" v-on="click: onClickType('5')">Outdoor</a></li>
+            <li v-repeat="types" v-class="selected: selectedType == id"><a href="javascript:;" v-on="click: onClickType(id)">{{label}}</a></li>
         </ul>
     </div>
 </template>
@@ -17,6 +13,28 @@ export default {
 
   data() {
     return {
+      types: [
+        {
+          id: '1',
+          label: 'Food'
+        },
+        {
+          id: '2',
+          label: 'Shows'
+        },
+        {
+          id: '3',
+          label: 'Wifi'
+        },
+        {
+          id: '4',
+          label: 'Park'
+        },
+        {
+          id: '5',
+          label: 'Outdoor'
+        }
+      ]
     }
   },
 

@@ -77,16 +77,9 @@ export default {
         })
       },
 
-      getItemById(id) {
-        var items = $.grep(this.items, (item) => {
-          return item.id === id
-        })
-        return (items && items[0]) || null
-      },
-
       onSelectCard(id) {
         // set to response cache
-        this.$root.cache.detail = this.getItemById(id)
+        this.$root.cache.detail = util.getItemById(this.items, id)
         location.href = '#/detail/' + id
       },
 
