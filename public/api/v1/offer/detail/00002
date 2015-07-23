@@ -10,6 +10,5 @@
     "availability": "9AM - 10PM",
     "categories": ["Shows", "Food & Drink"],
     "imageUrl": "https://dyt5fqgc4jagm.cloudfront.net/upload/img350X275/81e0fab8-Robot-Restuarant.jpg",
-    "price": "$45",
-    "favorited": true
+    "price": "$45"
 }

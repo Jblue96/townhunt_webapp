@@ -34,14 +34,19 @@ var app = new Vue({
         'page-mypage-top': pageMypageTop,
         'page-mypage-edit': pageMypageEdit,
         'page-payment-order': pagePaymentOrder,
-        'page-payment-succsss': pagePaymentSuccess,
+        'page-payment-success': pagePaymentSuccess,
         'page-request-list': pageRequestList,
         'page-request-detail': pageRequestDetail
     },
 
     data: {
         currentView: 'page-top',
-        headerOptions: {}
+        headerOptions: {},
+        // API response cache
+        cache: {
+            detail: null,
+            me: null
+        }
     },
 
     created() {
@@ -69,6 +74,25 @@ var app = new Vue({
                     }
                     break
             }
+        },
+
+        fetchMe() {
+            return new Promise((resolve, reject) => {
+                // not loggedIn
+                if(!config.isLoggedIn){
+                    reject()
+                    return
+                }
+                // already loaded
+                if(this.$root && this.$root.cache.me){
+                    resolve(this.$root.cache.me)
+                    return
+                }
+                // initial load
+                util.request({
+                    url: './api/v1/user/me'
+                }).then(resolve, reject)
+            })
         }
     }
 })
@@ -76,6 +100,7 @@ var app = new Vue({
 var onRoute = (componentId, params, headerType) => {
     app.currentView = componentId
     app.updateHeader(headerType)
+    app.closeMenu()
     // temp
     setTimeout(() => {
         app.$broadcast('onRoute', params)
@@ -90,12 +115,32 @@ var routes = {
     '/detail/:id': function(id) {
         onRoute('page-detail', {id: id})
     },
-    '/mypage': function() {
+    '/login': function() {
+        onRoute('page-login')
+    },
+    '/wishlist': function() {
+        onRoute('page-wishlist')
+    },
+    '/mypage/top': function() {
         onRoute('page-mypage-top')
+    },
+    '/mypage/edit': function() {
+        onRoute('page-mypage-edit')
+    },
+    '/payment/order': function() {
+        onRoute('page-payment-order')
+    },
+    '/payment/success': function() {
+        onRoute('page-payment-success')
+    },
+    '/request/list': function() {
+        onRoute('page-request-list')
+    },
+    '/request/detail/:id': function(id) {
+        onRoute('page-request-detail', {id: id})
     }
 }
 
-var router = Router(routes)
-router.init('/')
+Router(routes).init('/')
 
 module.exports = app

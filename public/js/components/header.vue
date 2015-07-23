@@ -68,7 +68,7 @@ export default {
           action = {
             label: 'mypage',
             callback: function(){},
-            link: '#/mypage'
+            link: '#/mypage/top'
           }
           break
         case 'mypageEdit':

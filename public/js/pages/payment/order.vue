@@ -9,6 +9,7 @@
 export default {
     data() {
         return {
+          item: {}
         }
     },
 
@@ -16,6 +17,14 @@ export default {
     },
 
     created() {
+        var cache = this.$root.cache.detail
+        if(cache){
+            this.item = cache
+        }else{
+          alert('An error occurs')
+          // move to top page
+          location.href = '#/'
+        }
     },
 
     methods: {

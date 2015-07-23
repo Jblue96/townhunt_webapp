@@ -1,5 +1,5 @@
 <template>
-    <a v-attr="href: '#/detail/' + id" class="component__card">
+    <a v-on="click: onClickItem" href="javascript:;" class="component__card">
         <div class="card_bg" v-style="background-image: 'url(' + imageUrl + ')'">
             <div class="card_wrap">
                 <div class="card_main">
@@ -11,7 +11,7 @@
                         <div class="card_area">{{location.area}}</div>
                     </div>
                     <div class="card_right">
-                        <div class="card_favorite">Fav</div>
+                        <div class="card_favorite" v-class="favorited: favorited">Fav</div>
                         <div class="card_price">{{price}}</div>
                     </div>
                 </div>
@@ -40,6 +40,9 @@ export default {
   },
 
   methods: {
+    onClickItem() {
+        this.$dispatch('onSelectCard', this.id)
+    }
   }
 }
 </script>

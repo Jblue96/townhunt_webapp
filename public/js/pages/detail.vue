@@ -37,7 +37,7 @@
             <p class="detail_description">{{{item.description}}}</p>
         </div>
         <div class="detail_footer">
-            <div class="detail_btn">GET TICKET {{item.price}}</div>
+            <div class="detail_btn" v-on="click: onClickPayment">GET TICKET {{item.price}}</div>
         </div>
     </div>
   </div>
@@ -45,6 +45,7 @@
 
 <script lang="babel">
 import $ from 'npm-zepto'
+import util from '../common/util'
 
 export default {
 
@@ -57,31 +58,42 @@ export default {
     },
 
     created() {
-      this.$on('onRoute', (params) => {
-        // TODO: check exisiting item
- 
-        // if item does not exist, load an item
-        this.refresh(params.id)
-      })
+        // check exisiting item
+        var cache = this.$root.cache.detail
+        if(cache){
+            this.item = cache
+            this.initialized = true
+        }else{
+            // if item does not exist, load an item
+            this.$on('onRoute', (params) => this.refresh(params.id))
+        }
     },
 
     methods: {
-        refresh: function(id) {
+        refresh(id) {
             if(!id) {
               return
             }
-            $.ajax({    
-                type: "GET",
-                url: "./api/v1/event/detail/" + id,
-                dataType: "json",
-                cache: false,
-                success: (item) => {
-                    this.item = item
-                    this.initialized = true
-                },
-                error: () => {
-                }
+            // initial load
+            var detailDeferred = util.request({
+                url: "./api/v1/offer/detail/" + id
             })
+            // done both detail and me promises are resolved
+            Promise.all([detailDeferred, this.$root.fetchMe()]).then((data) => {
+              // for initial router destroyed e.g. direct access to detail page
+              if(!this.$root) { return }
+              var item = data[0] || [],
+                  me = data[1] || {favorites: []}
+                // set favorited
+                item.favorited = (me.favorites.indexOf(item.id) > -1)
+                // store to cache
+                this.$root.cache.detail = this.item = item
+                this.initialized = true
+            })
+        },
+
+        onClickPayment() {
+            location.href = '#/payment/order'
         }
     }
 }
