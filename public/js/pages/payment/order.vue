@@ -6,6 +6,7 @@
 </template>
 
 <script lang="babel">
+import cache from '../../common/cache'
 
 export default {
     data() {
@@ -18,13 +19,7 @@ export default {
     },
 
     created() {
-        var cache = this.$root.cache.detail
-        if(!cache){
-          console.log('anonymous access to payment/order')
-          location.href = '#/'
-          return
-        }
-        this.item = cache
+        this.item = cache.get('detail')
     },
 
     methods: {

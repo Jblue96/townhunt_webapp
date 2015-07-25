@@ -17,11 +17,6 @@ export default {
     },
 
     created() {
-      if(!config.isLoggedIn){
-        console.log('anonymous access to wishlist')
-        location.href = '#/login'
-        return
-      }
       this.refresh()
     },
 

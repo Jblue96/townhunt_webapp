@@ -8,6 +8,7 @@
 
 <script lang="babel">
 import config from '../common/config'
+import cache from '../common/cache'
 
 export default {
     data() {
@@ -27,7 +28,7 @@ export default {
       onClickLogin() {
         // TODO: temp
         config.isLoggedIn = true
-        location.href = '#/'
+        location.href = cache.get('loginCallbackUrl') || '#/'
       }
     }
 }

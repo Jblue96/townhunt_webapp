@@ -11,7 +11,7 @@
                         <div class="card_area">{{location.area}}</div>
                     </div>
                     <div class="card_right">
-                        <div class="card_favorite" v-class="favorited: favorited">Fav</div>
+                        <div class="card_favorite" v-class="icon_favorite: favorited, icon_favorite_blank: !favorited" v-on="click: favorite"></div>
                         <div class="card_price">{{price}}</div>
                     </div>
                 </div>
@@ -42,6 +42,17 @@ export default {
   methods: {
     onClickItem() {
         this.$dispatch('onSelectCard', this.id)
+    },
+
+    favorite(){
+        alert("fav")
+        // TODO
+        var favorited = this.favorited
+        if(favorited) {
+            // send unfav
+        } else {
+            // send fav
+        }
     }
   }
 }

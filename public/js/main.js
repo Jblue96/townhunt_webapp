@@ -2,6 +2,7 @@ import Vue from 'vue'
 import {Router} from 'director'
 import config from './common/config'
 import util from './common/util'
+import cache from './common/cache'
 import componentHeader from './components/header.vue'
 import componentNav from './components/nav.vue'
 import componentFooter from './components/footer.vue'
@@ -56,29 +57,6 @@ var app = new Vue({
     },
 
     methods: {
-        closeMenu() {
-            util.getSlideOut().close()
-        },
-
-        updateHeader(type, title='') {
-            switch(type){
-                case 'back':
-                    this.headerOptions = {
-                        title: title,
-                        leftType: 'back',
-                        rightType: 'none'
-                    }
-                    break
-                default:
-                    this.headerOptions = {
-                        title: title,
-                        leftType: 'menu',
-                        rightType: config.isLoggedIn ? 'mypage' : 'login'
-                    }
-                    break
-            }
-        },
-
         fetchMe() {
             return new Promise((resolve, reject) => {
                 // not loggedIn
@@ -87,15 +65,15 @@ var app = new Vue({
                     return
                 }
                 // already loaded
-                if(this.$root && this.$root.cache.me){
-                    resolve(this.$root.cache.me)
+                if(this.$root && cache.get('me')){
+                    resolve(cache.get('me'))
                     return
                 }
                 // initial load
                 util.request({
                     url: './api/v1/user/me'
                 }).then((data) => {
-                    this.$root.cache.me = data
+                    cache.set('me', data)
                     resolve(data)
                 }, reject)
             })
@@ -103,14 +81,9 @@ var app = new Vue({
     }
 })
 
-var onRoute = (componentId, params, headerType) => {
+var onRoute = (componentId) => {
     app.currentView = componentId
-    app.updateHeader(headerType)
-    app.closeMenu()
-    // temp
-    setTimeout(() => {
-        app.$broadcast('onRoute', params)
-    }, 25)
+    app.$broadcast('onRoute', componentId)
 }
 
 // setup router
@@ -119,7 +92,7 @@ var routes = {
         onRoute('page-top')
     },
     '/detail/:id': function(id) {
-        onRoute('page-detail', {id: id})
+        onRoute('page-detail')
     },
     '/login': function() {
         onRoute('page-login')
@@ -143,10 +116,27 @@ var routes = {
         onRoute('page-request-list')
     },
     '/request/detail/:id': function(id) {
-        onRoute('page-request-detail', {id: id})
+        onRoute('page-request-detail')
     }
 }
 
-Router(routes).init('/')
+var NEED_LOGIN_PAGES = ['mypage', 'payment', 'request', 'wishlist']
+
+var router = app.router = Router(routes).configure({
+    before() {
+        // move login screen for anonymous login
+        var current = '#/' + router.getRoute().join('/')
+        if(!config.isLoggedIn){
+            if(NEED_LOGIN_PAGES.indexOf(router.getRoute()[0]) > -1){
+                cache.set('loginCallbackUrl', current)
+                location.href = '#/login'
+                return false
+            }
+        }
+        cache.get('histories').push(current)
+    }
+})
+
+router.init('/')
 
 module.exports = app

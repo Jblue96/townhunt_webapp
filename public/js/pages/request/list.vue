@@ -16,6 +16,7 @@
 <script lang="babel">
 import config from '../../common/config'
 import util from '../../common/util'
+import cache from '../../common/cache'
 
 export default {
     data() {
@@ -28,11 +29,6 @@ export default {
     },
 
     created() {
-        if(!config.isLoggedIn){
-          console.log('anonymous access to request/list')
-          location.href = '#/login'
-          return
-        }
         this.refresh()
     },
 
@@ -47,7 +43,7 @@ export default {
 
       onClickItem(id) {
         // store to cache
-        this.$root.cache.request.detail = util.getItemById(this.items, id)
+        cache.set('requestDetail', util.getItemById(this.items, id))
         location.href = '#/request/detail/' + id
       }
 

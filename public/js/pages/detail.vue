@@ -14,7 +14,7 @@
                     <div class="detail_area">{{item.location.area}}</div>
                 </div>
                 <div class="detail_right">
-                    <div class="detail_favorite">Fav</div>
+                <div class="detail_favorite" v-class="icon_favorite: favorited, icon_favorite_blank: !favorited" v-on="click: favorite"></div>
                     <div class="detail_price">{{item.price}}</div>
                 </div>
             </div>
@@ -46,6 +46,7 @@
 <script lang="babel">
 import $ from 'npm-zepto'
 import util from '../common/util'
+import cache from '../common/cache'
 
 export default {
 
@@ -59,13 +60,13 @@ export default {
 
     created() {
         // check exisiting item
-        var cache = this.$root.cache.detail
-        if(cache){
-            this.item = cache
+        var detail = cache.get('detail')
+        if(detail){
+            this.item = detail
             this.initialized = true
         }else{
-            // if item does not exist, load an item
-            this.$on('onRoute', (params) => this.refresh(params.id))
+            // direct access if item does not exist, load an item
+            this.refresh(this.$root.router.getRoute()[1])
         }
     },
 
@@ -87,13 +88,25 @@ export default {
                 // set favorited
                 item.favorited = (me.favorites.indexOf(item.id) > -1)
                 // store to cache
-                this.$root.cache.detail = this.item = item
+                this.item = item
+                cache.set('detail', item)
                 this.initialized = true
             })
         },
 
         onClickPayment() {
             location.href = '#/payment/order'
+        },
+
+        favorite(){
+            alert("fav")
+            // TODO
+            var favorited = item.favorited
+            if(favorited) {
+                // send unfav
+            } else {
+                // send fav
+            }
         }
     }
 }

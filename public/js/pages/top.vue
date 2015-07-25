@@ -1,13 +1,11 @@
 <template>
   <div class="page__top">
-      <div class="top_title">
-        Welcome to Tokyo!
-      </div>
+      <!-- <div class="top_title"></div> -->
       <div class="top_nav">
         <component-categories selected-type="{{queryParams.filter}}"></component-categories>
       </div>
       <div class="top_filter">
-          <select v-on="change: onChangeOrder" v-model="queryParams.order">
+          <select class="select_large" v-on="change: onChangeOrder" v-model="queryParams.order">
             <option value="popular">Popular</option>
             <option value="price">Price</option>
             <option value="time">Limited Time Offer</option>
@@ -26,6 +24,7 @@
 import $ from 'npm-zepto'
 import util from '../common/util'
 import config from '../common/config'
+import cache from '../common/cache'
 import componentCategories from '../components/categories.vue'
 import componentCard from '../components/card.vue'
 
@@ -79,7 +78,7 @@ export default {
 
       onSelectCard(id) {
         // set to response cache
-        this.$root.cache.detail = util.getItemById(this.items, id)
+        cache.set('detail', util.getItemById(this.items, id))
         location.href = '#/detail/' + id
       },
 

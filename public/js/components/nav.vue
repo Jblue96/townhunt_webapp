@@ -4,22 +4,23 @@
   </div>
   <div class="nav_menu">
     <ul>
-      <li><a v-attr="href:'/'">Explore</a></li>
-      <li><a v-attr="href:'#/wishlist'">Wish List</a></li>
-      <!-- <li><a v-attr="href:'#'">Earn Credit</a><span>$0.00</span></li> -->
-      <!-- <li><a v-attr="href:'#'">Settings</a></li> -->
+      <li><a v-on="click: move('#/')">Explore</a></li>
+      <li><a v-on="click: move('#/wishlist')">Wish List</a></li>
+      <!-- <li><a v-on="click: move('#')">Earn Credit</a><span>$0.00</span></li> -->
+      <!-- <li><a v-on="click: move('#')">Settings</a></li> -->
+      <li>
+        <a v-on="click: move('#/request/list')">My Bookings</a>
+        <div class="nav_bookings">
+          <div v-repeat="bookings"></div>
+        </div>
+      </li>
     </ul>
-  </div>
-  <div class="nav_bookings">
-    <div>
-      <a v-attr="href: '#/request/list'">My Bookings</a>
-    </div>
-    <div v-repeat="bookings"></div>
   </div>
 </template>
 
 <script lang="babel">
 import config from '../common/config'
+import util from '../common/util'
 
 export default {
   data() {
@@ -29,7 +30,15 @@ export default {
     }
   },
 
+  created() {
+
+  },
+
   methods: {
+    move(href) {
+      util.getSlideOut().close()
+      location.href = href
+    }
   }
 }
 </script>
