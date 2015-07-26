@@ -44,8 +44,8 @@ export default {
         this.$dispatch('onSelectCard', this.id)
     },
 
-    favorite(){
-        alert("fav")
+    favorite(e){
+        alert("favorited!")
         // TODO
         var favorited = this.favorited
         if(favorited) {
@@ -53,6 +53,8 @@ export default {
         } else {
             // send fav
         }
+        e.stopPropagation()
+        return false
     }
   }
 }

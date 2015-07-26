@@ -74,8 +74,9 @@ export default {
 
     defaultRight() {
       if(config.isLoggedIn) {
-        // TODO: set login user profile image
-        var label = '<img src="http://graph.facebook.com/10152855301715662/picture?type=normal"/>'
+        // set login user profile image
+        var me = cache.get('me')
+        var label = `<img src="${me.imageUrl}"/>`
         return {
           icon: 'icon_profile',
           label: label,
@@ -94,6 +95,7 @@ export default {
     },
 
     updateHeader(componentId) {
+      var that = this
       switch(componentId){
         case 'page-login':
           this.center = { title: 'Login' }
@@ -120,11 +122,11 @@ export default {
           break
         case 'page-mypage-top':
           this.center = { title: 'Account' }
-          // this.left = this.defaultLeft()
-          this.left = {
-            icon: 'icon_back',
-            callback: this.back
-          }
+          this.left = this.defaultLeft()
+          // this.left = {
+          //   icon: 'icon_back',
+          //   callback: this.back
+          // }
           this.right = {
             label: 'Edit',
             callback() {
@@ -142,7 +144,9 @@ export default {
           }
           this.right = {
             label: 'Save',
-            callback: this.onMypageEditSave
+            callback() {
+              that.onSave(componentId)
+            }
           }
           break
         case 'page-payment-order':
@@ -206,8 +210,8 @@ export default {
       this.$dispatch('onChangeCountry', this.countryId)
     },
 
-    onMypageEditSave() {
-      this.$dispatch('onMypageEditSave')
+    onSave(componentId) {
+      this.$dispatch('onSave', componentId)
     }
   }
 }

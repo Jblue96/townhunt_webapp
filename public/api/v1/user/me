@@ -2,5 +2,6 @@
     "userId": "1234",
     "name": "Takuya Tejima",
     "email": "tejitak@hoge.com",
+    "imageUrl": "http://graph.facebook.com/10152855301715662/picture?type=normal",
     "favorites": ["00002"]
 }

@@ -1,8 +1,7 @@
 <template>
   <div class="page__request">
-      <h2>request list</h2>
       <ul>
-        <li v-repeat="items">
+        <li v-repeat="items" class="request_list_item request_list_bg" v-style="background-image: 'url(' + imageUrl + ')'">
           <a v-on="click: onClickItem(id)">
             <h3>{{title}}</h3>
             <div>{{price}}</div>

@@ -54,6 +54,11 @@ var app = new Vue({
     },
 
     created() {
+        // called by headear save button
+        this.$on('onSave', (componentId) => {
+            // e.g. onSave:page-mypage-edit
+            this.$broadcast('onSave:' + componentId)
+        })
     },
 
     methods: {

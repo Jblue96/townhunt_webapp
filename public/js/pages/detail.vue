@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="detail_main">
-            <h3>About this place</h3>
+            <h5>About this place</h5>
             <div>
                 <p>Hours: {{item.availability}}</p>
             </div>
@@ -99,9 +99,9 @@ export default {
         },
 
         favorite(){
-            alert("fav")
+            alert("favorited!")
             // TODO
-            var favorited = item.favorited
+            var favorited = this.item.favorited
             if(favorited) {
                 // send unfav
             } else {
