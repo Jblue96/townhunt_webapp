@@ -56,7 +56,7 @@ export default {
   },
 
   methods: {
-    defaultLeft() {
+    iconDefaultLeft() {
       return {
         icon: 'icon_menu',
         callback: this.toggleMenu
@@ -72,27 +72,51 @@ export default {
       }
     },
 
-    defaultRight() {
-      if(config.isLoggedIn) {
-        // set login user profile image
-        var me = cache.get('me')
-        var label = `<img src="${me.imageUrl}"/>`
-        return {
-          icon: 'icon_profile',
-          label: label,
-          callback() {
-            location.href = '#/mypage/top'
-          }
-        }
-      }else{
-        return {
-          label: 'Login',
-          callback() {
-            location.href = '#/login'
-          }
+    iconNone() {
+      return {
+        icon: 'none'
+      }
+    },
+
+    iconMap() {
+      return {
+        icon: 'icon_map',
+        callback() {
+          location.href = '#/map'
         }
       }
     },
+
+    iconList() {
+      return {
+        icon: 'icon_list',
+        callback() {
+          location.href = '#/'
+        }
+      }
+    },
+
+    // iconDefaultRight() {
+    //   if(config.isLoggedIn) {
+    //     // set login user profile image
+    //     var me = cache.get('me')
+    //     var label = `<img src="${me.imageUrl}"/>`
+    //     return {
+    //       icon: 'icon_profile',
+    //       label: label,
+    //       callback() {
+    //         location.href = '#/mypage/top'
+    //       }
+    //     }
+    //   }else{
+    //     return {
+    //       label: 'Login',
+    //       callback() {
+    //         location.href = '#/login'
+    //       }
+    //     }
+    //   }
+    // },
 
     updateHeader(componentId) {
       var that = this
@@ -107,22 +131,27 @@ export default {
           break
         case 'page-top':
           this.center = { title: '' }
-          this.left = this.defaultLeft()
-          this.right = this.defaultRight()
+          this.left = this.iconDefaultLeft()
+          this.right = this.iconMap()
+          break
+        case 'page-map':
+          this.center = { title: '' }
+          this.left = this.iconDefaultLeft()
+          this.right = this.iconList()
           break
         case 'page-detail':
           this.center = { title: 'Detail Info' }
-          this.left = this.defaultLeft()
-          this.right = this.defaultRight()
+          this.left = this.iconDefaultLeft()
+          this.right = this.iconNone()
           break
         case 'page-wishlist':
           this.center = { title: 'Wish List' }
           this.left = this.backToTop()
-          this.right = this.defaultRight()
+          this.right = this.iconNone()
           break
         case 'page-mypage-top':
           this.center = { title: 'Account' }
-          this.left = this.defaultLeft()
+          this.left = this.iconDefaultLeft()
           // this.left = {
           //   icon: 'icon_back',
           //   callback: this.back
@@ -155,12 +184,12 @@ export default {
             icon: 'icon_back',
             callback: this.back
           }
-          this.right = this.defaultRight()
+          this.right = this.iconNone()
           break
         case 'page-payment-success':
           this.center = { title: 'Thank You' }
-          this.left = this.defaultLeft()
-          this.right = this.defaultRight()
+          this.left = this.iconDefaultLeft()
+          this.right = this.iconNone()
           break
         case 'page-request-list':
           this.center = { title: 'My Bookings' }
@@ -170,7 +199,7 @@ export default {
               location.href = '#/'
             }
           }
-          this.right = this.defaultRight()
+          this.right = this.iconNone()
           break
         case 'page-request-detail':
           this.center = { title: 'My Bookings' }
@@ -180,12 +209,12 @@ export default {
               location.href = '#/request/list'
             }
           }
-          this.right = this.defaultRight()
+          this.right = this.iconNone()
           break
         default:
             this.center = {}
-            this.left = this.defaultLeft()
-            this.right = this.defaultRight()
+            this.left = this.iconDefaultLeft()
+            this.right = this.iconNone()
             break
       }
     },

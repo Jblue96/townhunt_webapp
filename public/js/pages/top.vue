@@ -42,18 +42,24 @@ export default {
 
     components: {
       'component-categories': componentCategories,
-      'component-card': componentCard,
+      'component-card': componentCard
     },
 
     created() {
+      // TODO: handle initial query params
+      
       // listening events
-      this.$on('onSelectCard', this.onSelectCard.bind(this))
-      this.$on('onSelectType', this.onSelectType.bind(this))
+      this.attachEvents()
       // initial load
       this.refresh()
     },
 
     methods: {
+      attachEvents() {
+        this.$on('onSelectCard', this.onSelectCard.bind(this))
+        this.$on('onSelectType', this.onSelectType.bind(this))
+      },
+
       refresh() {
         // list promise
         var listDeferred = util.request({
@@ -73,6 +79,7 @@ export default {
           })
           this.items = items
           this.initialized = true
+          this.onLoadCompleted()
         })
       },
 
@@ -89,6 +96,10 @@ export default {
 
       onChangeOrder() {
         alert("order by: " + this.queryParams.order)
+      },
+
+      // for override
+      onLoadCompleted() {
       }
     }
 }

@@ -8,7 +8,9 @@ import componentNav from './components/nav.vue'
 import componentFooter from './components/footer.vue'
 import pageDetail from './pages/detail.vue'
 import pageLogin from './pages/login.vue'
+import pageLogout from './pages/logout.vue'
 import pageTop from './pages/top.vue'
+import pageMap from './pages/map.vue'
 import pageWishlist from './pages/wishlist.vue'
 import pageMypageTop from './pages/mypage/top.vue'
 import pageMypageEdit from './pages/mypage/edit.vue'
@@ -30,7 +32,9 @@ var app = new Vue({
         'component-footer': componentFooter,
         'page-detail': pageDetail,
         'page-login': pageLogin,
+        'page-logout': pageLogout,
         'page-top': pageTop,
+        'page-map': pageMap,
         'page-wishlist': pageWishlist,
         'page-mypage-top': pageMypageTop,
         'page-mypage-edit': pageMypageEdit,
@@ -96,11 +100,17 @@ var routes = {
     '/': function() {
         onRoute('page-top')
     },
+    '/map': function() {
+        onRoute('page-map')
+    },
     '/detail/:id': function(id) {
         onRoute('page-detail')
     },
     '/login': function() {
         onRoute('page-login')
+    },
+    '/logout': function() {
+        onRoute('page-logout')
     },
     '/wishlist': function() {
         onRoute('page-wishlist')
