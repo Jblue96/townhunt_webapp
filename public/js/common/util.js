@@ -23,6 +23,12 @@ export default {
         'padding': 256,
         'tolerance': 70
       })
+      // add event handler on main to close by click
+      $('.component__main').on('click', (e) => {
+        if(slideout.isOpen()){
+          slideout.close()
+        }
+      })
       return () => slideout
     })(),
 

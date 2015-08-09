@@ -2,5 +2,7 @@ node_modules/
 bower_components/
 data/
 .DS_Store
+dump.rdb
 npm-debug.log
 app.config.js
+
