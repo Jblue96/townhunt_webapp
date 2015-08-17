@@ -117,11 +117,12 @@ export default {
         initSwiper() {
             // TODO: temp to attach after DOM is inserted by initialized flag
             setTimeout(() => {
-                var $banners = $(this.$el).find('.swiper-container')
+                var $banners = $(this.$el).find('.swiper-container'),
+                    size = $banners.find('li').size()
                 new Swiper($banners, {
                     wrapperClass: "swiper-wrapper",
                     slideClass: "swiper-slide",
-                    loop: $banners.size() > 1,
+                    loop: size > 1,
                     autoplay: 4000,
                     autoplayDisableOnInteraction: false,
                 })
