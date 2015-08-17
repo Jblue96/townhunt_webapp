@@ -1,6 +1,5 @@
 <template>
   <div class="page__top">
-      <!-- <div class="top_title"></div> -->
       <div class="top_nav">
         <component-categories selected-type="{{queryParams.filter}}"></component-categories>
       </div>
@@ -11,10 +10,10 @@
             <option value="time">Limited Time Offer</option>
           </select>
       </div>
-      <div class="top_main" v-if="initialized">
+      <div class="top_main" v-if="!loading">
         <component-card v-repeat="items"></component-card>
       </div>
-      <div v-if="!initialized">
+      <div v-if="loading">
         Loading...
       </div>
   </div>
@@ -31,7 +30,7 @@ import componentCard from '../components/card.vue'
 export default {
     data() {
       return {
-        initialized: false,
+        loading: false,
         items: [],
         queryParams: {
           filter: '',
@@ -47,7 +46,7 @@ export default {
 
     created() {
       // TODO: handle initial query params
-      
+      this.restoreQueryParams()
       // listening events
       this.attachEvents()
       // initial load
@@ -60,26 +59,53 @@ export default {
         this.$on('onSelectType', this.onSelectType.bind(this))
       },
 
+      restoreQueryParams() {
+        // restore queryParams
+        var _cache = cache.get('queryParams')
+        if(_cache) {
+          this.queryParams = _cache
+        }
+      },
+
       refresh() {
+
+        var params = {
+          limit: 50,
+          order: '-createdAt'
+        }
+
+        // if (skip) {
+        //   params.skip = skip
+        // }
+
+        if (this.queryParams.filter) {
+          params.where = { type: this.queryParams.filter }
+        }
+
         // list promise
         var listDeferred = util.request({
-          url: './api/v1/offer/list'
+          // url: './api/v1/offer/list'
+          url: config.api.url + '/classes/Offer',
+          data: params
         })
 
+        this.loading = true
         // done both list and me promises are resolved
         Promise.all([listDeferred, this.$root.fetchMe()]).then((data) => {
           // for initial router destroyed e.g. direct access to detail page
           if(!this.$root) { return }
           // store to cache
-          var items = data[0] || [],
+          var items = data[0] && data[0].results || [],
               me = data[1] || {favorites: []}
           // set favorited
           items.forEach((item) => {
             item.favorited = (me.favorites.indexOf(item.id) > -1)
           })
           this.items = items
-          this.initialized = true
-          this.onLoadCompleted()
+          this.loading = false
+          // broadcast load events
+          this.$emit('onLoadCompleted')
+          this.$broadcast('onLoadCompleted')
         })
       },
 
@@ -90,16 +116,19 @@ export default {
       },
 
       onSelectType(id) {
-        this.queryParams.filter = id
-        alert("filter by: " + this.queryParams.filter)
+        // toggle
+        if (this.queryParams.filter === id) {
+          this.queryParams.filter = ''
+        } else {
+          this.queryParams.filter = id
+        }
+        // store cache to refer from map component
+        cache.set('queryParams', this.queryParams)
+        this.refresh()
       },
 
       onChangeOrder() {
-        alert("order by: " + this.queryParams.order)
-      },
-
-      // for override
-      onLoadCompleted() {
+        console.log("order by: " + this.queryParams.order)
       }
     }
 }

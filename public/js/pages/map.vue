@@ -43,6 +43,15 @@ var Component = {
       'component-categories': componentCategories
     },
 
+    created() {
+      // TODO: handle initial query params
+      this.restoreQueryParams()
+      // listening events
+      this.attachEvents()
+      // initial load
+      this.refresh()
+    },
+
     ready() {
       this.initMap()
     },
@@ -51,6 +60,7 @@ var Component = {
       attachEvents() {
         this.$on('onSelectMap', this.onSelectMap.bind(this))
         this.$on('onSelectType', this.onSelectType.bind(this))
+        this.$on('onLoadCompleted', this.onLoadCompleted.bind(this))
       },
 
       onSelectMap(id) {
@@ -68,7 +78,7 @@ var Component = {
 
         $(mapNode).height($(window).height() - (headerH + navH + filterH))
 
-        // should move to component?
+        // TODO: get current location
         this._map = mapUtil.create(mapNode, {
           lat: this.initPos.lat,
           lng: this.initPos.lng,
@@ -78,13 +88,16 @@ var Component = {
 
       onLoadCompleted() {
         var that = this
+        // clear existing markers
+        this._map.clearMarkers()
+        // add new markers
         this.items.forEach((item, i) => {
           this._map.addMaker({
-            id: item.id,
-            lat: item.location.lat,
-            lng: item.location.lng,
+            id: item.objectId,
+            lat: item.location.latitude,
+            lng: item.location.longitude,
             onClickMarker() {
-              that.onSelectCard(item.id)
+              that.onSelectCard(item.objectId)
             }
           })
         })

@@ -57,9 +57,15 @@ export default {
 
   methods: {
     iconDefaultLeft() {
+      // return {
+      //   icon: 'icon_menu',
+      //   callback: this.toggleMenu
+      // }
       return {
-        icon: 'icon_menu',
-        callback: this.toggleMenu
+        icon: 'icon_logo',
+        callback() {
+          location.href = '#/'
+        }
       }
     },
 
@@ -130,12 +136,12 @@ export default {
           }
           break
         case 'page-top':
-          this.center = { title: '' }
+          this.center = { title: 'Tokyo' }
           this.left = this.iconDefaultLeft()
           this.right = this.iconMap()
           break
         case 'page-map':
-          this.center = { title: '' }
+          this.center = { title: 'Tokyo' }
           this.left = this.iconDefaultLeft()
           this.right = this.iconList()
           break

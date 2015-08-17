@@ -1,18 +1,18 @@
 <template>
     <a v-on="click: onClickItem" href="javascript:;" class="component__card">
-        <div class="card_bg" v-style="background-image: 'url(' + imageUrl + ')'">
+        <div class="card_bg" v-style="background-image: 'url(' + dislayImageUrl + ')'">
             <div class="card_wrap">
                 <div class="card_main">
                     <div class="card_middle">
-                        <div class="card_title">{{title}}</div>
+                        <div class="card_title">{{name}}</div>
                         <div class="card_categories">
-                            <span v-repeat="cat : categories">{{cat}}</span>
+                            <span>{{type | type}}</span>
                         </div>
-                        <div class="card_area">{{location.area}}</div>
+                        <div class="card_area">{{address.city}}</div>
                     </div>
                     <div class="card_right">
                         <div class="card_favorite" v-class="icon_favorite: favorited, icon_favorite_blank: !favorited" v-on="click: favorite"></div>
-                        <div class="card_price">{{price}}</div>
+                        <div class="card_price">{{price | price}}</div>
                     </div>
                 </div>
             </div>
@@ -24,28 +24,46 @@
 export default {
   data() {
     return {
-        id: '',
-        title: '',
+        objectId: '',
+        name: '',
         description: '',
-        location: {
-            name: "",
-            area: "",
-            address: ""
+        address: {
+            city: '',
+            country: '',
+            line1: '',
+            line2: '',
+            region: '',
+            state: '',
+            zip: ''
         },
-        categories: [],
-        imageUrl: '',
-        price: "",
+        type: '',
+        defaultImageIndex: null,
+        images: [],
+        price: {
+            amount: 0,
+            currency: '',
+            unit: ''
+        },
+        reservationDetails: '',
+        reservationPhone: '',
+        reservationUrl: '',
         favorited: false
+    }
+  },
+
+  computed: {
+    dislayImageUrl() {
+        var image = this.images.length && this.images[this.defaultImageIndex || 0]
+        return (image && image.url) || '/img/no_image.png'
     }
   },
 
   methods: {
     onClickItem() {
-        this.$dispatch('onSelectCard', this.id)
+        this.$dispatch('onSelectCard', this.objectId)
     },
 
     favorite(e){
-        alert("favorited!")
         // TODO
         var favorited = this.favorited
         if(favorited) {

@@ -17,11 +17,12 @@
   },
   "homepage": "https://github.com/tejitak/booked",
   "engines": {
-    "iojs": "v1.2.0",
-    "npm": "2.5.1"
+    "iojs": "v3.0.0",
+    "npm": "2.13.5"
   },
   "dependencies": {
     "body-parser": "~1.10.2",
+    "compression": "^1.5.2",
     "cookie-parser": "~1.3.3",
     "debug": "~2.1.1",
     "ejs": "^2.2.4",

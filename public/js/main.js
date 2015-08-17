@@ -3,9 +3,11 @@ import {Router} from 'director'
 import config from './common/config'
 import util from './common/util'
 import cache from './common/cache'
+// components
 import componentHeader from './components/header.vue'
 import componentNav from './components/nav.vue'
 import componentFooter from './components/footer.vue'
+// pages
 import pageDetail from './pages/detail.vue'
 import pageLogin from './pages/login.vue'
 import pageLogout from './pages/logout.vue'
@@ -18,6 +20,12 @@ import pagePaymentOrder from './pages/payment/order.vue'
 import pagePaymentSuccess from './pages/payment/success.vue'
 import pageRequestList from './pages/request/list.vue'
 import pageRequestDetail from './pages/request/detail.vue'
+// filter
+import filter from './filters/filter'
+// zepto patch
+// for swiper
+import $ from 'npm-zepto'
+import {} from './lib/zepto.height'
 
 // setup Vue
 Vue.config.debug = config.debug

@@ -1,0 +1,42 @@
+{
+   "ACL":{
+      "*":{
+         "read":true
+      },
+      "role:admin":{
+         "write":true
+      }
+   },
+   "address":{
+      "city":"Minato",
+      "country":"JP",
+      "line1":"6-11-1",
+      "line2":"Roppongi",
+      "region":"Tokyo",
+      "state":"Tokyo"
+   },
+   "createdAt":"2015-08-16T03:40:38.437Z",
+   "defaultImageIndex":"0",
+   "description":"Enjoy a romantic helicopter cruise over Tokyo to discover fantastic views of the city skyline, Mount Fuji and the twinkling city lights\u003cul\u003e\u003cli\u003eSee the city from 600 meters up on a 15 minute helicopter flight\u003c/li\u003e\u003cli\u003eView elegant Mount Fuji in the distance on a day flight or see the Tokyo in all its glittering glory by night\u003c/li\u003e\u003cli\u003eReceive a complimentary pre-departure drink in the flight lounge\u003c/li\u003e\u003cli\u003eCelebrate a special occasion with this unique and romantic experience\u003c/li\u003e\u003c/ul\u003e",
+   "images":[
+      {
+         "__type":"File",
+         "name":"tfss-eb8efa4d-c1f2-4bda-963a-1f45a356017c-onrahl.jpg",
+         "url":"http://files.parsetfss.com/07dc7fa5-1b34-491d-970f-4178c046f705/tfss-eb8efa4d-c1f2-4bda-963a-1f45a356017c-onrahl.jpg"
+      }
+   ],
+   "location":{
+      "__type":"GeoPoint",
+      "latitude":35.66,
+      "longitude":139.73
+   },
+   "name":"Tokyo City View from Ropppongi Hills Tower",
+   "objectId":"eo6dmhIMyi",
+   "price":{
+      "amount":0,
+      "currency":"USD",
+      "unit":"$"
+   },
+   "type":"luxury",
+   "updatedAt":"2015-08-16T05:20:31.004Z"
+}

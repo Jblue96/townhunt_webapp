@@ -48,6 +48,7 @@ export default {
         config.isLoggedIn = true
         // TODO: call API
         this.$root.fetchMe().then(() => {
+          // TODO: set sessionToken
           location.href = cache.get('loginCallbackUrl') || '#/'
         }, () => {
           config.isLoggedIn = false

@@ -14,7 +14,9 @@ export default {
     // current selected detail offer
     detail: null,
     // current selected request detail
-    requestDetail: null
+    requestDetail: null,
+    // current top & map query conditions
+    queryParams: null
   },
 
   set(key, value) {

@@ -4,16 +4,16 @@
           <div class="request_detail_banner_bg" v-style="background-image: 'url(' + item.offer.imageUrl + ')'"></div>
       </div>
       <div class="request_detail_summary">
-          <div class="request_detail_title">{{item.offer.title}}</div>
+          <div class="request_detail_title">{{item.offer.name}}</div>
           <div class="request_detail_table">
               <div class="request_detail_middle">
                   <div class="request_detail_categories">
-                      <span v-repeat="cat : item.offer.categories">{{cat}}</span>
+                      <span>{{item.offer.type | type}</span>
                   </div>
-                  <div class="request_detail_area">{{item.offer.location.area}}</div>
+                  <div class="request_detail_area">{{item.offer.address.city}}</div>
               </div>
               <div class="request_detail_right">
-                  <div class="request_detail_price">{{item.offer.price}}</div>
+                  <div class="request_detail_price">{{item.offer.price | price}}</div>
               </div>
           </div>
       </div>
