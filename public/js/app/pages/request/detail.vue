@@ -38,7 +38,7 @@
 </template>
 
 <script lang="babel">
-import cache from '../../common/cache'
+import cache from '../../../common/cache'
 
 export default {
     data() {

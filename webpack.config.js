@@ -6,7 +6,9 @@ module.exports = {
   watch: true,
 
   entry: {
-    'main': ['./public/js/main.js']
+    'app': ['./public/js/app/main.js'],
+    'pc': ['./public/js/pc/main.js'],
+    'sp': ['./public/js/sp/main.js']
   },
 
   output: {

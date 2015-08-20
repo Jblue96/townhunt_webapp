@@ -19,10 +19,10 @@
 
 <script lang="babel">
 import $ from 'npm-zepto'
-import util from '../common/util'
-import config from '../common/config'
-import cache from '../common/cache'
-import mapUtil from '../common/mapUtil'
+import util from '../../common/util'
+import config from '../../common/config'
+import cache from '../../common/cache'
+import mapUtil from '../../common/mapUtil'
 import componentCategories from '../components/categories.vue'
 import pageTop from '../pages/top.vue'
 

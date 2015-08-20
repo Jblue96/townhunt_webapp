@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import {Router} from 'director'
-import config from './common/config'
-import util from './common/util'
-import cache from './common/cache'
+import config from '../common/config'
+import util from '../common/util'
+import cache from '../common/cache'
 // components
 import componentHeader from './components/header.vue'
 import componentNav from './components/nav.vue'
@@ -25,7 +25,7 @@ import filter from './filters/filter'
 // zepto patch
 // for swiper
 import $ from 'npm-zepto'
-import {} from './lib/zepto.height'
+import {} from '../lib/zepto.height'
 
 // setup Vue
 Vue.config.debug = config.debug

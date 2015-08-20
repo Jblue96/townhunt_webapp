@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import constants from '../common/constants'
+import constants from '../../common/constants'
 
 Vue.filter('price', function (price) {
     if (!price.amount) {

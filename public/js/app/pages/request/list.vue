@@ -13,9 +13,9 @@
 </template>
 
 <script lang="babel">
-import config from '../../common/config'
-import util from '../../common/util'
-import cache from '../../common/cache'
+import config from '../../../common/config'
+import util from '../../../common/util'
+import cache from '../../../common/cache'
 
 export default {
     data() {

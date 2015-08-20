@@ -47,9 +47,9 @@
 
 <script lang="babel">
 import $ from 'npm-zepto'
-import util from '../common/util'
-import config from '../common/config'
-import cache from '../common/cache'
+import util from '../../common/util'
+import config from '../../common/config'
+import cache from '../../common/cache'
 
 export default {
 
