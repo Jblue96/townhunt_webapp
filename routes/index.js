@@ -1,12 +1,26 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var parseCtrl = require('../controllers/parseCtrl')
+var responseInterceptor = require('../controllers/responseInterceptor')
+
+var router = express.Router()
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    // TODO: set uesr info
-    res.render('index', { 
-        loginUser: req.user
-    });
-});
+    // get offer list via Parse
+    var promise = new Promise(function(resolve, reject) {
+        parseCtrl.find('Offer', '', function(err, response) {
+          err ? reject(err) : resolve(response && response.results)            
+        })
+    })
 
-module.exports = router;
+    promise.then(function(results) {
+        // TODO: set uesr info
+        responseInterceptor.render(req, res, 'index', { 
+            loginUser: req.user,
+            offers: results
+        })
+    })
+})
+
+
+module.exports = router
