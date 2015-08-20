@@ -27,7 +27,9 @@ Access to http://localhost:8080/
 module.exports = {
     FB_API_KEY: "xxx",
     FB_API_SECRET: "xxx",
-    FB_CALLBACK_URL: "xxx"
+    FB_CALLBACK_URL: "xxx",
+    PARSE_APP_ID: "xxx",
+    PARSE_MASTER_KEY: "xxx"
 };
 ```
 
