@@ -21,6 +21,8 @@
 </template>
 
 <script lang="babel">
+import filter from '../filters/filter'
+
 export default {
   data() {
     return {
@@ -53,8 +55,7 @@ export default {
 
   computed: {
     dislayImageUrl() {
-        var image = this.images.length && this.images[this.defaultImageIndex || 0]
-        return (image && image.url) || '/img/no_image.png'
+        return filter.dislayImageUrl(this)
     }
   },
 

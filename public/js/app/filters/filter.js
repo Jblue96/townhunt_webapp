@@ -1,27 +1,9 @@
 import Vue from 'vue'
-import constants from '../../common/constants'
+import filter from '../../../../controllers/filter'
 
-Vue.filter('price', function (price) {
-    if (!price.amount) {
-        return "Free"
-    }else{
-        return price.unit + price.amount
-    }
-})
+Vue.filter('price', filter.price)
+Vue.filter('address',  filter.address)
+Vue.filter('type', filter.type)
+Vue.filter('dislayImageUrl', filter.dislayImageUrl)
 
-Vue.filter('address', function (address) {
-    return [address.line1,
-            address.line2,
-            address.city,
-            address.region].join(' ')
-})
-
-Vue.filter('type', function (type) {
-    var matched = type
-    constants.Types.forEach((obj) => {
-        if(obj.id === type) {
-            matched = obj.label
-        }
-    })
-    return matched
-})
+export default filter

@@ -10,6 +10,10 @@ module.exports = {
 
     find(className, query, callback) {
         return this._app.find(className, query, callback)
+    },
+
+    findWithObjectId(className, objectId, callback) {
+        return this._app.findWithObjectId(className, objectId, callback)
     }
 
 }

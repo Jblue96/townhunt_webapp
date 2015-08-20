@@ -8,7 +8,7 @@
 
 <script lang="babel">
 import Swiper from '../../lib/swiper.jquery'
-import constants from '../../common/constants'
+import constants from '../../../../controllers/constants'
 
 export default {
 

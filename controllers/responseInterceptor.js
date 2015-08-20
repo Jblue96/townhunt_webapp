@@ -1,4 +1,6 @@
 var resourceBundle = require('../controllers/resourceBundle');
+var constants = require('../controllers/constants');
+var filter = require('../controllers/filter');
 
 module.exports = {
 
@@ -6,6 +8,9 @@ module.exports = {
         // add nls messages
         data = data || {}
         data.labels = resourceBundle.getLabels(req)
+        data.constants = constants,
+        data.filter = filter
+
         // switch pc/mobile by ua
         var ua = req.header('user-agent');
         if (/mobile/i.test(ua)) {

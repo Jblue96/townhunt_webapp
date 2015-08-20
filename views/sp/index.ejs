@@ -1,11 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <% include partials/header %>
+  <% include partials/header %>
 </head>
 <body>
+<main id="main">
 
-  <div>for mobile</div>
+    <!-- Header -->
+    <haeder class="component__header">
+      <div class="header_wrap">
+        <a class="button_left icon_logo" href="/"></a>
+        <div class="header_title">
+          <span>Tokyo</span>
+        </div>
+        <a class="button_right icon_map" href="/map"></a>
+    </div>
+    </haeder>
+
+    <!-- Page Content -->
+    <div class="component__main container">
+      <div class="page__top">
+        <div class="top_nav">
+          <div class="component__categories swiper-container">
+            <ul class="swiper-wrapper">
+                <li class="swiper-slide swiper-slide-active" style=""><a href="javascript:;">Food &amp; Drinks</a>
+                </li>
+                <li class="swiper-slide swiper-slide-next" style=""><a href="javascript:;">Shows</a></li>
+                <li class="swiper-slide" style=""><a href="javascript:;">Luxury</a></li>
+                <li class="swiper-slide" style=""><a href="javascript:;">Wifi &amp; Transport</a></li>
+                <li class="swiper-slide" style=""><a href="javascript:;">Theme Parks</a></li>
+                <li class="swiper-slide" style=""><a href="javascript:;">Outdoor</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="top_filter">
+            <select class="select_large">
+              <option value="popular">Popular</option>
+              <option value="price">Price</option>
+              <option value="time">Limited Time Offer</option>
+            </select>
+        </div>
+        <div class="top_main">
+          <% offers.forEach(function(offer) { %>
+          <a href="/detail/<%= offer.objectId %>" class="component__card">
+            <div class="card_bg" style="background-image: url(<%= filter.dislayImageUrl(offer) %>);">
+                <div class="card_wrap">
+                    <div class="card_main">
+                        <div class="card_middle">
+                            <div class="card_title"><%= offer.name %></div>
+                            <div class="card_categories">
+                                <span><%= filter.type(offer.type) %></span>
+                            </div>
+                            <div class="card_area"><%= offer.address.city %></div>
+                        </div>
+                        <div class="card_right">
+                            <div class="card_favorite icon_favorite_blank"></div>
+                            <div class="card_price"><%= filter.price(offer.price) %></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </a>
+          <% }) %>
+        </div>
+      </div>
+    </div>
   <!-- script -->
   <% include partials/scripts %>
 </body>
