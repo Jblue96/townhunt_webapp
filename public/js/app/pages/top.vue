@@ -1,14 +1,7 @@
 <template>
   <div class="page__top">
       <div class="top_nav">
-        <component-categories selected-type="{{queryParams.filter}}"></component-categories>
-      </div>
-      <div class="top_filter">
-          <select class="select_large" v-on="change: onChangeOrder" v-model="queryParams.order">
-            <option value="popular">Popular</option>
-            <option value="price">Price</option>
-            <option value="time">Limited Time Offer</option>
-          </select>
+      Search Conditions
       </div>
       <div class="top_main" v-if="!loading">
         <component-card v-repeat="items"></component-card>

@@ -3,8 +3,11 @@ var constants = require('./constants')
 module.exports = {
 
     price(price) {
+        if (!price) {
+            return ''
+        }
         if (!price.amount) {
-            return "Free"
+            return 'Free'
         }else{
             return price.unit + price.amount
         }

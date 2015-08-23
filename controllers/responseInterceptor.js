@@ -11,12 +11,17 @@ module.exports = {
         data.constants = constants,
         data.filter = filter
 
-        // switch pc/mobile by ua
-        var ua = req.header('user-agent');
-        if (/mobile/i.test(ua)) {
-            res.render('sp/' + view, data);
+        // TODO: to be removed. temp for v0.1
+        if (view === 'index') {
+            res.render('app/index', data)
         } else {
-            res.render('pc/' + view, data);
+            // switch pc/mobile by ua
+            var ua = req.header('user-agent');
+            if (/mobile/i.test(ua)) {
+                res.render('sp/' + view, data);
+            } else {
+                res.render('pc/' + view, data);
+            }
         }
     }
     
