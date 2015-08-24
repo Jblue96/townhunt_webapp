@@ -47,7 +47,7 @@ export default {
     },
 
     create(mapNode, opt={}) {
-        var MY_MAPTYPE_ID = 'Booked_style',
+        var MY_MAPTYPE_ID = 'TownHunt_style',
             lat = opt.lat,
             lng = opt.lng,
             zoom = opt.zoom

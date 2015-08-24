@@ -50,22 +50,16 @@ export default {
   },
 
   created() {
-    this.$on('onRoute', (componentId) => {
-      this.updateHeader(componentId)
+    this.$on('onRoute', (options) => {
+      this.updateHeader(options.componentId)
     })
   },
 
   methods: {
     iconDefaultLeft() {
-      // return {
-      //   icon: 'icon_menu',
-      //   callback: this.toggleMenu
-      // }
       return {
-        icon: 'icon_logo',
-        callback() {
-          location.href = '#/'
-        }
+        icon: 'icon_menu',
+        callback: this.toggleMenu
       }
     },
 
@@ -152,7 +146,7 @@ export default {
           break
         case 'page-wishlist':
           this.center = { title: 'Wish List' }
-          this.left = this.backToTop()
+          this.left = this.iconDefaultLeft()
           this.right = this.iconNone()
           break
         case 'page-mypage-top':

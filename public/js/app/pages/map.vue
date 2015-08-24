@@ -1,15 +1,7 @@
 <template>
   <div class="page__top">
-      <!-- <div class="top_title"></div> -->
       <div class="top_nav">
-        <component-categories selected-type="{{queryParams.filter}}"></component-categories>
-      </div>
-      <div class="top_filter">
-          <select class="select_large" v-on="change: onChangeOrder" v-model="queryParams.order">
-            <option value="popular">Popular</option>
-            <option value="price">Price</option>
-            <option value="time">Limited Time Offer</option>
-          </select>
+      Search Conditions (To be implemented...)
       </div>
       <div class="top_map">
         <div id="map_canvas"></div>
@@ -59,7 +51,6 @@ var Component = {
     methods: {
       attachEvents() {
         this.$on('onSelectMap', this.onSelectMap.bind(this))
-        this.$on('onSelectType', this.onSelectType.bind(this))
         this.$on('onLoadCompleted', this.onLoadCompleted.bind(this))
       },
 

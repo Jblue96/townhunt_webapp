@@ -1,6 +1,6 @@
 <template>
   <div class="page__wishlist">
-      <component-card v-repeat="items"></component-card>
+      <component-card v-repeat="items" track-by="objectId"></component-card>
   </div>
 </template>
 
@@ -13,6 +13,8 @@ import componentCard from '../components/card.vue'
 export default {
     data() {
         return {
+          // 'like', 'bucket'
+          type: '',
           items: []
         }
     },
@@ -22,25 +24,17 @@ export default {
     },
 
     created() {
+      this.$on('onRoute', (options) => {
+        this.type = options.type
+        this.refresh()
+      })
       // listening events
       this.$on('onSelectCard', this.onSelectCard.bind(this))
-      this.refresh()
     },
 
     methods: {
         refresh() {
-          // TODO: disscuss need wishlist API? or client filter or get list with favorited states only
-          // util.request({
-          //     url: './api/v1/wishlist'
-          // }).then((data) => {
-          //   this.items = data
-          // })
-          // TODO: temp
-          util.request({
-            url: './api/v1/offer/list'
-          }).then((data) => {
-            this.items = data
-          })
+          console.log('load from localStorage: ' + this.type)
         },
 
       onSelectCard(id) {

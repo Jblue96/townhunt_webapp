@@ -3,6 +3,7 @@ import {Router} from 'director'
 import config from '../common/config'
 import util from '../common/util'
 import cache from '../common/cache'
+import InfiniteScroller from '../common/InfiniteScroller'
 // components
 import componentHeader from './components/header.vue'
 import componentNav from './components/nav.vue'
@@ -98,9 +99,19 @@ var app = new Vue({
     }
 })
 
-var onRoute = (componentId) => {
-    app.currentView = componentId
-    app.$broadcast('onRoute', componentId)
+// setup infinite scroll
+app._infiniteScroller = new InfiniteScroller({
+    callback() {
+        app.$broadcast('onScrollBottom')
+    }
+})
+app._infiniteScroller.enable()
+
+var onRoute = (componentId, options = {}) => {
+    app.currentView = options.componentId = componentId
+    setTimeout(() => {
+        app.$broadcast('onRoute', options)
+    }, 25)
 }
 
 // setup router
@@ -120,8 +131,11 @@ var routes = {
     '/logout': function() {
         onRoute('page-logout')
     },
-    '/wishlist': function() {
-        onRoute('page-wishlist')
+    '/likes': function() {
+        onRoute('page-wishlist', {type: 'like'})
+    },
+    '/buckets': function() {
+        onRoute('page-wishlist', {type: 'bucket'})
     },
     '/mypage/top': function() {
         onRoute('page-mypage-top')
@@ -143,7 +157,7 @@ var routes = {
     }
 }
 
-var NEED_LOGIN_PAGES = ['mypage', 'payment', 'request', 'wishlist']
+var NEED_LOGIN_PAGES = ['mypage', 'payment', 'request']
 
 var router = app.router = Router(routes).configure({
     before() {

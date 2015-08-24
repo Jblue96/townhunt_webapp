@@ -16,24 +16,28 @@ export default {
       return (results && results[0]) || null
     },
 
-    // getSlideOut: (() => {
-    //   // setup slideout at initialization
-    //   var slideout = new Slideout({
-    //     'panel': document.getElementById('main'),
-    //     'menu': document.getElementById('menu'),
-    //     'padding': 256,
-    //     'tolerance': 70
-    //   })
-    //   // add event handler on main to close by click
-    //   $('.component__main').on('click', (e) => {
-    //     if(slideout.isOpen()){
-    //       slideout.close()
-    //     }
-    //   })
-    //   return () => slideout
-    // })(),
+    getSlideOut: (() => {
+      // setup slideout at initialization
+      var $menu = document.getElementById('menu')
+      if(!$menu) {
+        return
+      }
+      var slideout = new Slideout({
+        'panel': document.getElementById('main'),
+        'menu': $menu,
+        'padding': 256,
+        'tolerance': 70
+      })
+      // add event handler on main to close by click
+      $('.component__main').on('click', (e) => {
+        if(slideout.isOpen()){
+          slideout.close()
+        }
+      })
+      return () => slideout
+    })(),
 
-    request: (options={}) => {
+    request(options={}) {
       return new Promise((resolve, reject) => {
         var headers = options.headers || {}
         headers['X-Parse-Application-Id'] = config.api.appId
@@ -54,6 +58,34 @@ export default {
           error: reject
         })
       })
+    },
+
+    throttle(callback, limit) {
+      var wait = false
+      return function () {
+        if (!wait) {
+          callback()
+          wait = true
+          setTimeout(function () {
+              wait = false
+          }, limit)
+        }
+      }
+    },
+
+    debouncer(onStart, onStop, delay) {
+        var timer,
+            count = 0
+        return () => {
+            if(count === 0) {
+                onStart && onStart()
+            }
+            timer && clearTimeout(timer)
+            timer = setTimeout(() => {
+                onStop && onStop()
+                count = 0
+            }, delay || 500)
+        }
     }
 
 }

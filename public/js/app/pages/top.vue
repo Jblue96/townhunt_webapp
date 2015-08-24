@@ -1,12 +1,12 @@
 <template>
   <div class="page__top">
       <div class="top_nav">
-      Search Conditions
+      Search Conditions (To be implemented...)
       </div>
-      <div class="top_main" v-if="!loading">
-        <component-card v-repeat="items"></component-card>
+      <div class="top_main" v-if="!showLoading">
+        <component-card v-repeat="items" track-by="objectId"></component-card>
       </div>
-      <div v-if="loading">
+      <div v-if="showLoading">
         Loading...
       </div>
   </div>
@@ -23,11 +23,14 @@ import componentCard from '../components/card.vue'
 export default {
     data() {
       return {
-        loading: false,
+        showLoading: false,
         items: [],
         queryParams: {
-          filter: '',
-          order: 'popular'
+          limit: 20,
+          skip: 0,
+          order: '-createdAt',
+          // e.g. where:{"$or":[{"objectId":{"$regex":"shibuya"}},{"name":{"$regex":"shibuya"}},{"description":{"$regex":"shibuya"}},{"town":{"$regex":"shibuya"}}]}
+          where: ''
         }
       }
     },
@@ -43,13 +46,18 @@ export default {
       // listening events
       this.attachEvents()
       // initial load
-      this.refresh()
+      this.refresh().then((result) => {
+        this.items = result.items
+        // broadcast load events
+        this.$emit('onLoadCompleted')
+        this.$broadcast('onLoadCompleted')
+      })
     },
 
     methods: {
       attachEvents() {
         this.$on('onSelectCard', this.onSelectCard.bind(this))
-        this.$on('onSelectType', this.onSelectType.bind(this))
+        this.$on('onScrollBottom', this.loadMore.bind(this))
       },
 
       restoreQueryParams() {
@@ -61,44 +69,52 @@ export default {
       },
 
       refresh() {
+        // show loading
+        this.showLoading = true
+        return this.load()
+      },
 
-        var params = {
-          limit: 50,
-          order: '-createdAt'
-        }
-
-        // if (skip) {
-        //   params.skip = skip
-        // }
-
-        if (this.queryParams.filter) {
-          params.where = { type: this.queryParams.filter }
-        }
-
-        // list promise
-        var listDeferred = util.request({
-          // url: './api/v1/offer/list'
-          url: config.api.url + '/classes/Offer',
-          data: params
-        })
-
-        this.loading = true
-        // done both list and me promises are resolved
-        Promise.all([listDeferred, this.$root.fetchMe()]).then((data) => {
-          // for initial router destroyed e.g. direct access to detail page
-          if(!this.$root) { return }
-          // store to cache
-          var items = data[0] && data[0].results || [],
-              me = data[1] || {favorites: []}
-          // set favorited
-          items.forEach((item) => {
-            item.favorited = (me.favorites.indexOf(item.id) > -1)
+      load() {
+        return new Promise((resolve, reject) => {
+          this._requesting = true
+          // list promise
+          var listDeferred = util.request({
+            // url: './api/v1/offer/list'
+            url: config.api.url + '/classes/Offer',
+            data: this.queryParams
           })
-          this.items = items
-          this.loading = false
-          // broadcast load events
-          this.$emit('onLoadCompleted')
-          this.$broadcast('onLoadCompleted')
+
+          // done both list and me promises are resolved
+          Promise.all([listDeferred, this.$root.fetchMe()]).then((data) => {
+            // for initial router destroyed e.g. direct access to detail page
+            if(!this.$root) { return }
+            // store to cache
+            var items = data[0] && data[0].results || [],
+                me = data[1] || {favorites: []}
+            // set favorited
+            // items.forEach((item) => {
+            //   item.favorited = (me.favorites.indexOf(item.id) > -1)
+            // })
+            
+            // hide loading
+            this._requesting = this.showLoading = false
+            resolve({items: items, me: me})
+          }, () => {
+            this._requesting = this.showLoading = false
+            reject()
+          })
+        })
+      },
+
+      loadMore() {
+        if (this._requesting) {
+          return
+        }
+        this.queryParams.skip = this.queryParams.skip + this.queryParams.limit
+        this.load().then((result) => {
+          result.items.forEach((item) => {
+            this.items.push(item)
+          })
         })
       },
 
@@ -106,23 +122,8 @@ export default {
         // set to response cache
         cache.set('detail', util.getItemById(this.items, id))
         location.href = '#/detail/' + id
-      },
-
-      onSelectType(id) {
-        // toggle
-        if (this.queryParams.filter === id) {
-          this.queryParams.filter = ''
-        } else {
-          this.queryParams.filter = id
-        }
-        // store cache to refer from map component
-        cache.set('queryParams', this.queryParams)
-        this.refresh()
-      },
-
-      onChangeOrder() {
-        console.log("order by: " + this.queryParams.order)
       }
+
     }
 }
 </script>

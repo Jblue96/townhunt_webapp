@@ -1,7 +1,7 @@
 <template>
   <div class="page__login">
     <div class="login_titleWrap">
-      <h2 class="login_title">Join Booked</h2>
+      <h2 class="login_title">Join TownHunt</h2>
       <div>and never miss the best things to do for your trip.</div>
     </div>
     <div class="login_content">
@@ -10,8 +10,8 @@
       </div>
       <div class="login_btnWrap">
         <div>
-          <a class="BookedBtn" v-on="click: onClickLogin">
-            <div class="BookedBtnLabel">Login</div>
+          <a class="TownHuntBtn" v-on="click: onClickLogin">
+            <div class="TownHuntBtnLabel">Login</div>
           </a>
         </div>
         <div>
