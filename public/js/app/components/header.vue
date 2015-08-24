@@ -3,10 +3,6 @@
         <a class="button_left {{left.icon}}" v-on="click: leftCallback" v-if="left.icon != 'none'" href="javascript:;">{{{left.label}}}</a>
         <div class="header_title">
           <span v-if="center.title" v-text="center.title"></span>
-          <select class="select_title" v-if="!center.title" v-model="countryId">
-            <option value="tokyo">Tokyo</option>
-            <option value="singapore">Singapore</option>
-          </select>
         </div>
         <a class="button_right {{right.icon}}" v-on="click: rightCallback" v-if="right.icon != 'none'" href="javascript:;">{{{right.label}}}</a>
     </div>
@@ -139,9 +135,18 @@ export default {
           this.left = this.iconDefaultLeft()
           this.right = this.iconList()
           break
+        case 'page-queries':
+          this.center = { title: 'Filter' }
+          this.left = this.iconDefaultLeft()
+          this.right = this.iconNone()
+          break
         case 'page-detail':
           this.center = { title: 'Detail Info' }
-          this.left = this.iconDefaultLeft()
+          // this.left = this.iconDefaultLeft()
+          this.left = {
+            icon: 'icon_back',
+            callback: this.back
+          }
           this.right = this.iconNone()
           break
         case 'page-wishlist':
@@ -212,7 +217,7 @@ export default {
           this.right = this.iconNone()
           break
         default:
-            this.center = {}
+            this.center = {title: 'Tokyo'}
             this.left = this.iconDefaultLeft()
             this.right = this.iconNone()
             break

@@ -1,12 +1,12 @@
 <template>
   <div class="page__top">
       <div class="top_nav">
-      Search Conditions (To be implemented...)
+        <component-search-info></component-search-info>
       </div>
-      <div class="top_main" v-if="!showLoading">
+      <div class="top_main">
         <component-card v-repeat="items" track-by="objectId"></component-card>
       </div>
-      <div v-if="showLoading">
+      <div class="loading_more" v-if="hasNext">
         Loading...
       </div>
   </div>
@@ -17,18 +17,19 @@ import $ from 'npm-zepto'
 import util from '../../common/util'
 import config from '../../common/config'
 import cache from '../../common/cache'
-import componentCategories from '../components/categories.vue'
+// import componentCategories from '../components/categories.vue'
 import componentCard from '../components/card.vue'
+import componentSearchInfo from '../components/searchInfo.vue'
 
 export default {
     data() {
       return {
-        showLoading: false,
+        hasNext: true,
         items: [],
         queryParams: {
           limit: 20,
           skip: 0,
-          order: '-createdAt',
+          order: 'createdAt',
           // e.g. where:{"$or":[{"objectId":{"$regex":"shibuya"}},{"name":{"$regex":"shibuya"}},{"description":{"$regex":"shibuya"}},{"town":{"$regex":"shibuya"}}]}
           where: ''
         }
@@ -36,13 +37,14 @@ export default {
     },
 
     components: {
-      'component-categories': componentCategories,
-      'component-card': componentCard
+      // 'component-categories': componentCategories,
+      'component-card': componentCard,
+      'component-search-info': componentSearchInfo
     },
 
     created() {
-      // TODO: handle initial query params
-      this.restoreQueryParams()
+      // handle initial query params
+      this.queryParams = $.extend(this.queryParams, util.getUrlSearchQueryParams())
       // listening events
       this.attachEvents()
       // initial load
@@ -60,17 +62,7 @@ export default {
         this.$on('onScrollBottom', this.loadMore.bind(this))
       },
 
-      restoreQueryParams() {
-        // restore queryParams
-        var _cache = cache.get('queryParams')
-        if(_cache) {
-          this.queryParams = _cache
-        }
-      },
-
       refresh() {
-        // show loading
-        this.showLoading = true
         return this.load()
       },
 
@@ -87,7 +79,7 @@ export default {
           // done both list and me promises are resolved
           Promise.all([listDeferred, this.$root.fetchMe()]).then((data) => {
             // for initial router destroyed e.g. direct access to detail page
-            if(!this.$root) { return }
+            if (!this.$root) { return }
             // store to cache
             var items = data[0] && data[0].results || [],
                 me = data[1] || {favorites: []}
@@ -97,10 +89,13 @@ export default {
             // })
             
             // hide loading
-            this._requesting = this.showLoading = false
+            if (items.length === 0) {
+              this.hasNext = false
+            }
+            this._requesting = false
             resolve({items: items, me: me})
           }, () => {
-            this._requesting = this.showLoading = false
+            this._requesting = false
             reject()
           })
         })

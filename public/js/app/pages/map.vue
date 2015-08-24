@@ -1,7 +1,7 @@
 <template>
   <div class="page__top">
       <div class="top_nav">
-      Search Conditions (To be implemented...)
+        <component-search-info></component-search-info>
       </div>
       <div class="top_map">
         <div id="map_canvas"></div>
@@ -15,7 +15,8 @@ import util from '../../common/util'
 import config from '../../common/config'
 import cache from '../../common/cache'
 import mapUtil from '../../common/mapUtil'
-import componentCategories from '../components/categories.vue'
+// import componentCategories from '../components/categories.vue'
+import componentSearchInfo from '../components/searchInfo.vue'
 import pageTop from '../pages/top.vue'
 
 // extend pageTop
@@ -32,12 +33,13 @@ var Component = {
     },
 
     components: {
-      'component-categories': componentCategories
+      // 'component-categories': componentCategories
+      'component-search-info': componentSearchInfo
     },
 
     created() {
-      // TODO: handle initial query params
-      this.restoreQueryParams()
+      // handle initial query params
+      this.queryParams = $.extend(this.queryParams, util.getUrlSearchQueryParams())
       // listening events
       this.attachEvents()
       // initial load

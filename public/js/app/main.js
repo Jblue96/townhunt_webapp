@@ -10,6 +10,7 @@ import componentNav from './components/nav.vue'
 import componentFooter from './components/footer.vue'
 // pages
 import pageDetail from './pages/detail.vue'
+import pageQueries from './pages/queries.vue'
 import pageLogin from './pages/login.vue'
 import pageLogout from './pages/logout.vue'
 import pageTop from './pages/top.vue'
@@ -26,6 +27,7 @@ import filter from './filters/filter'
 // zepto patch
 // for swiper
 import $ from 'npm-zepto'
+import {} from '../lib/zepto.deparam'
 import {} from '../lib/zepto.height'
 
 // setup Vue
@@ -40,6 +42,7 @@ var app = new Vue({
         'component-nav': componentNav,
         'component-footer': componentFooter,
         'page-detail': pageDetail,
+        'page-queries': pageQueries,
         'page-login': pageLogin,
         'page-logout': pageLogout,
         'page-top': pageTop,
@@ -121,6 +124,9 @@ var routes = {
     },
     '/map': function() {
         onRoute('page-map')
+    },
+    '/queries': function() {
+        onRoute('page-queries')
     },
     '/detail/:id': function(id) {
         onRoute('page-detail')

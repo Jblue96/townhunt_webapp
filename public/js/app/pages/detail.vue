@@ -11,35 +11,45 @@
             <div class="detail_table">
                 <div class="detail_middle">
                     <div class="detail_categories">
-                        <span>{{item.type | type}}</span>
+                    <span>{{item.town}}</span> / <span>{{item.shop.category}}</span>
                     </div>
-                    <div class="detail_area">{{item.address.city}}</div>
+                    <div>
+                        <span>Michelin</span>
+                        <span>{{item.shop.michelin | michelin}}</span>
+                    </div>
+                    <div>
+                        Now Opened
+                    </div>
                 </div>
                 <div class="detail_right">
                 <div class="detail_favorite" v-class="icon_favorite: favorited, icon_favorite_blank: !favorited" v-on="click: favorite"></div>
-                    <div class="detail_price">{{item.price | price}}</div>
                 </div>
             </div>
+        </div>
+        <div class="detail_location">
+            <div class="detail_location_content">
+                <p>{{item.address}}</p>
+            </div>
+            <div class="detail_location_icon"></div>
         </div>
         <div class="detail_main">
-            <h5>About this place</h5>
-            <div>
-                <p>Hours: {{item.availability}}</p>
-            </div>
-            <div class="detail_location">
-                <div class="detail_location_icon"></div>
-                <div class="detail_location_content">
-                    <div class="detail_location_title">{{item.address.state}}</div>
-                    <div class="detail_location_address">{{item.address | address}}</div>
-                    <div class="detail_location_right">
-                        <span>Open with Google Map</span>
-                    </div>
-                </div>
-            </div>
-            <p class="detail_description">{{{item.description}}}</p>
+            <dl>
+                <dt>Budget</dt>
+                <dd>{{item.shop.budget.display | displayBudget}}</dd>
+
+                <dt>Credit Card</dt>
+                <dd>{{item.shop.cardAvailable | displayCard}}</dd>
+
+                <dt>Open Hours</dt>
+                <dd>{{item.shop.operatingHours | displayOperatingHours}}</dd>
+
+                <dt>Closed on</dt>
+                <dd>{{item.shop.shopHolidays | displayShopHolidays}}</dd>
+            </dl>
         </div>
         <div class="detail_footer">
-            <div class="detail_btn btn_large" v-on="click: onClickPayment">GET TICKET {{item.price | price}}</div>
+            <div class="detail_btn btn_large" v-on="click: onClickLike">Lovin' it</div>
+            <div class="detail_btn btn_large" v-on="click: onClickBucket">Bucket it</div>
         </div>
     </div>
   </div>
@@ -50,6 +60,7 @@ import $ from 'npm-zepto'
 import util from '../../common/util'
 import config from '../../common/config'
 import cache from '../../common/cache'
+import Swiper from '../../lib/swiper.jquery'
 
 export default {
 
@@ -102,6 +113,14 @@ export default {
 
         onClickPayment() {
             location.href = '#/payment/order'
+        },
+
+        onClickLike() {
+
+        },
+
+        onClickBucket() {
+
         },
 
         favorite(){
