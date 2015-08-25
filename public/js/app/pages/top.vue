@@ -47,13 +47,26 @@ export default {
       this.queryParams = $.extend(this.queryParams, util.getUrlSearchQueryParams())
       // listening events
       this.attachEvents()
-      // initial load
-      this.refresh().then((result) => {
-        this.items = result.items
-        // broadcast load events
-        this.$emit('onLoadCompleted')
-        this.$broadcast('onLoadCompleted')
-      })
+    },
+
+    attached() {
+      if (cache.needForceReload(this.$options.id)) {
+        this._cachedScrollTop = 0
+        this.refresh().then((result) => {
+          this.items = result.items
+          // broadcast load events
+          this.$emit('onLoadCompleted')
+          this.$broadcast('onLoadCompleted')
+          cache.disableForceReload(this.$options.id)
+        })
+      }
+      $(window).scrollTop(this._cachedScrollTop || 0)
+      this.$root._infiniteScroller.enable()
+    },
+
+    detached() {
+        this._cachedScrollTop = this.$root._infiniteScroller.getLastScrollTop()
+        this.$root._infiniteScroller.disable()
     },
 
     methods: {

@@ -14,7 +14,11 @@ export default {
     // current selected detail offer
     detail: null,
     // current selected request detail
-    requestDetail: null
+    requestDetail: null,
+    // force reload with ignoring keep-alive
+    _forceReload: {
+      'page-top': true
+    }
   },
 
   set(key, value) {
@@ -23,5 +27,18 @@ export default {
 
   get(key) {
     return this._ref[key]
+  },
+
+  enableForceReload(componentId) {
+    this._ref._forceReload[componentId] = true
+  },
+
+  disableForceReload(componentId) {
+    this._ref._forceReload[componentId] = false
+  },
+
+  needForceReload(componentId) {
+    return this._ref._forceReload[componentId] || false
   }
+
 }

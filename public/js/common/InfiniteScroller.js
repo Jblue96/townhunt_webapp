@@ -24,8 +24,19 @@ export default class InfiniteScroller {
       this._removeScrollEvent()
   }
 
+  getLastScrollTop() {
+    return this._sct
+  }
+
   _scroll() {
-      if (this.$win.scrollTop() + this.$win.height() >= this.$container.height() - this.autoLoadingBottomHeight) {
+      this._sct = this.$win.scrollTop()
+      // temp workaround for slideout opened call
+      var winH = this.$win.height(),
+        contentH = this.$container.height()
+      if (winH === contentH) {
+        return
+      }
+      if (this._sct + winH >= contentH - this.autoLoadingBottomHeight) {
         this.callback()
       }
   }

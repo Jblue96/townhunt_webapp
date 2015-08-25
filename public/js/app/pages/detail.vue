@@ -52,6 +52,9 @@
             <div class="detail_btn btn_large" v-on="click: onClickBucket">Bucket it</div>
         </div>
     </div>
+    <div v-if="!initialized">
+        Loading...
+    </div>
   </div>
 </template>
 
@@ -73,6 +76,10 @@ export default {
     },
 
     created() {
+    },
+
+    attached() {
+        this.initialized = false
         // check exisiting item
         var detail = cache.get('detail')
         if(detail){
@@ -85,9 +92,12 @@ export default {
         }
     },
 
+    detached() {
+    },
+
     methods: {
         refresh(id) {
-            if(!id) {
+            if(this.initialized || !id) {
               return
             }
             // initial load
@@ -108,6 +118,8 @@ export default {
                 cache.set('detail', item)
                 this.initialized = true
                 this.initSwiper()
+            }, () => {
+                this.initialized = true
             })
         },
 

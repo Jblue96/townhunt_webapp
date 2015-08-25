@@ -11,7 +11,7 @@ export default {
     // filter an item from list by id prop
     getItemById(items, targetId, idProp) {
       var results = $.grep(items, (item) => {
-        return item['id' || idProp] === targetId
+        return item['objectId' || idProp] === targetId
       })
       return (results && results[0]) || null
     },

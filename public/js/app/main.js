@@ -57,7 +57,7 @@ var app = new Vue({
     },
 
     data: {
-        currentView: 'page-top',
+        currentView: '',
         headerOptions: {},
         // API response cache
         cache: {
@@ -108,7 +108,6 @@ app._infiniteScroller = new InfiniteScroller({
         app.$broadcast('onScrollBottom')
     }
 })
-app._infiniteScroller.enable()
 
 var onRoute = (componentId, options = {}) => {
     app.currentView = options.componentId = componentId
@@ -180,6 +179,6 @@ var router = app.router = Router(routes).configure({
     }
 })
 
-router.init('/')
+router.init(location.hash || '/')
 
 module.exports = app

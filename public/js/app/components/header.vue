@@ -53,6 +53,8 @@ export default {
 
   methods: {
     iconDefaultLeft() {
+      // enable slideout
+      util.getSlideOut()._opened = false
       return {
         icon: 'icon_menu',
         callback: this.toggleMenu
@@ -116,6 +118,8 @@ export default {
 
     updateHeader(componentId) {
       var that = this
+      // disable slideout by default
+      util.getSlideOut()._opened = true
       switch(componentId){
         case 'page-login':
           this.center = { title: 'Login' }
