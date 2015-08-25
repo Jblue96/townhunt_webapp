@@ -43,20 +43,17 @@ export default {
     },
 
     created() {
-      // handle initial query params
-      this.queryParams = $.extend(this.queryParams, util.getUrlSearchQueryParams())
       // listening events
       this.attachEvents()
     },
 
     attached() {
+      // handle initial query params
+      this.queryParams = $.extend(this.queryParams, util.getUrlSearchQueryParams())
       if (cache.needForceReload(this.$options.id)) {
         this._cachedScrollTop = 0
         this.refresh().then((result) => {
           this.items = result.items
-          // broadcast load events
-          this.$emit('onLoadCompleted')
-          this.$broadcast('onLoadCompleted')
           cache.disableForceReload(this.$options.id)
         })
       }
@@ -75,6 +72,10 @@ export default {
         this.$on('onScrollBottom', this.loadMore.bind(this))
       },
 
+      getQueryParams() {
+        return this.queryParams
+      },
+
       refresh() {
         return this.load()
       },
@@ -86,13 +87,11 @@ export default {
           var listDeferred = util.request({
             // url: './api/v1/offer/list'
             url: config.api.url + '/classes/Offer',
-            data: this.queryParams
+            data: this.getQueryParams()
           })
 
           // done both list and me promises are resolved
           Promise.all([listDeferred, this.$root.fetchMe()]).then((data) => {
-            // for initial router destroyed e.g. direct access to detail page
-            if (!this.$root) { return }
             // store to cache
             var items = data[0] && data[0].results || [],
                 me = data[1] || {favorites: []}

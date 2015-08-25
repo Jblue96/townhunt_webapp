@@ -136,11 +136,8 @@ var routes = {
     '/logout': function() {
         onRoute('page-logout')
     },
-    '/likes': function() {
-        onRoute('page-wishlist', {type: 'like'})
-    },
-    '/buckets': function() {
-        onRoute('page-wishlist', {type: 'bucket'})
+    '/favorites': function() {
+        onRoute('page-wishlist', {type: 'favorites'})
     },
     '/mypage/top': function() {
         onRoute('page-mypage-top')

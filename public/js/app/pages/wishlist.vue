@@ -13,7 +13,7 @@ import componentCard from '../components/card.vue'
 export default {
     data() {
         return {
-          // 'like', 'bucket'
+          // 'favorites'
           type: '',
           items: []
         }

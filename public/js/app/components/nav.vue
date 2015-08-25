@@ -5,8 +5,7 @@
   <div class="nav_menu">
     <ul>
       <li><a v-on="click: move('#/')">Explore</a></li>
-      <li><a v-on="click: move('#/likes')">Lovin' it</a></li>
-      <li><a v-on="click: move('#/buckets')">Bucket it</a></li>
+      <li><a v-on="click: move('#/favorites')">Favorites</a></li>
       <!--li v-if="me" class="nav_profile">
           <a class="icon_profile" v-on="click: move('#/mypage/top')" href="javascript:;">
             <img v-attr="src: me.imageUrl"/>

@@ -1,5 +1,5 @@
-import Slideout from 'slideout'
 import $ from 'npm-zepto'
+import Slideout from '../lib/slideout'
 import config from './config'
 
 export default {

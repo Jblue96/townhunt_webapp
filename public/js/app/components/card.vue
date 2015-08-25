@@ -6,9 +6,9 @@
                     <div class="card_middle">
                         <div class="card_title">{{name}}</div>
                         <div class="card_categories">
-                            <span>{{type | type}}</span>
+                            <span>{{shop.category}}</span>
                         </div>
-                        <div class="card_area">{{address.city}}</div>
+                        <div class="card_area">{{city}}</div>
                     </div>
                     <div class="card_right">
                         <div class="card_favorite" v-class="icon_favorite: favorited, icon_favorite_blank: !favorited" v-on="click: favorite"></div>
@@ -25,32 +25,7 @@ import filter from '../filters/filter'
 
 export default {
   data() {
-    return {
-        objectId: '',
-        name: '',
-        description: '',
-        address: {
-            city: '',
-            country: '',
-            line1: '',
-            line2: '',
-            region: '',
-            state: '',
-            zip: ''
-        },
-        type: '',
-        defaultImageIndex: null,
-        images: [],
-        price: {
-            amount: 0,
-            currency: '',
-            unit: ''
-        },
-        reservationDetails: '',
-        reservationPhone: '',
-        reservationUrl: '',
-        favorited: false
-    }
+    return {}
   },
 
   computed: {

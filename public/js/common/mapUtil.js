@@ -2,7 +2,7 @@ class Map {
     constructor(map) {
         // constants
         this._markerSize = 36;
-        this._displayedIds = []
+        this._displayedIdMap = {}
         this._markers = []
         this._map = map
     }
@@ -13,7 +13,7 @@ class Map {
             lng = opt.lng,
             onClickMarker = opt.onClickMarker
         // dup check
-        if(this._displayedIds.indexOf(id) !== -1) {
+        if(this._displayedIdMap[id] === true) {
           return
         }
         var ms = this._markerSize,
@@ -28,16 +28,30 @@ class Map {
             google.maps.event.addListener(marker, 'click', onClickMarker)
         }
         this._markers.push(marker)
-        this._displayedIds.push(id)
+        this._displayedIdMap[id] = true
     }
 
     clearMarkers() {
-        this._displayedIds = []
+        for (var name in this._displayedIdMap) {
+            if (name && this._displayedIdMap[name]) {
+                this._displayedIdMap[name] = false
+            }
+        }
         this._markers.forEach((marker, i) => {
           marker.setMap(null)
         })
         this._markers = []
     }
+
+    getCenter() {
+      return this._map.getCenter()
+    }
+
+    setCenter(location) {
+        // set to center
+        this._map.panTo(new google.maps.LatLng(location.latitude, location.longitude))
+    }
+
 }
 
 export default {
@@ -50,7 +64,8 @@ export default {
         var MY_MAPTYPE_ID = 'TownHunt_style',
             lat = opt.lat,
             lng = opt.lng,
-            zoom = opt.zoom
+            zoom = opt.zoom,
+            onDragEnd = opt.onDragEnd
 
         var map = new google.maps.Map(mapNode, {
             center: new google.maps.LatLng(lat, lng),
@@ -91,6 +106,11 @@ export default {
         )
         map.mapTypes.set(MY_MAPTYPE_ID, customMapType)
 
+        if (onDragEnd) {
+            google.maps.event.addListener(map, 'idle', function(){
+                onDragEnd()
+            })
+        }
         return this.newInstance(map)
     }
 }

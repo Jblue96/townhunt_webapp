@@ -6,6 +6,9 @@
       <div class="top_map">
         <div id="map_canvas"></div>
       </div>
+      <div>
+        <component-map-card item="{{selectedMapItem}}" v-if="selectedMapItem"></component-map-card>
+      </div>
   </div>
 </template>
 
@@ -17,33 +20,66 @@ import cache from '../../common/cache'
 import mapUtil from '../../common/mapUtil'
 // import componentCategories from '../components/categories.vue'
 import componentSearchInfo from '../components/searchInfo.vue'
+import componentMapCard from '../components/mapCard.vue'
 import pageTop from '../pages/top.vue'
 
 // extend pageTop
 var Component = {
     data() {
       return {
+        zoom: 16,
         items: [],
+        selectedMapItem: null,
         queryParams: {
-          filter: '',
-          order: 'popular'
+          limit: 40,
+          // filter: '',
+          order: 'popular',
+          where: ''
         },
-        initPos: {lat: 35.658517, lng: 139.701334},
+        initPos: {lat: 35.658517, lng: 139.701334}
       }
     },
 
     components: {
       // 'component-categories': componentCategories
-      'component-search-info': componentSearchInfo
+      'component-search-info': componentSearchInfo,
+      'component-map-card': componentMapCard
     },
 
     created() {
-      // handle initial query params
-      this.queryParams = $.extend(this.queryParams, util.getUrlSearchQueryParams())
       // listening events
       this.attachEvents()
+    },
+
+    attached() {
+      // handle initial query params
+      this.queryParams = $.extend(this.queryParams, util.getUrlSearchQueryParams())
       // initial load
-      this.refresh()
+      this.clear()
+      // render and select first item
+      var initRender = (items) => {
+          this.render(items)
+          if (items.length > 0) {
+            this.updateMapCard(items[0])
+          }
+          this._initialized = true
+      }
+      this.refresh().then((result) => {
+        // set current position by default
+        this.getCurrentLocation().then((coords) => {
+          // move to center
+          this._map.setCenter(coords)
+          // set initial location
+          initRender(result.items)
+        }, () => {
+          initRender(result.items)
+        })
+      })
+    },
+
+    detached() {
+      this._initialized = false
+      this.selectedMapItem = null
     },
 
     ready() {
@@ -52,53 +88,127 @@ var Component = {
 
     methods: {
       attachEvents() {
-        this.$on('onSelectMap', this.onSelectMap.bind(this))
-        this.$on('onLoadCompleted', this.onLoadCompleted.bind(this))
+        this.$on('onSelectMarker', this.updateMapCard.bind(this))
+        this.$on('onSelectMapCard', this.onSelectMapCard.bind(this))
       },
 
-      onSelectMap(id) {
-        // set to response cache
-        cache.set('detail', util.getItemById(this.items, id))
-        location.href = '#/detail/' + id
-      },
+      // getQueryParams() {
+      //   // add additional location parameters
+      //   return $.extend({}, this.queryParams)
+      // },
 
       initMap() {
         // temp to set map height
-        var mapNode = document.getElementById("map_canvas"),
+        var that = this,
+          mapNode = document.getElementById("map_canvas"),
           headerH = 44,
-          navH = 48,
-          filterH = 32
+          filterH = 60,
+          mapCardH = 60
 
-        $(mapNode).height($(window).height() - (headerH + navH + filterH))
+        $(mapNode).height($(window).height() - (headerH + filterH + mapCardH))
 
-        // TODO: get current location
         this._map = mapUtil.create(mapNode, {
           lat: this.initPos.lat,
           lng: this.initPos.lng,
-          zoom: 12
+          zoom: this.zoom,
+          onDragEnd() {
+            if (that._initialized) {
+              // load with the map center position
+              var gLatLng = that._map.getCenter()
+              that.loadByLocation({
+                latitude: gLatLng.lat(),
+                longitude: gLatLng.lng()
+              })
+            }
+          }
         })
       },
 
-      onLoadCompleted() {
-        var that = this
+      clear() {
         // clear existing markers
-        this._map.clearMarkers()
+        if (this._map) {
+          this._map.clearMarkers()
+        }
+      },
+
+      render(items) {
+        var that = this
         // add new markers
-        this.items.forEach((item, i) => {
+        items.forEach((item, i) => {
           this._map.addMaker({
             id: item.objectId,
             lat: item.location.latitude,
             lng: item.location.longitude,
             onClickMarker() {
-              that.onSelectCard(item.objectId)
+              that.$emit('onSelectMarker', item)
             }
           })
         })
+      },
+
+      loadByLocation(location) {
+        if (this._requesting || !location) {
+          return
+        }
+        // reference: https://parse.com/docs/rest/guide/#geopoints-geo-queries
+        // construct query parmas
+        this.queryParams.where = JSON.stringify({
+          "location": {
+            "$nearSphere": {
+              "__type": "GeoPoint",
+              "latitude": location.latitude,
+              "longitude": location.longitude
+            },
+            "$maxDistanceInKilometers": 4.0
+          }
+        })
+        // this.queryParams.location = location
+        this.load().then((result) => {
+          this.render(result.items)
+        })
+      },
+
+      getCurrentLocation() {
+        // TODO: loading indicator?
+        return new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition((pos) => {
+            // TODO: 
+            resolve(pos.coords)
+          }, () => reject, {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+          })
+        })
+      },
+
+      updateCurrentLocation() {
+        // TODO: call with interval or click current location button
+        this.getCurrentLocation().then(this.setCurrentLocationMarker)
+      },
+
+      setCurrentLocationMarker(coords) {
+        // TODO: place current location marker?
+
+      },
+
+      updateMapCard(item) {
+        // move to center position
+        this._map.setCenter(item.location)
+        // set as selected item
+        this.selectedMapItem = item
+        // load by the selected location
+        this.loadByLocation(item.location)
+      },
+
+      onSelectMapCard(id) {
+        // set to response cache
+        cache.set('detail', util.getItemById(this.items, id))
+        location.href = '#/detail/' + id
       }
     }
 }
-// TODO: temp extend implementation for methos
+// TODO: temp for load
 Component.methods = $.extend({}, pageTop.methods, Component.methods)
-Component.computed = $.extend({}, pageTop.computed, Component.computed)
-export default $.extend({}, pageTop, Component)
+export default Component
 </script>

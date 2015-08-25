@@ -47,10 +47,6 @@
                 <dd>{{item.shop.shopHolidays | displayShopHolidays}}</dd>
             </dl>
         </div>
-        <div class="detail_footer">
-            <div class="detail_btn btn_large" v-on="click: onClickLike">Lovin' it</div>
-            <div class="detail_btn btn_large" v-on="click: onClickBucket">Bucket it</div>
-        </div>
     </div>
     <div v-if="!initialized">
         Loading...
@@ -79,13 +75,15 @@ export default {
     },
 
     attached() {
-        this.initialized = false
         // check exisiting item
         var detail = cache.get('detail')
         if(detail){
-            this.item = detail
-            this.initialized = true
-            this.initSwiper()
+            // TODO: temp workaround to scrollTop
+            setTimeout(() => {
+                this.initialized = true
+                this.item = detail
+                this.initSwiper()
+            }, 25)
         }else{
             // direct access if item does not exist, load an item
             this.refresh(this.$root.router.getRoute()[1])
@@ -93,6 +91,7 @@ export default {
     },
 
     detached() {
+        this.initialized = false
     },
 
     methods: {
@@ -125,14 +124,6 @@ export default {
 
         onClickPayment() {
             location.href = '#/payment/order'
-        },
-
-        onClickLike() {
-
-        },
-
-        onClickBucket() {
-
         },
 
         favorite(){
