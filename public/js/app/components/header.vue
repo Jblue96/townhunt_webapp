@@ -53,8 +53,6 @@ export default {
 
   methods: {
     iconDefaultLeft() {
-      // enable slideout
-      util.getSlideOut().enableTouch()
       return {
         icon: 'icon_menu',
         callback: this.toggleMenu
@@ -118,8 +116,6 @@ export default {
 
     updateHeader(componentId) {
       var that = this
-      // disable slideout by default
-      util.getSlideOut().disableTouch()
       switch(componentId){
         case 'page-login':
           this.center = { title: 'Login' }
@@ -138,8 +134,6 @@ export default {
           this.center = { title: 'Tokyo' }
           this.left = this.iconDefaultLeft()
           this.right = this.iconList()
-          // special handling to prevent touch move
-          util.getSlideOut().disableTouch()
           break
         case 'page-queries':
           this.center = { title: 'Filter' }

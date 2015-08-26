@@ -34,6 +34,8 @@ export default {
           slideout.close()
         }
       })
+      // disable slideout by default
+      slideout.disableTouch()
       return () => slideout
     })(),
 

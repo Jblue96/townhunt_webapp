@@ -1,10 +1,18 @@
+
 class Map {
+
     constructor(map) {
         // constants
         this._markerSize = 36;
         this._displayedIdMap = {}
         this._markers = []
         this._map = map
+        this._currentPlaceCircle = null
+        this._currentPlaceMarker = null
+        // this.markerIcon = new google.maps.MarkerImage('/img/icons/map_goal_icon.png', new google.maps.Size(24, 35), new google.maps.Point(24, 35), new google.maps.Point(12, 35));
+        // this.currentPlaceIcon = new google.maps.MarkerImage('/img/icons/map_blue_circle.png', new google.maps.Size(32, 32), new google.maps.Point(16, 16), new google.maps.Point(8, 8));
+        this.markerIcon = new google.maps.MarkerImage('/img/icons/map_goal_icon.png', new google.maps.Size(24, 36));
+        this.currentPlaceIcon = new google.maps.MarkerImage('/img/icons/map_blue_circle.png', new google.maps.Size(16, 16));
     }
 
     addMaker(opt = {}) {
@@ -22,7 +30,8 @@ class Map {
         // TODO: use custom marker to show title and image?
         var marker = new google.maps.Marker({
           position: gLatLng,
-          map: this._map
+          map: this._map,
+          icon: this.markerIcon
         })
         if(onClickMarker) {
             google.maps.event.addListener(marker, 'click', onClickMarker)
@@ -47,9 +56,50 @@ class Map {
       return this._map.getCenter()
     }
 
-    setCenter(location) {
+    setCenter(coords) {
         // set to center
-        this._map.panTo(new google.maps.LatLng(location.latitude, location.longitude))
+        this._map.panTo(new google.maps.LatLng(coords.latitude, coords.longitude))
+    }
+
+    setMyLocation(coords) {
+        var lat = coords.latitude,
+            lng = coords.longitude,
+            accuracy = coords.accuracy
+        this.removeOverlays()
+        var gLatLng = new google.maps.LatLng(lat, lng)
+        // draw a circle with acc
+        this._currentPlaceCircle = new google.maps.Circle({
+            strokeColor: "#7eabe3",
+            strokeWeight: 1,
+            strokeOpacity: 1,
+            fillColor: "#d7e5ed",
+            fillOpacity: 0.35,
+            center: gLatLng,
+            radius: accuracy,
+            map: this._map
+        })
+        // add blue icon at center
+        this._currentPlaceMarker = new google.maps.Marker({
+            position: gLatLng,
+            icon: this.currentPlaceIcon,
+            map: this._map
+        }) 
+        this.setCenter(coords)
+    }
+
+    removeOverlays() {
+        if(this._currentPlaceCircle){
+            this._currentPlaceCircle.setMap(null)
+            this._currentPlaceCircle = null
+        }
+        if(this._currentPlaceMarker){
+            this._currentPlaceMarker.setMap(null)
+            this._currentPlaceMarker = null                
+        }
+    }
+
+    getBounds() {
+        return this._map.getBounds()
     }
 
 }

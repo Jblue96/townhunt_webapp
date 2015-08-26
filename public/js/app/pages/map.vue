@@ -1,12 +1,12 @@
 <template>
-  <div class="page__top">
+  <div class="page__map">
       <div class="top_nav">
         <component-search-info></component-search-info>
       </div>
       <div class="top_map">
         <div id="map_canvas"></div>
       </div>
-      <div>
+      <div class="top_map_card">
         <component-map-card item="{{selectedMapItem}}" v-if="selectedMapItem"></component-map-card>
       </div>
   </div>
@@ -57,24 +57,19 @@ var Component = {
       // initial load
       this.clear()
       // render and select first item
-      var initRender = (items) => {
+      var initRender = () => {
+        this.refresh().then((result) => {
+          var items = result.items
           this.render(items)
-          if (items.length > 0) {
-            this.updateMapCard(items[0])
-          }
+          // select first result
+          // if (items.length > 0) {
+          //   this.updateMapCard(items[0])
+          // }
           this._initialized = true
-      }
-      this.refresh().then((result) => {
-        // set current position by default
-        this.getCurrentLocation().then((coords) => {
-          // move to center
-          this._map.setCenter(coords)
-          // set initial location
-          initRender(result.items)
-        }, () => {
-          initRender(result.items)
         })
-      })
+      }
+      // set current position by default
+      this.updateCurrentLocation().then(initRender, initRender)
     },
 
     detached() {
@@ -112,7 +107,7 @@ var Component = {
           lng: this.initPos.lng,
           zoom: this.zoom,
           onDragEnd() {
-            if (that._initialized) {
+            if (!that._requesting && that._initialized) {
               // load with the map center position
               var gLatLng = that._map.getCenter()
               that.loadByLocation({
@@ -152,14 +147,35 @@ var Component = {
         }
         // reference: https://parse.com/docs/rest/guide/#geopoints-geo-queries
         // construct query parmas
+        var latlngBounds = this._map.getBounds();
+        if(!latlngBounds){
+            // map is not loaded yet
+            return [];
+        }
+        var swLatlng = latlngBounds.getSouthWest();
+        var neLatlng = latlngBounds.getNorthEast();
         this.queryParams.where = JSON.stringify({
           "location": {
-            "$nearSphere": {
-              "__type": "GeoPoint",
-              "latitude": location.latitude,
-              "longitude": location.longitude
-            },
-            "$maxDistanceInKilometers": 4.0
+            // "$nearSphere": {
+            //   "__type": "GeoPoint",
+            //   "latitude": location.latitude,
+            //   "longitude": location.longitude
+            // },
+            // "$maxDistanceInKilometers": 4.0
+            "$within": {
+              "$box": [
+                {
+                  "__type": "GeoPoint",
+                  "latitude": swLatlng.lat(),
+                  "longitude": swLatlng.lng()
+                },
+                {
+                  "__type": "GeoPoint",
+                  "latitude": neLatlng.lat(),
+                  "longitude": neLatlng.lng()
+                }
+              ]
+            }
           }
         })
         // this.queryParams.location = location
@@ -172,7 +188,6 @@ var Component = {
         // TODO: loading indicator?
         return new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition((pos) => {
-            // TODO: 
             resolve(pos.coords)
           }, () => reject, {
             enableHighAccuracy: true,
@@ -183,13 +198,16 @@ var Component = {
       },
 
       updateCurrentLocation() {
-        // TODO: call with interval or click current location button
-        this.getCurrentLocation().then(this.setCurrentLocationMarker)
+        // call with interval or click current location button
+        return this.getCurrentLocation().then(this.setCurrentLocationMarker)
       },
 
       setCurrentLocationMarker(coords) {
-        // TODO: place current location marker?
-
+        // place current location marker?
+        return new Promise((resolve, reject) => {
+          this._map.setMyLocation(coords)
+          resolve()
+        })
       },
 
       updateMapCard(item) {
