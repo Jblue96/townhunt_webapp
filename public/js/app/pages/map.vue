@@ -57,16 +57,12 @@ var Component = {
       // initial load
       this.clear()
       // render and select first item
-      var initRender = () => {
-        this.refresh().then((result) => {
-          var items = result.items
-          this.render(items)
-          // select first result
-          // if (items.length > 0) {
-          //   this.updateMapCard(items[0])
-          // }
-          this._initialized = true
+      var initRender = (coords) => {
+        this.loadByLocation({
+          latitude: coords.latitude,
+          longitude: coords.longitude
         })
+        this._initialized = true
       }
       // set current position by default
       this.updateCurrentLocation().then(initRender, initRender)
@@ -86,11 +82,6 @@ var Component = {
         this.$on('onSelectMarker', this.updateMapCard.bind(this))
         this.$on('onSelectMapCard', this.onSelectMapCard.bind(this))
       },
-
-      // getQueryParams() {
-      //   // add additional location parameters
-      //   return $.extend({}, this.queryParams)
-      // },
 
       initMap() {
         // temp to set map height
@@ -206,7 +197,7 @@ var Component = {
         // place current location marker?
         return new Promise((resolve, reject) => {
           this._map.setMyLocation(coords)
-          resolve()
+          resolve(coords)
         })
       },
 
