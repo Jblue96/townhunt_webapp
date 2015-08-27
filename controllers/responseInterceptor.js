@@ -8,8 +8,9 @@ module.exports = {
         // add nls messages
         data = data || {}
         data.labels = resourceBundle.getLabels(req)
-        data.constants = constants,
+        data.constants = constants
         data.filter = filter
+        data.labels = resourceBundle.getLabels(req)
 
         // TODO: to be removed. temp for v0.1
         if (view === 'index') {

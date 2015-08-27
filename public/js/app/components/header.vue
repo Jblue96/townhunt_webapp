@@ -225,7 +225,9 @@ export default {
     },
 
     toggleMenu() {
-        util.getSlideOut().toggle()
+        var slideout = util.getSlideOut()
+        slideout.toggle()
+        this.$dispatch('toggleMenu', slideout.isOpen())
     },
 
     back() {

@@ -10,5 +10,6 @@ Vue.filter('displayBudget', filter.displayBudget)
 Vue.filter('displayCard', filter.displayCard)
 Vue.filter('displayOperatingHours', filter.displayOperatingHours)
 Vue.filter('displayShopHolidays', filter.displayShopHolidays)
+Vue.filter('gMapLink', filter.gMapLink)
 
 export default filter

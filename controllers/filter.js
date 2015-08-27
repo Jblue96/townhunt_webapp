@@ -51,10 +51,15 @@ module.exports = {
     },
 
     displayCard(available) {
-        if(!available) {
-            return 'N/A'
+        // TODO: nls
+        switch (available) {
+            case 'yes': 
+                return 'Yes'
+            case 'no':
+                return 'No'
+            default:
+                return 'N/A'
         }
-        return available ? 'Yes' : 'No'
     },
 
     displayOperatingHours(array) {
@@ -72,5 +77,12 @@ module.exports = {
         }
         // TODO
         return JSON.stringify(array)
+    },
+
+    gMapLink(location) {
+        if(!location) {
+            return 'javascript:;'
+        }
+        return 'http://www.google.com/maps/place/' + location.latitude + ',' + location.longitude
     }
 }

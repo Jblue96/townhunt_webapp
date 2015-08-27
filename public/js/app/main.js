@@ -4,6 +4,7 @@ import config from '../common/config'
 import util from '../common/util'
 import cache from '../common/cache'
 import InfiniteScroller from '../common/InfiniteScroller'
+import constants from '../../../controllers/constants'
 // components
 import componentHeader from './components/header.vue'
 import componentNav from './components/nav.vue'
@@ -32,6 +33,8 @@ import {} from '../lib/zepto.height'
 
 // setup Vue
 Vue.config.debug = config.debug
+// setup constants
+constants.init(config.labels)
 
 var app = new Vue({
 
@@ -59,6 +62,7 @@ var app = new Vue({
     data: {
         currentView: '',
         headerOptions: {},
+        isMenuOpened: false,
         // API response cache
         cache: {
             detail: null,
@@ -74,6 +78,9 @@ var app = new Vue({
         this.$on('onSave', (componentId) => {
             // e.g. onSave:page-mypage-edit
             this.$broadcast('onSave:' + componentId)
+        })
+        this.$on('toggleMenu', (opened) => {
+            this.isMenuOpened = opened
         })
     },
 
@@ -98,6 +105,13 @@ var app = new Vue({
                     resolve(data)
                 }, reject)
             })
+        },
+
+        onClickMenuOverlay(e) {
+            util.getSlideOut().close()
+            this.$emit('toggleMenu', false)
+            e.preventDefault(e)
+            return false
         }
     }
 })

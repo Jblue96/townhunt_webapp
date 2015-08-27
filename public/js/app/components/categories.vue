@@ -16,7 +16,7 @@ export default {
 
   data() {
     return {
-      types: constants.Types
+      types: constants.getgetKeyLabel('Type')
     }
   },
 

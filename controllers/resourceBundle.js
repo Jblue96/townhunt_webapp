@@ -1,7 +1,7 @@
 var fs = require('fs');
 
 var SUPPORT_LANGS = {
-    "ja": true
+    "ja": false
 };
 
 // {"default": {...}, "ja": {...}}
@@ -47,6 +47,7 @@ var resourceBundle = {
         var isSupported = SUPPORT_LANGS[locale];
         return isSupported ? _resources[locale] : _resources["default"]
     }
+
 };
 
 module.exports = resourceBundle;

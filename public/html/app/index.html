@@ -43,13 +43,16 @@
 
   </main>
 
+  <div class="slideout-overlay" v-show="isMenuOpened" v-on="click: onClickMenuOverlay"></div>
+  
   <!-- script -->
   <script>
   var OPTION = {
     config: {
       debug: true,
       environment: "development",
-      isLoggedIn: false
+      isLoggedIn: false,
+      labels: {"constants_Types_food-and-drinks":"Food & Drinks","constants_Types_shows":"Shows","constants_Types_luxury":"Luxury","constants_Types_wifi-and-transport":"Wifi & Transport","constants_Types_theme-parks":"Theme Parks","constants_Types_outdoor":"Outdoor","_dummy":null}
     }
   };
   </script>

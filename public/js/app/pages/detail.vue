@@ -18,7 +18,7 @@
                         <span>{{item.shop.michelin | michelin}}</span>
                     </div>
                     <div>
-                        Now Opened
+                        Open Now
                     </div>
                 </div>
                 <div class="detail_right">
@@ -27,9 +27,9 @@
             </div>
         </div>
         <div class="detail_location">
-            <div class="detail_location_content">
+            <a class="detail_location_link" v-attr="href: item.location | gMapLink" target="_blank">
                 <p>{{item.address}}</p>
-            </div>
+            </a>
             <div class="detail_location_icon"></div>
         </div>
         <div class="detail_main">
@@ -67,6 +67,7 @@ export default {
         return {
             initialized: false,
             item: {
+                location: {}
             }
         }
     },
