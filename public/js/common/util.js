@@ -1,9 +1,13 @@
 import $ from 'npm-zepto'
 import Slideout from '../lib/slideout'
 import config from './config'
+import cache from './cache'
+import localStorage from './localStorage'
 import constants from '../../../controllers/constants'
 
-export default {
+var util = {
+
+    _requests: {},
 
     escapeHTML(text) {
       return text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -40,6 +44,10 @@ export default {
       return () => slideout
     })(),
 
+    timestamp() {
+      return new Date().getTime()
+    },
+
     request(options={}) {
       return new Promise((resolve, reject) => {
         var headers = options.headers || {}
@@ -50,7 +58,8 @@ export default {
         // if (sessionToken) {
         //   headers['X-Parse-Session-Token'] = sessionToken
         // }
-        $.ajax({    
+        var requestId = util.timestamp()
+        var xhr = $.ajax({    
           type: "GET",
           headers: headers,
           url: options.url,
@@ -58,9 +67,23 @@ export default {
           dataType: options.dataType || "json",
           cache: options.cache || false,
           success: resolve,
-          error: reject
+          error: reject,
+          complete() {
+            delete util._requests[requestId]
+          }
         })
+        util._requests[requestId] = xhr
       })
+    },
+
+    abortRequests() {
+      // abort all existing requests
+      for (var requestId in util._requests) {
+        if (requestId && util._requests[requestId]) {
+          util._requests[requestId].abort()
+        }
+      }
+      util._requests = {}
     },
 
     throttle(callback, limit) {
@@ -90,6 +113,69 @@ export default {
                 count = 0
             }, delay || 500)
         }
-    }
+    },
 
+    me() {
+      return new Promise((resolve, reject) => {
+        // TODO: temp for server-side favorites
+        var me = {
+            favorites: localStorage.get(constants.clientStorages.favorites) || []
+        }
+        // not loggedIn
+        if (!config.isLoggedIn) {
+            resolve(me)
+        } else if (cache.get('me')) {
+            // already loaded
+            resolve(cache.get('me'))
+        } else {
+            // initial load
+            util.request({
+                url: './api/v1/user/me'
+            }).then((data) => {
+                cache.set('me', data)
+                resolve(data)
+            }, reject)
+        }
+      })
+    },
+
+    toggleFavorite(item) {
+      var favorited = item.favorited
+      if(favorited) {
+          return util.unfavorite(item.objectId).then(() => {
+              // TODO: show success
+              item.favorited = !item.favorited
+          })
+      } else {
+          return util.favorite(item.objectId).then(() => {
+              // TODO: show success
+              item.favorited = !item.favorited
+          })
+      }
+    },
+
+    favorite(id) {
+      return new Promise((resolve, reject) => {
+        var favorites = localStorage.get(constants.clientStorages.favorites)
+        if(!favorites) { favorites = [] }
+        favorites.push(id)
+        localStorage.set(constants.clientStorages.favorites, favorites)
+        resolve()
+      })
+    },
+
+    unfavorite(id) {
+      return new Promise((resolve, reject) => {
+        var favorites = localStorage.get(constants.clientStorages.favorites)
+        if(!favorites) { favorites = [] }
+        var index = favorites.indexOf(id);
+        if (index > -1) {
+          favorites.splice(index, 1)
+        }
+        localStorage.set(constants.clientStorages.favorites, favorites)
+        resolve()
+      })
+    }
 }
+
+export default util

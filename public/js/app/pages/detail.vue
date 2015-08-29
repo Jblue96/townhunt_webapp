@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="detail_right">
-                <div class="detail_favorite" v-class="icon_favorite: favorited, icon_favorite_blank: !favorited" v-on="click: favorite"></div>
+                <div class="detail_favorite" v-class="icon_favorite: item.favorited, icon_favorite_blank: !item.favorited" v-on="click: favorite"></div>
                 </div>
             </div>
         </div>
@@ -38,13 +38,16 @@
                 <dd>{{item.shop.budget.display | displayBudget}}</dd>
 
                 <dt>Credit Card</dt>
-                <dd>{{item.shop.cardAvailable | displayCard}}</dd>
+                <dd>{{item.shop.cardAvailable | displayAvailbility}}</dd>
 
                 <dt>Open Hours</dt>
                 <dd>{{item.shop.operatingHours | displayOperatingHours}}</dd>
 
                 <dt>Closed on</dt>
                 <dd>{{item.shop.shopHolidays | displayShopHolidays}}</dd>
+
+                <dt>Smoking</dt>
+                <dd>{{item.shop.smokingAvailable | displayAvailbility}}</dd>
             </dl>
         </div>
     </div>
@@ -93,7 +96,8 @@ export default {
     },
 
     detached() {
-        this.initialized = false
+      util.abortRequests()
+      this.initialized = false
     },
 
     methods: {
@@ -108,13 +112,13 @@ export default {
                 url: config.api.url + '/classes/Offer/' + id
             })
             // done both detail and me promises are resolved
-            Promise.all([detailDeferred, this.$root.fetchMe()]).then((data) => {
+            Promise.all([detailDeferred, util.me()]).then((data) => {
               // for initial router destroyed e.g. direct access to detail page
               if(!this.$root) { return }
               var item = data[0] || [],
                   me = data[1] || {favorites: []}
                 // set favorited
-                item.favorited = (me.favorites.indexOf(item.id) > -1)
+                item.favorited = (me.favorites.indexOf(item.objectId) > -1)
                 // store to cache
                 this.item = item
                 cache.set('detail', item)
@@ -132,13 +136,7 @@ export default {
         },
 
         favorite(){
-            // TODO
-            var favorited = this.item.favorited
-            if(favorited) {
-                // send unfav
-            } else {
-                // send fav
-            }
+            util.toggleFavorite(this.item)
         },
 
         initSwiper() {

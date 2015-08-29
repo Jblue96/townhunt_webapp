@@ -68,7 +68,7 @@ var filter = {
         return 'Day: ' + budget.day + " Night: " + budget.night
     },
 
-    displayCard(available) {
+    displayAvailbility(available) {
         // TODO: nls
         switch (available) {
             case 'yes': 
@@ -76,7 +76,7 @@ var filter = {
             case 'no':
                 return 'No'
             default:
-                return 'N/A'
+                return '-'
         }
     },
 

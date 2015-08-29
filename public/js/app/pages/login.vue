@@ -26,6 +26,7 @@
 
 <script lang="babel">
 import config from '../../common/config'
+import util from '../../common/util'
 import cache from '../../common/cache'
 
 export default {
@@ -47,7 +48,7 @@ export default {
         // TODO: temp callback
         config.isLoggedIn = true
         // TODO: call API
-        this.$root.fetchMe().then(() => {
+        util.me.then(() => {
           // TODO: set sessionToken
           location.href = cache.get('loginCallbackUrl') || '#/'
         }, () => {

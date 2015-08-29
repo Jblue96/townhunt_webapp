@@ -86,7 +86,7 @@ class Map {
       this._map.setZoom(zoom)
     }
 
-    setMyLocation(coords) {
+    updateMyLocation(coords) {
         var lat = coords.latitude,
             lng = coords.longitude,
             accuracy = coords.accuracy
@@ -108,7 +108,11 @@ class Map {
             position: gLatLng,
             icon: this.currentPlaceIcon,
             map: this._map
-        }) 
+        })
+    }
+
+    setMyLocation(coords) {
+        this.updateMyLocation(coords)
         return this.setCenter(coords)
     }
 
@@ -124,9 +128,12 @@ class Map {
     }
 
     getBounds() {
-        return this._map.getBounds()
+      return this._map.getBounds()
     }
 
+    resize() {
+      google.maps.event.trigger(this._map, 'resize');
+    }
 }
 
 export default {

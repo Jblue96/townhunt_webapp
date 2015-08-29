@@ -3,6 +3,7 @@ import {Router} from 'director'
 import config from '../common/config'
 import util from '../common/util'
 import cache from '../common/cache'
+import localStorage from '../common/localStorage'
 import InfiniteScroller from '../common/InfiniteScroller'
 import constants from '../../../controllers/constants'
 // components
@@ -85,28 +86,6 @@ var app = new Vue({
     },
 
     methods: {
-        fetchMe() {
-            return new Promise((resolve, reject) => {
-                // not loggedIn
-                if(!config.isLoggedIn){
-                    resolve()
-                    return
-                }
-                // already loaded
-                if(this.$root && cache.get('me')){
-                    resolve(cache.get('me'))
-                    return
-                }
-                // initial load
-                util.request({
-                    url: './api/v1/user/me'
-                }).then((data) => {
-                    cache.set('me', data)
-                    resolve(data)
-                }, reject)
-            })
-        },
-
         onClickMenuOverlay(e) {
             util.getSlideOut().close()
             this.$emit('toggleMenu', false)

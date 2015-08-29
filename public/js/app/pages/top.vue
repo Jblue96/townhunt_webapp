@@ -66,8 +66,9 @@ export default {
     },
 
     detached() {
-        this._cachedScrollTop = this.$root._infiniteScroller.getLastScrollTop()
-        this.$root._infiniteScroller.disable()
+      util.abortRequests()
+      this._cachedScrollTop = this.$root._infiniteScroller.getLastScrollTop()
+      this.$root._infiniteScroller.disable()
     },
 
     methods: {
@@ -95,14 +96,14 @@ export default {
           })
 
           // done both list and me promises are resolved
-          Promise.all([listDeferred, this.$root.fetchMe()]).then((data) => {
+          Promise.all([listDeferred, util.me()]).then((data) => {
             // store to cache
             var items = data[0] && data[0].results || [],
                 me = data[1] || {favorites: []}
             // set favorited
-            // items.forEach((item) => {
-            //   item.favorited = (me.favorites.indexOf(item.id) > -1)
-            // })
+            items.forEach((item) => {
+              item.favorited = (me.favorites.indexOf(item.objectId) > -1)
+            })
             
             // hide loading
             if (items.length === 0 || items.length < this.queryParams.limit) {

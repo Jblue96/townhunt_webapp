@@ -21,6 +21,7 @@
 </template>
 
 <script lang="babel">
+import util from '../../common/util'
 import filter from '../filters/filter'
 
 export default {
@@ -40,13 +41,7 @@ export default {
     },
 
     favorite(e){
-        // TODO
-        var favorited = this.favorited
-        if(favorited) {
-            // send unfav
-        } else {
-            // send fav
-        }
+        util.toggleFavorite(this)
         e.stopPropagation()
         return false
     }

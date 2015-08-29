@@ -61,6 +61,7 @@ var Component = {
     },
 
     attached() {
+      this._detached = false
       // handle initial query params
       this.queryParams = $.extend(this.queryParams, urlQueryParser.getUrlSearchQueryParams())
       // initial load
@@ -76,6 +77,11 @@ var Component = {
           this._map.setZoom(this.zoom)
           this.loadByCenterLocation()
           this.initialized = true
+          // attach resizer
+          $(window).on("resize.map", this.resize.bind(this))
+          this._myLocationInterval = setInterval(() => {
+            this.updateCurrentLocation(true/*noMove*/)
+          }, 10000)
         })
       }
       // set current position by default
@@ -83,8 +89,12 @@ var Component = {
     },
 
     detached() {
+      util.abortRequests()
+      this._detached = true
       this.initialized = false
       this.selectedMapItem = null
+      $(window).off("resize.map");
+      clearInterval(this._myLocationInterval)
     },
 
     ready() {
@@ -99,24 +109,16 @@ var Component = {
 
       initMap() {
         // temp to set map height
-        var that = this,
-          mapNode = document.getElementById("map_canvas"),
-          headerH = 44,
-          filterH = 60,
-          mapCardH = 60
-
-        $(mapNode).height($(window).height() - (headerH + filterH + mapCardH))
-
-        this._map = mapUtil.create(mapNode, {
+        var that = this
+        this._mapNode = document.getElementById("map_canvas")
+        this.resize()
+        this._map = mapUtil.create(this._mapNode, {
           lat: this.initPos.latitude,
           lng: this.initPos.longitude,
           zoom: 14,
           onDragEnd() {
-            if (!that._requesting && that.initialized) {
-              // load with the map center position
-              // var gLatLng = that._map.getCenter()
-              that.loadByCenterLocation()
-            }
+            // load with the map center position
+            that.loadByCenterLocation()
           }
         })
       },
@@ -144,10 +146,12 @@ var Component = {
             this.items.push(item)
           }
         })
+        this.resize()
       },
 
       loadByCenterLocation() {
-        if (this._requesting) {
+        if (this._requesting || this._detached) {
+          console.log("detached!")
           return
         }
         // reference: https://parse.com/docs/rest/guide/#geopoints-geo-queries
@@ -201,9 +205,19 @@ var Component = {
         })
       },
 
-      updateCurrentLocation() {
+      updateCurrentLocation(noMove) {
         // call with interval or click current location button
-        return this.getCurrentLocation().then(this.setCurrentLocationMarker)
+        return this.getCurrentLocation().then((coords) => {
+          if (noMove) {
+            return new Promise((resolve, reject) => {
+              // just update my location
+              this._map.updateMyLocation(coords)
+              resolve()
+            })
+          } else {
+            return this.setCurrentLocationMarker(coords)
+          }
+        })
       },
 
       setCurrentLocationMarker(coords) {
@@ -229,6 +243,18 @@ var Component = {
         // set to response cache
         cache.set('detail', util.getItemById(this.items, id))
         location.href = '#/detail/' + id
+      },
+
+      resize() {
+        if (this._mapNode) {
+          var headerH = 44,
+            filterH = 60,
+            mapCardH = 60
+          $(this._mapNode).height($(window).height() - (headerH + filterH + mapCardH))
+        }
+        if (this._map) {
+          this._map.resize()
+        }
       }
     }
 }

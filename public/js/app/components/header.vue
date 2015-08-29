@@ -153,7 +153,7 @@ export default {
           this.right = this.iconNone()
           break
         case 'page-wishlist':
-          this.center = { title: 'Wish List' }
+          this.center = { title: 'My Favorites' }
           this.left = this.iconDefaultLeft()
           this.right = this.iconNone()
           break
