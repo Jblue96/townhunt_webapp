@@ -137,7 +137,10 @@ export default {
           break
         case 'page-queries':
           this.center = { title: 'Filter' }
-          this.left = this.iconDefaultLeft()
+          this.left = {
+            icon: 'icon_back',
+            callback: this.back
+          }
           this.right = this.iconNone()
           break
         case 'page-detail':

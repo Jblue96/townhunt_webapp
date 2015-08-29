@@ -1,6 +1,24 @@
 var constants = require('./constants')
 
-module.exports = {
+var filter = {
+
+    util: {
+        getNowInfo() {
+            var date = new Date()
+            var hour = ('0' + date.getHours()).slice(-2)
+            var minites = ('0' + date.getMinutes()).slice(-2)
+            var queryPrefix = (hour - 0)  > 16 ? 'oh2_' : 'oh1_'
+            var daysOfWeek = constants.DaysOfWeek[date.getDay()]
+            return {
+              hour: hour,
+              minites: minites,
+              diplayTime: hour + ':' + minites,
+              daysOfWeek: daysOfWeek,
+              startColumn: queryPrefix + daysOfWeek + '_start',
+              endColumn: queryPrefix + daysOfWeek + '_end'
+            }
+        }
+    },
 
     price(price) {
         if (!price) {
@@ -84,5 +102,49 @@ module.exports = {
             return 'javascript:;'
         }
         return 'http://www.google.com/maps/place/' + location.latitude + ',' + location.longitude
+    },
+    
+    displaySearchInfo(where, labels) {
+        var _labels = []
+        if(where) {
+            if (where.area) {
+                _labels.push('Area: ' + where.area)
+            }
+            if (where.category && where.category['$regex']) {
+                _labels.push('Genre: ' + where.category['$regex'])
+            }
+            if (where.priceRange) {
+                _labels.push('Price Range: ' + where.priceRange)
+            }
+            for (var prop in where) {
+                // temp to check having time conditions
+                if (prop && prop.indexOf('_start') >= 0) {
+                    _labels.push('Open Now')
+                }
+            }
+            if (where.name && where.name['$regex']) {
+                _labels.push('Keyword: ' + where.name['$regex'])
+            }
+        }
+        return _labels.length > 0 ? 'Filtered by ' + _labels.join(', ') : 'Search with ...'
+    },
+
+    displayNowOpened(item) {
+      var nowInfo = filter.util.getNowInfo()
+      // check current time is between start time and end time
+      if (item[nowInfo.startColumn] <= nowInfo.diplayTime
+       && item[nowInfo.endColumn] >= nowInfo.diplayTime) {
+        return 'Open Now'
+      } else{
+        return ''
+      }
+    },
+
+    displayCategory(categoryStr, labels) {
+        // TODO: split with comma
+
     }
+
 }
+
+module.exports = filter

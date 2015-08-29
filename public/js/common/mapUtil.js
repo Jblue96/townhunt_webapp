@@ -15,29 +15,33 @@ class Map {
         this.currentPlaceIcon = new google.maps.MarkerImage('/img/icons/map_blue_circle.png', new google.maps.Size(16, 16));
     }
 
-    addMaker(opt = {}) {
-        var id = opt.id,
-            lat = opt.lat,
-            lng = opt.lng,
-            onClickMarker = opt.onClickMarker
-        // dup check
-        if(this._displayedIdMap[id] === true) {
-          return
-        }
-        var ms = this._markerSize,
-            gLatLng = new google.maps.LatLng(lat, lng)
+    exists(id) {
+      return this._displayedIdMap[id] === true
+    }
 
-        // TODO: use custom marker to show title and image?
-        var marker = new google.maps.Marker({
-          position: gLatLng,
-          map: this._map,
-          icon: this.markerIcon
-        })
-        if(onClickMarker) {
-            google.maps.event.addListener(marker, 'click', onClickMarker)
-        }
-        this._markers.push(marker)
-        this._displayedIdMap[id] = true
+    addMaker(opt = {}) {
+      var id = opt.id,
+          lat = opt.lat,
+          lng = opt.lng,
+          onClickMarker = opt.onClickMarker
+      // dup check
+      if(this.exists(id)) {
+        return
+      }
+      var ms = this._markerSize,
+          gLatLng = new google.maps.LatLng(lat, lng)
+
+      // TODO: use custom marker to show category?
+      var marker = new google.maps.Marker({
+        position: gLatLng,
+        map: this._map,
+        icon: this.markerIcon
+      })
+      if(onClickMarker) {
+          google.maps.event.addListener(marker, 'click', onClickMarker)
+      }
+      this._markers.push(marker)
+      this._displayedIdMap[id] = true
     }
 
     clearMarkers() {
@@ -57,8 +61,29 @@ class Map {
     }
 
     setCenter(coords) {
+      return new Promise((resolve, reject) => {
         // set to center
         this._map.panTo(new google.maps.LatLng(coords.latitude, coords.longitude))
+        // temp workaround for no firing
+        var called = false
+        google.maps.event.addListenerOnce(this._map, 'idle', () => {
+          if(!called) {
+            called = true
+            resolve()
+          }
+        })
+        // force fire for 1 seconds
+        setTimeout(() => {
+          if(!called) {
+            called = true
+            resolve()
+          }
+        }, 1500)
+      })
+    }
+
+    setZoom(zoom) {
+      this._map.setZoom(zoom)
     }
 
     setMyLocation(coords) {
@@ -84,7 +109,7 @@ class Map {
             icon: this.currentPlaceIcon,
             map: this._map
         }) 
-        this.setCenter(coords)
+        return this.setCenter(coords)
     }
 
     removeOverlays() {

@@ -1,5 +1,5 @@
 <template>
-  <div class="nav_logo">
+  <div class="nav_logo" v-on="click: move('#/')">
     <span class="icon_logo"></span>
   </div>
   <div class="nav_menu">

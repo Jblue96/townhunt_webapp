@@ -18,7 +18,7 @@
                         <span>{{item.shop.michelin | michelin}}</span>
                     </div>
                     <div>
-                        Open Now
+                        {{item | displayNowOpened}}
                     </div>
                 </div>
                 <div class="detail_right">

@@ -1,14 +1,25 @@
 <template>
   <div class="component__searchInfo" v-on="click: onClick">
-      Search Conditions
+    <span>{{queryParams.where | displaySearchInfo}}</span>
   </div>
 </template>
 
 <script lang="babel">
+import urlQueryParser from '../../common/urlQueryParser'
+
 export default {
   data() {
     return {
+      queryParams: {
+        where: {
+        }
+      }
     }
+  },
+
+  created() {
+      // handle initial query params
+      this.queryParams = urlQueryParser.getUrlSearchQueryParams()
   },
 
   methods: {

@@ -6,6 +6,9 @@
       <div class="top_main">
         <component-card v-repeat="items" track-by="objectId"></component-card>
       </div>
+      <div class="top_no_result" v-show="!hasNext && items.length == 0">
+        No Results
+      </div>
       <div class="loading_more" v-if="hasNext">
         Loading...
       </div>
@@ -17,6 +20,7 @@ import $ from 'npm-zepto'
 import util from '../../common/util'
 import config from '../../common/config'
 import cache from '../../common/cache'
+import urlQueryParser from '../../common/urlQueryParser'
 // import componentCategories from '../components/categories.vue'
 import componentCard from '../components/card.vue'
 import componentSearchInfo from '../components/searchInfo.vue'
@@ -49,7 +53,7 @@ export default {
 
     attached() {
       // handle initial query params
-      this.queryParams = $.extend(this.queryParams, util.getUrlSearchQueryParams())
+      this.queryParams = $.extend(this.queryParams, urlQueryParser.getUrlSearchQueryParams())
       if (cache.needForceReload(this.$options.id)) {
         this._cachedScrollTop = 0
         this.refresh().then((result) => {
@@ -101,7 +105,7 @@ export default {
             // })
             
             // hide loading
-            if (items.length === 0) {
+            if (items.length === 0 || items.length < this.queryParams.limit) {
               this.hasNext = false
             }
             this._requesting = false

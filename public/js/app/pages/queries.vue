@@ -17,6 +17,11 @@
         <label>Open Now</label>
         <input type="checkbox" v-model="values.nowOpened">
       </div>
+      <div>
+        <label>Keyword</label>
+        <input type="text" v-model="values.keyword" placeholder="Restaurant name">
+      </div>
+
     </div>
     <div class="queries_footer">
         <div class="queries_btn btn_large" v-on="click: submit">Filter</div>
@@ -27,8 +32,9 @@
 
 <script lang="babel">
 import config from '../../common/config'
-import util from '../../common/util'
 import cache from '../../common/cache'
+import urlQueryParser from '../../common/urlQueryParser'
+import filter from '../filters/filter'
 import constants from '../../../../controllers/constants'
 
 var DEFAULT_VALUE = '_default'
@@ -55,7 +61,8 @@ export default {
           area: DEFAULT_VALUE,
           category: DEFAULT_VALUE,
           priceRange: DEFAULT_VALUE,
-          nowOpened: false
+          nowOpened: false,
+          keyword: ''
         },
         queryParams: {
           // order: '',
@@ -67,13 +74,13 @@ export default {
 
     created() {
       // handle initial query params
-      this.queryParams = $.extend(this.queryParams, util.getUrlSearchQueryParams())
-      console.log(this.queryParams.where)
+      this.queryParams = $.extend(this.queryParams, urlQueryParser.getUrlSearchQueryParams())
       // convet queryParams to form values
       this.values.area = this.queryParams.where.area || DEFAULT_VALUE
-      this.values.category = this.queryParams.where.category || DEFAULT_VALUE
+      this.values.category = this.queryParams.where.category && this.queryParams.where.category['$regex'] || DEFAULT_VALUE
       this.values.priceRange = this.queryParams.where.priceRange || DEFAULT_VALUE
-
+      this.values.nowOpened = this.queryParams.where.oh2_saturday_start ? true : false
+      this.values.keyword = this.queryParams.where.name && this.queryParams.where.name['$regex'] || ''
     },
 
     methods: {
@@ -91,7 +98,9 @@ export default {
         if (this.values.category === DEFAULT_VALUE) {
           delete this.queryParams.where.category
         } else {
-          this.queryParams.where.category = this.values.category
+          // this.queryParams.where.category = this.values.category
+          // TODO: temp implementation handling comma separated string
+          this.queryParams.where.category = {'$regex': this.values.category, '$options':'i'}
           filtered = true
         }
         // set price range
@@ -102,18 +111,42 @@ export default {
           filtered = true
         }
 
-        // TODO:
-        // nowOpened
-        // check today is holiday -> check operatingHours_holiday_srart, operatingHours_holiday_end
+        // for time query
+        var nowInfo = filter.util.getNowInfo()
+        // check today's day -> check corresponding oh1_<day>_start, oh1_<day>_end
+        // TODO: TEMP implementation
+        // -16:00 -> query for oh1_ columns as day
+        // 16:00- -> query for oh2_ columns as nihgt 
+        // TODO: check today is holiday -> check oh1_holiday_start, oh1_holiday_end
 
-        // check today's day -> check corresponding operatingHours_<day>_srart, operatingHours_<day>_end
-
-        console.log(this.queryParams.where)
-        // location.href = '?search={"where":{"area":"shibuya"}}#/'
-        if (filtered) {
-          location.href = '?search=' + JSON.stringify(this.queryParams) + '#/'
+        if (this.values.nowOpened) {
+          // start time
+          this.queryParams.where[nowInfo.startColumn] = {"$lte": nowInfo.diplayTime}
+          // end time
+          this.queryParams.where[nowInfo.endColumn] = {"$gte": nowInfo.diplayTime}
+          filtered = true
         } else {
-          location.href = '/#/'
+          delete this.queryParams.where[nowInfo.startColumn]
+          delete this.queryParams.where[nowInfo.endColumn]
+        }
+
+        // keyword
+        // query with {'$regex': q, '$options':'i'} for now
+        if (this.values.keyword) {
+          this.queryParams.where.name = {'$regex': this.values.keyword, '$options':'i'}
+          filtered = true
+        } else {
+          delete this.queryParams.where.name
+        }
+
+        // location.href = '?search={"where":{"area":"shibuya"}}#/'
+        // chcek previous page e.g. #/ or #/map
+        var histories = cache.get('histories')
+        var prev = histories[histories.length - 2] || '#/'
+        if (filtered) {
+          location.href = '?search=' + JSON.stringify(this.queryParams) + prev
+        } else {
+          location.href = '?' + prev
         }
       }
     }

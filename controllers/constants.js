@@ -25,6 +25,20 @@ module.exports = {
     return arr
   },
 
+  getAreaLocation(area) {
+    switch(area) {
+      case 'shibuya':
+        return {latitude: 35.658129, longitude: 139.702133}
+      case 'shinjuku':
+        return {latitude: 35.690921, longitude: 139.700258}
+      case 'roppongi':
+        return {latitude: 35.662836, longitude: 139.731443}
+      case 'ginza-shinbash':
+        return {latitude: 35.671989, longitude: 139.763965}
+    }
+    return null
+  },
+
   Area_JP_tokyo: [
     'shibuya',
     'shinjuku',
@@ -45,5 +59,10 @@ module.exports = {
     'wifi-and-transport',
     'theme-parks',
     'outdoor'
-  ] 
+  ],
+
+
+  DaysOfWeek: [
+    'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'
+  ]
 }

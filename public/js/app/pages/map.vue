@@ -6,7 +6,13 @@
       <div class="top_map">
         <div id="map_canvas"></div>
       </div>
-      <div class="top_map_card">
+      <div class="top_map_card" v-show="initialized">
+        <div v-show="!selectedMapItem && this.items.length == 0">
+          <span>No results found in this location</span>
+        </div>
+        <div v-show="!selectedMapItem && this.items.length > 0">
+          <span>Select a Pin</span>
+        </div>
         <component-map-card item="{{selectedMapItem}}" v-if="selectedMapItem"></component-map-card>
       </div>
   </div>
@@ -18,6 +24,8 @@ import util from '../../common/util'
 import config from '../../common/config'
 import cache from '../../common/cache'
 import mapUtil from '../../common/mapUtil'
+import urlQueryParser from '../../common/urlQueryParser'
+import constants from '../../../../controllers/constants'
 // import componentCategories from '../components/categories.vue'
 import componentSearchInfo from '../components/searchInfo.vue'
 import componentMapCard from '../components/mapCard.vue'
@@ -27,6 +35,7 @@ import pageTop from '../pages/top.vue'
 var Component = {
     data() {
       return {
+        initialized: false,
         zoom: 16,
         items: [],
         selectedMapItem: null,
@@ -34,9 +43,9 @@ var Component = {
           limit: 40,
           // filter: '',
           order: 'popular',
-          where: ''
+          where: {}
         },
-        initPos: {lat: 35.658517, lng: 139.701334}
+        initPos: constants.getAreaLocation('shibuya')
       }
     },
 
@@ -53,23 +62,28 @@ var Component = {
 
     attached() {
       // handle initial query params
-      this.queryParams = $.extend(this.queryParams, util.getUrlSearchQueryParams())
+      this.queryParams = $.extend(this.queryParams, urlQueryParser.getUrlSearchQueryParams())
       // initial load
       this.clear()
       // render and select first item
       var initRender = (coords) => {
-        this.loadByLocation({
-          latitude: coords.latitude,
-          longitude: coords.longitude
+        // if area is specified as a query, show the area as initial location
+        var queryArea = this.queryParams.where.area
+        var initialPos = queryArea && constants.getAreaLocation(queryArea) || coords
+        // move to center position
+        this._map.setCenter(initialPos).then(() => {
+          // set zoom
+          this._map.setZoom(this.zoom)
+          this.loadByCenterLocation()
+          this.initialized = true
         })
-        this._initialized = true
       }
       // set current position by default
       this.updateCurrentLocation().then(initRender, initRender)
     },
 
     detached() {
-      this._initialized = false
+      this.initialized = false
       this.selectedMapItem = null
     },
 
@@ -94,17 +108,14 @@ var Component = {
         $(mapNode).height($(window).height() - (headerH + filterH + mapCardH))
 
         this._map = mapUtil.create(mapNode, {
-          lat: this.initPos.lat,
-          lng: this.initPos.lng,
-          zoom: this.zoom,
+          lat: this.initPos.latitude,
+          lng: this.initPos.longitude,
+          zoom: 14,
           onDragEnd() {
-            if (!that._requesting && that._initialized) {
+            if (!that._requesting && that.initialized) {
               // load with the map center position
-              var gLatLng = that._map.getCenter()
-              that.loadByLocation({
-                latitude: gLatLng.lat(),
-                longitude: gLatLng.lng()
-              })
+              // var gLatLng = that._map.getCenter()
+              that.loadByCenterLocation()
             }
           }
         })
@@ -121,19 +132,22 @@ var Component = {
         var that = this
         // add new markers
         items.forEach((item, i) => {
-          this._map.addMaker({
-            id: item.objectId,
-            lat: item.location.latitude,
-            lng: item.location.longitude,
-            onClickMarker() {
-              that.$emit('onSelectMarker', item)
-            }
-          })
+          if(!this._map.exists(item.objectId)) {
+            this._map.addMaker({
+              id: item.objectId,
+              lat: item.location.latitude,
+              lng: item.location.longitude,
+              onClickMarker() {
+                that.$emit('onSelectMarker', item)
+              }
+            })
+            this.items.push(item)
+          }
         })
       },
 
-      loadByLocation(location) {
-        if (this._requesting || !location) {
+      loadByCenterLocation() {
+        if (this._requesting) {
           return
         }
         // reference: https://parse.com/docs/rest/guide/#geopoints-geo-queries
@@ -145,14 +159,8 @@ var Component = {
         }
         var swLatlng = latlngBounds.getSouthWest();
         var neLatlng = latlngBounds.getNorthEast();
-        this.queryParams.where = JSON.stringify({
+        var geoQuery = {
           "location": {
-            // "$nearSphere": {
-            //   "__type": "GeoPoint",
-            //   "latitude": location.latitude,
-            //   "longitude": location.longitude
-            // },
-            // "$maxDistanceInKilometers": 4.0
             "$within": {
               "$box": [
                 {
@@ -168,8 +176,13 @@ var Component = {
               ]
             }
           }
-        })
-        // this.queryParams.location = location
+        }
+        // mixin geo queries
+        try {
+          this.queryParams.where = JSON.parse(this.queryParams.where)
+        } catch(e) {}
+        var query = $.extend({}, this.queryParams.where, geoQuery)
+        this.queryParams.where = JSON.stringify(query)
         this.load().then((result) => {
           this.render(result.items)
         })
@@ -196,18 +209,20 @@ var Component = {
       setCurrentLocationMarker(coords) {
         // place current location marker?
         return new Promise((resolve, reject) => {
-          this._map.setMyLocation(coords)
-          resolve(coords)
+          this._map.setMyLocation(coords).then(() => {
+            resolve(coords)
+          })
         })
       },
 
       updateMapCard(item) {
-        // move to center position
-        this._map.setCenter(item.location)
         // set as selected item
         this.selectedMapItem = item
-        // load by the selected location
-        this.loadByLocation(item.location)
+        // move to center position
+        this._map.setCenter(item.location).then(() => {
+          // load by the selected location
+          this.loadByCenterLocation()
+        })
       },
 
       onSelectMapCard(id) {
