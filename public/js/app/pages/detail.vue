@@ -48,7 +48,7 @@
             </dl>
         </div>
     </div>
-    <div v-if="!initialized">
+    <div class="loading_page" v-if="showLoading">
         Loading...
     </div>
   </div>
@@ -66,6 +66,7 @@ export default {
     data() {
         return {
             initialized: false,
+            showLoading: false,
             item: {
                 location: {}
             }
@@ -100,6 +101,7 @@ export default {
             if(this.initialized || !id) {
               return
             }
+            this.showLoading = true
             // initial load
             var detailDeferred = util.request({
                 // url: "./api/v1/offer/detail/" + id
@@ -117,9 +119,11 @@ export default {
                 this.item = item
                 cache.set('detail', item)
                 this.initialized = true
+                this.showLoading = false
                 this.initSwiper()
             }, () => {
                 this.initialized = true
+                this.showLoading = false
             })
         },
 
