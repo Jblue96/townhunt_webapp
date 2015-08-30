@@ -45,14 +45,11 @@ export default {
 
     methods: {
       onClickLogin() {
-        // TODO: temp callback
-        config.isLoggedIn = true
         // TODO: call API
-        util.me.then(() => {
+        util.me().then(() => {
           // TODO: set sessionToken
           location.href = cache.get('loginCallbackUrl') || '#/'
         }, () => {
-          config.isLoggedIn = false
         })
       }
     }

@@ -13,8 +13,7 @@ export default {
 
     created() {
       // TODO: use API to logout
-      cache.set('me', null)
-      config.isLoggedIn = false
+      config.loginUser = null
       // redirect to top
       location.href = '#/'
     }

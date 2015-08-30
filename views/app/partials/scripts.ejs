@@ -4,6 +4,7 @@ var OPTION = {
       debug: false,
       environment: "development",
       loginUser: <%= loginUser ? JSON.stringify(loginUser) : 'null' %>,
+      baseUrl: 'https://dev-booked.herokuapp.com',
       labels: <%- JSON.stringify(labels) %>
     }
 };

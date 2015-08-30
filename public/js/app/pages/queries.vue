@@ -97,7 +97,10 @@ export default {
       this.values.area = this.queryParams.where.area || DEFAULT_VALUE
       this.values.category = this.queryParams.where.category && this.queryParams.where.category['$regex'] || DEFAULT_VALUE
       this.values.priceRange = this.queryParams.where.priceRange || DEFAULT_VALUE
-      this.values.nowOpened = this.queryParams.where.oh2_saturday_start ? true : false
+
+      var nowInfo = filter.util.getNowInfo()
+      this.values.nowOpened = this.queryParams.where[nowInfo.startColumn] ? true : false
+
       this.values.keyword = this.queryParams.where.name && this.queryParams.where.name['$regex'] || ''
     },
 

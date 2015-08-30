@@ -30,8 +30,8 @@
                 </div>
                 <div class="detail_right">
                     <div class="detail_sns_wrap">
-                        <a href="https://www.facebook.com/" class="icon_sns_fb"></a>
-                        <a href="https://twitter.com/" class="icon_sns_tw"></a>
+                        <a href="javascript:;" class="icon_sns_fb" v-on="click: onClickShareFB"></a>
+                        <a href="javascript:;" class="icon_sns_tw" v-on="click: onClickShareTW"></a>
                     </div>
                 </div>
                 <div class="detail_nowOpened">
@@ -194,6 +194,14 @@ export default {
                     autoplayDisableOnInteraction: false,
                 })
             }, 25)
+        },
+
+        onClickShareFB() {
+          util.shareFB(config.baseUrl + '/detail/' + this.item.objectId)
+        },
+
+        onClickShareTW() {
+          util.shareTW(config.baseUrl + '/detail/' + this.item.objectId, this.item.name)
         }
     }
 }

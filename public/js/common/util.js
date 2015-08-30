@@ -175,6 +175,18 @@ var util = {
         localStorage.set(constants.clientStorages.favorites, favorites)
         resolve()
       })
+    },
+
+    shareFB(url) {
+        var shareUrl = url || location.href
+        window.open('http://wwww.facebook.com/sharer.php?u=' + encodeURIComponent(shareUrl), 'FacebookShare', 'width=550,height=450,resizable=yes,scrollbars=no')
+    },
+
+    shareTW(url, text, hashtags) {
+        var shareUrl = url || location.href
+        var shareText = text || document.title
+        var hashtags = 'townhunt_tokyo'
+        window.open('http://twitter.com/share?url=' + encodeURIComponent(shareUrl) + '&text=' + encodeURIComponent(shareText) + '&hashtags=' + encodeURIComponent(hashtags), 'TwitterShare', 'width=550,height=450,resizable=yes,scrollbars=no')
     }
 }
 

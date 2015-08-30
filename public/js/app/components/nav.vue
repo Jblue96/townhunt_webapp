@@ -29,15 +29,14 @@
   </div>
   <section>
     <div class="nav_sns_wrap">
-      <a href="https://www.facebook.com/" class="icon_sns_fb"></a>
-      <a href="https://twitter.com/" class="icon_sns_tw"></a>
+      <a href="javascript:;" class="icon_sns_fb" v-on="click: onClickShareFB"></a>
+      <a href="javascript:;" class="icon_sns_tw" v-on="click: onClickShareTW"></a>
     </div>
   </section>
 </template>
 
 <script lang="babel">
 import config from '../../common/config'
-import cache from '../../common/cache'
 import util from '../../common/util'
 
 export default {
@@ -50,7 +49,7 @@ export default {
 
   created() {
     this.$on('onRoute', (options) => {
-      this.me = cache.get('me')
+      this.me = config.loginUser
     })
   },
 
@@ -58,6 +57,14 @@ export default {
     move(href) {
       util.getSlideOut().close()
       location.href = href
+    },
+
+    onClickShareFB() {
+      util.shareFB(config.baseUrl)
+    },
+
+    onClickShareTW() {
+      util.shareTW(config.baseUrl)
     }
   }
 }

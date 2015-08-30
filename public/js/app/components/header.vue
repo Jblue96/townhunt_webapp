@@ -17,7 +17,6 @@ export default {
 
   data() {
     return {
-        isLoggedIn: config.isLoggedIn,
         countryId: 'tokyo',
         center: {
           title: ''
@@ -93,7 +92,7 @@ export default {
     },
 
     // iconDefaultRight() {
-    //   if(config.isLoggedIn) {
+    //   if(config.loginUser) {
     //     // set login user profile image
     //     var me = cache.get('me')
     //     var label = `<img src="${me.imageUrl}"/>`

@@ -15,7 +15,7 @@
 </template>
 
 <script lang="babel">
-import cache from '../../../common/cache'
+import config from '../../../common/config'
 
 export default {
     data() {
@@ -28,7 +28,7 @@ export default {
     },
 
     created() {
-      this.me = cache.get('me')
+      this.me = config.loginUser
     },
 
     methods: {

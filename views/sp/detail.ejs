@@ -9,7 +9,7 @@
       <!-- Header -->
       <haeder class="component__header">
         <div class="header_wrap">
-          <a class="button_left icon_logo" href="/"></a>
+          <a class="button_left icon_back" href="/"></a>
           <div class="header_title">
             <span>Detail Info</span>
           </div>
@@ -19,59 +19,117 @@
       <!-- Page Content -->
       <div class="component__main container">
         <div class="page__detail">
-      <div>
-          <div class="detail_banner">
-              <ul class="swiper-wrapper">
-                <% offer.images && offer.images.forEach(function(image) { %>
-                <li class="swiper-slide detail_banner_bg" style="background-image: url(<%= image.url %>);"></li>
-                <% }) %>
-              </ul>
+          <div>
+            <div class="detail_banner swiper-container">
+                <!-- TODO: swiper -->
+                <ul class="swiper-wrapper">
+                  <% offer.images && offer.images.forEach(function(image) { %>
+                    <li class="swiper-slide detail_banner_bg" style="background-image: url(<%= image.url %>);"></li>
+                  <% }) %>
+                </ul>
+            </div>
+            <div class="detail_summary">
+                <div class="detail_table">
+                    <div class="detail_middle">
+                        <div class="detail_title"><%= offer.name %></div>
+                    </div>
+                    <div class="detail_right">
+                        <!-- TODO: favorite -->
+                        <!--div class="detail_favorite" v-class="icon_favorite: offer.favorited, icon_favorite_blank: !offer.favorited" v-on="click: favorite"></div-->
+                    </div>
+                </div>
+                <div class="detail_table">
+                    <div class="detail_middle">
+                        <div class="detail_categories">
+                            <span><%= filter.displayCategory(offer.shop.category, labels) %></span>
+                        </div>
+                        <div class="detail_area">
+                            <span><%= filter.displayArea(offer.area, labels) %></span>
+                        </div>
+                        <div>
+                            <span>Michelin</span>
+                            <span><%= filter.michelin(offer.shop.michelin, labels) %></span>
+                        </div>
+                    </div>
+                    <div class="detail_right">
+                        <div class="detail_sns_wrap">
+                          <!-- TODO: share -->
+                            <a href="javascript:;" class="icon_sns_fb"></a>
+                            <a href="javascript:;" class="icon_sns_tw"></a>
+
+                        </div>
+                    </div>
+                    <div class="detail_nowOpened">
+                        <%= filter.displayNowOpened(offer, labels) %>
+                    </div>
+                </div>
+            </div>
+            <div class="detail_location">
+                <a class="detail_location_link" href="<%= filter.gMapLink(offer.location, labels) %>" target="_blank">
+                    <p><%= offer.address %></p>
+                </a>
+                <div class="detail_location_icon"></div>
+            </div>
+            <div class="detail_main">
+                <div class="component_table">
+                    <div class="table_row">
+                        <div class="table_cell table_cell_left">
+                            <label>Budget</label>
+                        </div>
+                        <div class="table_cell table_cell_right">
+                            <%- filter.displayBudget(offer.shop.budget.display, labels) %>
+                        </div>
+                    </div>
+                    <div class="table_row">
+                        <div class="table_cell table_cell_left">
+                            <label>Credit Card</label>
+                        </div>
+                        <div class="table_cell table_cell_right">
+                            <%= filter.displayAvailbility(offer.shop.cardAvailable, labels) %>
+                        </div>
+                    </div>
+                    <div class="table_row">
+                        <div class="table_cell table_cell_left">
+                            <label>Open Hours</label>
+                        </div>
+                        <div class="table_cell table_cell_right">
+                            <%- filter.displayOperatingHours(offer.shop.operatingHours, labels) %>
+                        </div>
+                    </div>
+                    <div class="table_row">
+                        <div class="table_cell table_cell_left">
+                            <label>Closed on</label>
+                        </div>
+                        <div class="table_cell table_cell_right">
+                            <%= filter.displayShopHolidays(offer.shop.shopHolidays, labels) %>
+                        </div>
+                    </div>
+                    <div class="table_row">
+                        <div class="table_cell table_cell_left">
+                            <label>Smoking</label>
+                        </div>
+                        <div class="table_cell table_cell_right">
+                            <%= filter.displayAvailbility(offer.shop.smokingAvailable, labels) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% if(offer.description) { %>
+            <div class="detail_description">
+                <p><%= offer.description %></p>
+            </div>
+            <% } %>
           </div>
-          <div class="detail_summary">
-              <div class="detail_title"><%= offer.name %></div>
-              <div class="detail_table">
-                  <div class="detail_middle">
-                      <div class="detail_categories">
-                          <span><%= filter.type(offer.type) %></span>
-                      </div>
-                      <div class="detail_area"></div>
-                  </div>
-                  <div class="detail_right">
-                  <div class="detail_favorite icon_favorite_blank"></div>
-                      <div class="detail_price"><%= filter.price(offer.price) %></div>
-                  </div>
-              </div>
-          </div>
-          <div class="detail_main">
-              <h5>About this place</h5>
-              <div>
-                  <p>Hours: </p>
-              </div>
-              <div class="detail_location">
-                  <div class="detail_location_icon"></div>
-                  <div class="detail_location_content">
-                      <div class="detail_location_title">Tokyo</div>
-                      <div class="detail_location_address">   </div>
-                      <div class="detail_location_right">
-                          <span>Open with Google Map</span>
-                      </div>
-                  </div>
-              </div>
-              <p class="detail_description"><%= offer.description %></p>
-          </div>
-          <div class="detail_footer">
-              <div class="detail_btn btn_large">GET TICKET <%= filter.price(offer.price) %></div>
-          </div>
-      </div>
-    </div>
+        </div>
       </div>
       
       <!-- Footer -->
       <footer class="component__footer">
-        <div class="footer_wrap">
-    </div>
+        <div class="footer_wrap"></div>
       </footer>
 
+      <!-- Overlay -->
+      <div class="slideout-overlay" style="display: none;"></div>
   </main>
   <!-- script -->
   <% include partials/scripts %>

@@ -55,7 +55,6 @@ export default {
       // TODO: paging
       this.hasNext = true
       this.refresh().then((result) => {
-        console.log(result)
         this.items = result.items
       })
     },

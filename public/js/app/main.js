@@ -165,7 +165,7 @@ var router = app.router = Router(routes).configure({
     before() {
         // move login screen for anonymous login
         var current = '#/' + router.getRoute().join('/')
-        if(!config.isLoggedIn){
+        if(!config.loginUser){
             if(NEED_LOGIN_PAGES.indexOf(router.getRoute()[0]) > -1){
                 cache.set('loginCallbackUrl', current)
                 location.href = '#/login'
