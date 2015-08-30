@@ -38,7 +38,7 @@ var util = {
         if(slideout.isOpen()){
           slideout.close()
         }
-      })
+      })      
       // disable slideout by default
       slideout.disableTouch()
       return () => slideout

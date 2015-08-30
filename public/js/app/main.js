@@ -17,6 +17,7 @@ import pageLogin from './pages/login.vue'
 import pageLogout from './pages/logout.vue'
 import pageTop from './pages/top.vue'
 import pageMap from './pages/map.vue'
+import pageAbout from './pages/about.vue'
 import pageWishlist from './pages/wishlist.vue'
 import pageMypageTop from './pages/mypage/top.vue'
 import pageMypageEdit from './pages/mypage/edit.vue'
@@ -51,6 +52,7 @@ var app = new Vue({
         'page-logout': pageLogout,
         'page-top': pageTop,
         'page-map': pageMap,
+        'page-about': pageAbout,
         'page-wishlist': pageWishlist,
         'page-mypage-top': pageMypageTop,
         'page-mypage-edit': pageMypageEdit,
@@ -83,12 +85,14 @@ var app = new Vue({
         this.$on('toggleMenu', (opened) => {
             this.isMenuOpened = opened
         })
+        util.getSlideOut().on('close', () => {
+          this.$emit('toggleMenu', false)
+        })
     },
 
     methods: {
         onClickMenuOverlay(e) {
             util.getSlideOut().close()
-            this.$emit('toggleMenu', false)
             e.preventDefault(e)
             return false
         }
@@ -131,6 +135,9 @@ var routes = {
     },
     '/favorites': function() {
         onRoute('page-wishlist', {type: 'favorites'})
+    },
+    '/about': function() {
+        onRoute('page-about')
     },
     '/mypage/top': function() {
         onRoute('page-mypage-top')

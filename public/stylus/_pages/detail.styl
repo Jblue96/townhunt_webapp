@@ -12,30 +12,60 @@
         padding 12px
         border-bottom 2px solid #666
         
+    .detail_nowOpened
+        position absolute
+        top -8px
+        right 8px
+
     .detail_title
         font-size 16px
         font-weight 700
     
     .detail_location
+        position relative
         padding 12px
-        line-height 60px
         text-align center
         border-bottom 2px solid #666
+
+        &:before 
+            content " "
+            display inline-block
+            position absolute
+            top 20px
+            left 10px
+            width 24px
+            height 24px
+            background url(../img/icons/map.png);
+            background-size contain
+
+        &:after 
+            content " "
+            display inline-block
+            position absolute
+            top 24px
+            right 8px
+            width 16px
+            height 16px
+            background url(../img/icons/forward.png);
+            background-size contain
+
         
         .detail_location_link
-            display block
+            display inline-block
+            width 80%
+            line-height 40px
+            text-decoration none
+            color #fff
         
         p
-            white-space nowrap
             width 100%
-            overflow hidden
-            -o-text-overflow ellipsis
-            text-overflow ellipsis
+            ellipsis()
 
     .detail_table
+        position relative
+        display table
         height 40px
         width 100%
-        display table
 
     .detail_middle
         display table-cell
@@ -46,7 +76,7 @@
         display table-cell
         position relative
         vertical-align middle
-        text-align right
+        text-align center
         
     .detail_main
         padding 12px
@@ -75,7 +105,19 @@
         dl
             border none
             
+    .detail_description
+        padding 12px
+        border-top 2px solid #666
+            
+    .detail_sns_wrap
+        margin-top 12px
+        padding 8px 0 0 0
+        text-align right
+        a
+            margin 0 4px
+            
     .detail_footer
         // position fixed
         // bottom 0
         width 100%
+    

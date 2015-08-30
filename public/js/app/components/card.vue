@@ -6,9 +6,9 @@
                     <div class="card_middle">
                         <div class="card_title">{{name}}</div>
                         <div class="card_categories">
-                            <span>{{shop.category}}</span>
+                            <span>{{shop.category | displayCategory}}</span>
                         </div>
-                        <div class="card_area">{{city}}</div>
+                        <div class="card_area">{{area | displayArea}}</div>
                     </div>
                     <div class="card_right">
                         <div class="card_favorite" v-class="icon_favorite: favorited, icon_favorite_blank: !favorited" v-on="click: favorite"></div>

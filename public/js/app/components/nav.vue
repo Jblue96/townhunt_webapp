@@ -6,6 +6,7 @@
     <ul>
       <li><a v-on="click: move('#/')">Explore</a></li>
       <li><a v-on="click: move('#/favorites')">Favorites</a></li>
+      <li><a v-on="click: move('#/about')">About</a></li>
       <!--li v-if="me" class="nav_profile">
           <a class="icon_profile" v-on="click: move('#/mypage/top')" href="javascript:;">
             <img v-attr="src: me.imageUrl"/>
@@ -26,6 +27,12 @@
       <li v-if="me"><a v-on="click: move('#/logout')">Logout</a></li-->
     </ul>
   </div>
+  <section>
+    <div class="nav_sns_wrap">
+      <a href="https://www.facebook.com/" class="icon_sns_fb"></a>
+      <a href="https://twitter.com/" class="icon_sns_tw"></a>
+    </div>
+  </section>
 </template>
 
 <script lang="babel">

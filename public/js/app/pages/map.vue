@@ -3,14 +3,14 @@
       <div class="top_nav">
         <component-search-info></component-search-info>
       </div>
-      <div class="top_map">
+      <div class="map_main">
         <div id="map_canvas"></div>
       </div>
-      <div class="top_map_card" v-show="initialized">
-        <div v-show="!selectedMapItem && this.items.length == 0">
+      <div class="map_card" v-show="initialized">
+        <div class="map_card_msg" v-show="!selectedMapItem && this.items.length == 0">
           <span>No results found in this location</span>
         </div>
-        <div v-show="!selectedMapItem && this.items.length > 0">
+        <div class="map_card_msg" v-show="!selectedMapItem && this.items.length > 0">
           <span>Select a Pin</span>
         </div>
         <component-map-card item="{{selectedMapItem}}" v-if="selectedMapItem"></component-map-card>
@@ -151,7 +151,6 @@ var Component = {
 
       loadByCenterLocation() {
         if (this._requesting || this._detached) {
-          console.log("detached!")
           return
         }
         // reference: https://parse.com/docs/rest/guide/#geopoints-geo-queries

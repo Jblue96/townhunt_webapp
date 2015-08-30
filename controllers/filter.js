@@ -52,6 +52,10 @@ var filter = {
         var image = item.images && item.images.length && item.images[item.defaultImageIndex || 0]
         return (image && image.url) || '/img/no_image.png'
     },
+
+    displayArea(area, labels) {
+        return labels['constants_Area_JP_tokyo_' + area] || area
+    },
     
     michelin(value) {
         if (value === null) {
@@ -64,8 +68,7 @@ var filter = {
         if (!budget) {
             return '-'
         }
-        // TODO
-        return 'Day: ' + budget.day + " Night: " + budget.night
+        return 'Day ' + (budget.day || '-') + '<br>Night ' + (budget.night || '-')
     },
 
     displayAvailbility(available) {
@@ -80,21 +83,52 @@ var filter = {
         }
     },
 
-    displayOperatingHours(array) {
+    displayOperatingHours(array, labels) {
         if (!array || array.length === 0) {
             return '-'
         }
-        // TODO
-        return JSON.stringify(array)
+        var order = ['default', 'holiday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+        var map = {}
+        // [{"end":"15:30","lo":"15:00","start":"11:30","type":"default"},{"end":"20:00","lo":"19:30","start":"11:30","type":"saturday"},{"end":"17:00","lo":"16:30","start":"11:30","type":"sunday"},{"end":"21:30","lo":"21:00","start":"18:30","type":"default"}]
+        array.forEach(function(item) {
+            if (!map[item.type]) {
+                map[item.type] = []
+            }
+            var strs = []
+            if (item.start) {
+                strs.push(item.start)
+            }
+            strs.push(' - ')
+            if (item.end) {
+                strs.push(item.end)
+            }
+            if (item.lo) {
+                strs.push(' (L.O. ' + item.lo + ')')
+            }
+            map[item.type].push(strs.join(''))
+        })
+        // build strings from map
+        var results = []
+        order.forEach(function(key) {
+            if (map[key]) {
+                var str = key === 'default' ? '' : (labels['constants_DayOfWeek_' + key] || key) + ' '
+                // e.g. 15:00-18:00, 20:00-22:00
+                str += map[key].join(', ')
+                results.push(str)
+            }
+        })
+        return results.join('<br>')
     },
 
-    displayShopHolidays(array) {
-        // TODO
+    displayShopHolidays(array, labels) {
         if (!array || array.length === 0) {
             return '-'
         }
-        // TODO
-        return JSON.stringify(array)
+        var results = []
+        array.forEach(function(day) {
+            results.push(labels['constants_DayOfWeek_' + day] || day)
+        })
+        return results.join(', ')
     },
 
     gMapLink(location) {
@@ -142,7 +176,7 @@ var filter = {
 
     displayCategory(categoryStr, labels) {
         // TODO: split with comma
-
+        return categoryStr
     }
 
 }

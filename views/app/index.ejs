@@ -28,9 +28,10 @@
       <component-footer></component-footer>
     </footer>
 
+    <!-- Overlay -->
+    <div class="slideout-overlay" v-show="isMenuOpened" v-on="click: onClickMenuOverlay"></div>
   </main>
   
-  <div class="slideout-overlay" v-show="isMenuOpened" v-on="click: onClickMenuOverlay"></div>
 
   <!-- script -->
   <% include partials/scripts %>

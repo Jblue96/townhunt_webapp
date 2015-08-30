@@ -7,22 +7,35 @@
             </ul>
         </div>
         <div class="detail_summary">
-            <div class="detail_title">{{item.name}}</div>
+            <div class="detail_table">
+                <div class="detail_middle">
+                    <div class="detail_title">{{item.name}}</div>
+                </div>
+                <div class="detail_right">
+                    <div class="detail_favorite" v-class="icon_favorite: item.favorited, icon_favorite_blank: !item.favorited" v-on="click: favorite"></div>
+                </div>
+            </div>
             <div class="detail_table">
                 <div class="detail_middle">
                     <div class="detail_categories">
-                    <span>{{item.town}}</span> / <span>{{item.shop.category}}</span>
+                        <span>{{item.shop.category | displayCategory}}</span>
+                    </div>
+                    <div class="detail_area">
+                        <span>{{item.area | displayArea}}</span>
                     </div>
                     <div>
                         <span>Michelin</span>
                         <span>{{item.shop.michelin | michelin}}</span>
                     </div>
-                    <div>
-                        {{item | displayNowOpened}}
-                    </div>
                 </div>
                 <div class="detail_right">
-                <div class="detail_favorite" v-class="icon_favorite: item.favorited, icon_favorite_blank: !item.favorited" v-on="click: favorite"></div>
+                    <div class="detail_sns_wrap">
+                        <a href="https://www.facebook.com/" class="icon_sns_fb"></a>
+                        <a href="https://twitter.com/" class="icon_sns_tw"></a>
+                    </div>
+                </div>
+                <div class="detail_nowOpened">
+                    {{item | displayNowOpened}}
                 </div>
             </div>
         </div>
@@ -33,22 +46,51 @@
             <div class="detail_location_icon"></div>
         </div>
         <div class="detail_main">
-            <dl>
-                <dt>Budget</dt>
-                <dd>{{item.shop.budget.display | displayBudget}}</dd>
-
-                <dt>Credit Card</dt>
-                <dd>{{item.shop.cardAvailable | displayAvailbility}}</dd>
-
-                <dt>Open Hours</dt>
-                <dd>{{item.shop.operatingHours | displayOperatingHours}}</dd>
-
-                <dt>Closed on</dt>
-                <dd>{{item.shop.shopHolidays | displayShopHolidays}}</dd>
-
-                <dt>Smoking</dt>
-                <dd>{{item.shop.smokingAvailable | displayAvailbility}}</dd>
-            </dl>
+            <div class="component_table">
+                <div class="table_row">
+                    <div class="table_cell table_cell_left">
+                        <label>Budget</label>
+                    </div>
+                    <div class="table_cell table_cell_right">
+                        {{{item.shop.budget.display | displayBudget}}}
+                    </div>
+                </div>
+                <div class="table_row">
+                    <div class="table_cell table_cell_left">
+                        <label>Credit Card</label>
+                    </div>
+                    <div class="table_cell table_cell_right">
+                        {{item.shop.cardAvailable | displayAvailbility}}
+                    </div>
+                </div>
+                <div class="table_row">
+                    <div class="table_cell table_cell_left">
+                        <label>Open Hours</label>
+                    </div>
+                    <div class="table_cell table_cell_right">
+                        {{{item.shop.operatingHours | displayOperatingHours}}}
+                    </div>
+                </div>
+                <div class="table_row">
+                    <div class="table_cell table_cell_left">
+                        <label>Closed on</label>
+                    </div>
+                    <div class="table_cell table_cell_right">
+                        {{item.shop.shopHolidays | displayShopHolidays}}
+                    </div>
+                </div>
+                <div class="table_row">
+                    <div class="table_cell table_cell_left">
+                        <label>Smoking</label>
+                    </div>
+                    <div class="table_cell table_cell_right">
+                        {{item.shop.smokingAvailable | displayAvailbility}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="detail_description" v-show="item.description">
+            <p>{{item.description}}</p>
         </div>
     </div>
     <div class="loading_page" v-if="showLoading">

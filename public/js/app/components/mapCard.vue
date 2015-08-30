@@ -1,17 +1,14 @@
 <template>
     <a v-on="click: onClickItem" href="javascript:;" class="component__mapCard">
         <div class="card_bg" v-style="background-image: 'url(' + dislayImageUrl + ')'">
-            <div class="card_wrap">
-                <div class="card_main">
-                    <div class="card_middle">
-                        <div class="card_title">{{item.name}}</div>
-                        <div class="card_area">{{item.address}}</div>
-                    </div>
-                    <div class="card_right">
-
-                    </div>
+        </div>
+        <div class="card_main">
+            <div class="card_middle">
+                <div class="card_title">{{item.name}}</div>
+                <div class="card_info">
+                  <span>{{item.shop.category | displayCategory}} / {{item.area | displayArea}}</span></div>
                 </div>
-            </div>
+            <div class="card_right"></div>
         </div>
     </a>
 </template>

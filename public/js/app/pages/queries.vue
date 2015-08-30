@@ -1,25 +1,43 @@
 <template>
   <div class="page__queries">
     <div class="queries_form">
-      <div>
-        <label>Location</label>
-        <select v-model="values.area" options="options.areas"></select>
+      <div class="queries_item_wrap">
+        <div class="queries_item_label">
+          <label>Location</label>
+        </div>
+        <div clas="queries_item_select">
+          <select v-model="values.area" options="options.areas"></select>
+        </div>
       </div>
-      <div>
-        <label>Genre</label>
-        <select v-model="values.category" options="options.categories"></select>
+      <div class="queries_item_wrap">
+        <div class="queries_item_label">
+          <label>Genre</label>
+        </div>
+        <div clas="queries_item_select">
+          <select v-model="values.category" options="options.categories"></select>
+        </div>
       </div>
-      <div>
-        <label>Price Range</label>
-        <select v-model="values.priceRange" options="options.priceRanges"></select>
+      <div class="queries_item_wrap">
+        <div class="queries_item_label">
+          <label>Price Range</label>
+        </div>
+        <div clas="queries_item_select">
+          <select v-model="values.priceRange" options="options.priceRanges"></select>
+        </div>
       </div>
-      <div>
-        <label>Open Now</label>
-        <input type="checkbox" v-model="values.nowOpened">
+      <div class="queries_item_wrap">
+        <div class="queries_item_label">
+          <label>Open Now</label>
+          <input type="checkbox" v-model="values.nowOpened">
+        </div>
       </div>
-      <div>
-        <label>Keyword</label>
-        <input type="text" v-model="values.keyword" placeholder="Restaurant name">
+      <div class="queries_item_wrap">
+        <div class="queries_item_label">
+          <label>Keyword</label>
+        </div>
+        <div clas="queries_item_input">
+          <input type="text" v-model="values.keyword" placeholder="Restaurant name">
+        </div>
       </div>
 
     </div>

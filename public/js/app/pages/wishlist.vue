@@ -3,7 +3,7 @@
       <div class="wishlist_main">
         <component-card v-repeat="items" track-by="objectId"></component-card>
       </div>
-      <div class="top_no_result" v-show="!hasNext && items.length == 0">
+      <div class="wishlist_no_result" v-show="!hasNext && items.length == 0">
         No Results
       </div>
       <div class="loading_more" v-if="hasNext">

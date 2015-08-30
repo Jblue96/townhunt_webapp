@@ -15,5 +15,15 @@
     "constants_Genre_soba": "Soba",
     "constants_Genre_yakitori": "Yakitori",
 
+    "constants_DayOfWeek_sunday": "Sunday",
+    "constants_DayOfWeek_monday": "Monday",
+    "constants_DayOfWeek_tuesday": "Tuesday",
+    "constants_DayOfWeek_wednesday": "Wednesday",
+    "constants_DayOfWeek_thursday": "Thursday",
+    "constants_DayOfWeek_friday": "Friday",
+    "constants_DayOfWeek_saturday": "Saturday",
+    "constants_DayOfWeek_holiday": "Holiday",
+    "constants_DayOfWeek_irregular": "Irregular",
+
     "_dummy": null
 }
