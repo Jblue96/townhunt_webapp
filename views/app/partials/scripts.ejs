@@ -3,7 +3,7 @@ var OPTION = {
     config: {
       debug: false,
       environment: "development",
-      loginUser: <%= loginUser ? JSON.stringify(loginUser) : 'null' %>,
+      loginUser: <%- loginUser ? JSON.stringify(loginUser) : 'null' %>,
       labels: <%- JSON.stringify(labels) %>
     }
 };

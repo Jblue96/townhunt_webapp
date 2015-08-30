@@ -3,7 +3,7 @@ var passport = require('passport');
 var router = express.Router();
 
 //Passport Router
-router.get('/facebook', passport.authenticate('facebook'));
+router.get('/facebook', passport.authenticate('facebook', {scope: ['email']}));
 
 router.get('/facebook/callback', 
   passport.authenticate('facebook', {

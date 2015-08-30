@@ -1,19 +1,44 @@
+var fs = require('fs');
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
+var join = path.join;
 var favicon = require('serve-favicon');
 var compress = require('compression');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var passport = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy;
 var parseCtrl = require('./controllers/parseCtrl')
 var responseInterceptor = require('./controllers/responseInterceptor')
+
+// auth
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+var MongoStore = require('connect-mongo')(session);
+
 // routes
 var routes = require('./routes/index');
 var appRoute = require('./routes/app');
 var apiRoute = require('./routes/api');
 var authRoute = require('./routes/auth');
+
+// dbsetup
+var mongoose = require('mongoose');
+// Connect to mongodb
+var connect = function () {
+  var options = { server: { socketOptions: { keepAlive: 1 } } };
+  mongoose.connect('mongodb://localhost/townhunt', options);
+};
+connect();
+// Bootstrap models
+fs.readdirSync(join(__dirname, 'models')).forEach(function (file) {
+  if (~file.indexOf('.js')) require(join(__dirname, 'models', file));
+});
+// models
+var User = mongoose.model('User');
+
+mongoose.connection.on('error', console.log);
+mongoose.connection.on('disconnected', connect);
 
 var config = {};
 try{
@@ -31,23 +56,47 @@ app.set('view engine', 'ejs');
 
 // Passport session setup.
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  // done(null, user);
+  console.log('serialize: ' + user.id)
+   done(null, user.id)
 });
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
+passport.deserializeUser(function(id, done) {
+  // done(null, obj);
+  console.log('deserialize: ' + id)
+  User.load({ criteria: { _id: id } }, function (err, user) {
+    done(err, user)
+  })
 });
 
 // Use the FacebookStrategy within Passport.
 passport.use(new FacebookStrategy({
     clientID: config.FB_API_KEY,
     clientSecret:config.FB_API_SECRET ,
-    callbackURL: config.FB_CALLBACK_URL
+    callbackURL: config.FB_CALLBACK_URL,
+    profileFields: ['id', 'displayName', 'link', 'photos', 'emails']
   },
   function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function () {
-      //Check whether the User exists or not using profile.id
-      //Further DB code.
-      return done(null, profile);
+    var options = {
+      criteria: { 'facebook.id': profile.id }
+    };
+    User.load(options, function (err, user) {
+      if (err) return done(err);
+      if (!user) {
+        console.log(profile)
+        user = new User({
+          name: profile.displayName,
+          email: profile.emails[0].value,
+          username: profile.username,
+          provider: 'facebook',
+          facebook: profile._json
+        });
+        user.save(function (err) {
+          if (err) console.log(err);
+          return done(err, user);
+        });
+      } else {
+        return done(err, user);
+      }
     });
   }
 ));
@@ -56,8 +105,7 @@ passport.use(new FacebookStrategy({
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(compress());
 
 // static files
@@ -65,9 +113,27 @@ app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/dist', express.static(__dirname + '/public/dist'));
 app.use('/img', express.static(__dirname + '/public/img'));
 
+app.use(cookieParser());
+// https://github.com/madhums/node-express-mongoose-demo/blob/master/config/express.js
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: 'townhunt_secret',
+  store: new MongoStore({
+    db: 'townhunt',
+    host: 'localhost',
+    collection: 'sessions',
+    clear_interval: 60 * 60
+  }),
+  cookie: {
+    httpOnly: false,
+    maxAge: new Date(Date.now() + 60 * 60 * 1000)
+  }
+}));
 // setup passport
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 // setup routes
 app.use('/', routes);
