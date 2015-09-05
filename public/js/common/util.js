@@ -187,6 +187,18 @@ var util = {
         var shareText = text || document.title
         var hashtags = 'townhunt_tokyo'
         window.open('http://twitter.com/share?url=' + encodeURIComponent(shareUrl) + '&text=' + encodeURIComponent(shareText) + '&hashtags=' + encodeURIComponent(hashtags), 'TwitterShare', 'width=550,height=450,resizable=yes,scrollbars=no')
+    },
+
+    scrollTo(element, to, duration) {
+      if (duration < 0) return;
+      var difference = to - element.scrollTop;
+      var perTick = difference / duration * 10;
+
+      setTimeout(function() {
+        element.scrollTop = element.scrollTop + perTick;
+        if (element.scrollTop == to) return;
+        util.scrollTo(element, to, duration - 10);
+      }, 10);
     }
 }
 

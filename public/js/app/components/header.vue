@@ -1,7 +1,7 @@
 <template>
     <div class="header_wrap">
         <a class="button_left {{left.icon}}" v-on="click: leftCallback" v-if="left.icon != 'none'" href="javascript:;">{{{left.label}}}</a>
-        <div class="header_title">
+        <div class="header_title" v-on="click: scrollTop">
           <span v-if="center.title" v-text="center.title"></span>
         </div>
         <a class="button_right {{right.icon}}" v-on="click: rightCallback" v-if="right.icon != 'none'" href="javascript:;">{{{right.label}}}</a>
@@ -250,6 +250,10 @@ export default {
 
     onSave(componentId) {
       this.$dispatch('onSave', componentId)
+    },
+
+    scrollTop() {
+      util.scrollTo(document.body, 0, 200)
     }
   }
 }

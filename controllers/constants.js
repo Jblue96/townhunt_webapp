@@ -66,6 +66,10 @@ module.exports = {
     'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'
   ],
 
+  PriceRange: [
+    '_¥3000','¥3000_¥4000','¥4000_¥5000','¥5000_¥8000','¥8000_¥10000','¥10000_'
+  ],
+
   clientStorages: {
     favorites: 'townhunt.favorites'
   }

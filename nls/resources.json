@@ -25,5 +25,13 @@
     "constants_DayOfWeek_holiday": "Holiday",
     "constants_DayOfWeek_irregular": "Irregular",
 
+    "constants_PriceRange__¥3000": "Up to ¥3,000",
+    "constants_PriceRange_¥3000_¥4000": "¥3,000 - ¥4,000",
+    "constants_PriceRange_¥4000_¥5000": "¥4,000 - ¥5,000",
+    "constants_PriceRange_¥5000_¥8000": "¥5,000 - ¥8,000",
+    "constants_PriceRange_¥8000_¥10000": "¥8,000 - ¥10,000",
+    "constants_PriceRange_¥10000_": "Over ¥10,000",
+
+
     "_dummy": null
 }

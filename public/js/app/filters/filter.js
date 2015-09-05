@@ -10,8 +10,12 @@ Vue.filter('displayArea', (area) => {
     return filter.displayArea(area, config.labels)
 })
 Vue.filter('michelin', filter.michelin)
+Vue.filter('displayTel', filter.displayTel)
 Vue.filter('displayBudget', filter.displayBudget)
 Vue.filter('displayAvailbility', filter.displayAvailbility)
+Vue.filter('displayPriceRange', (value) => {
+    return filter.displayPriceRange(value, config.labels)
+})
 Vue.filter('displayOperatingHours', (array) => {
     return filter.displayOperatingHours(array, config.labels)
 })

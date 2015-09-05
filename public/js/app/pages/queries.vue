@@ -61,19 +61,12 @@ export default {
     data() {
       var areas = constants.getKeyLabel('Area_JP_tokyo', 'value', 'text')
       var categories = constants.getKeyLabel('Genre', 'value', 'text')
+      var priceRanges = constants.getKeyLabel('PriceRange', 'value', 'text')
       return {
         options: {
           areas: [{value: DEFAULT_VALUE, text:'All'}].concat(areas),
           categories: [{value: DEFAULT_VALUE, text: 'All'}].concat(categories),
-          priceRanges: [
-            {value: DEFAULT_VALUE, text: 'All'},
-            {value: '_¥3000', text: 'Up to ¥3,000'},
-            {value: '¥3000_¥4000', text: '¥3,000 - ¥4,000'},
-            {value: '¥4000_¥5000', text: '¥4,000 - ¥5,000'},
-            {value: '¥5000_¥8000', text: '¥5,000 - ¥8,000'},
-            {value: '¥8000_¥10000', text: '¥8,000 - ¥10,000'},
-            {value: '¥10000_', text: 'Over ¥10,000'}
-          ]
+          priceRanges: [{value: DEFAULT_VALUE, text:'All'}].concat(priceRanges)
         },
         values: {
           area: DEFAULT_VALUE,

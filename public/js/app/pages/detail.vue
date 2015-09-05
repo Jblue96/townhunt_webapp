@@ -49,6 +49,14 @@
             <div class="component_table">
                 <div class="table_row">
                     <div class="table_cell table_cell_left">
+                        <label>Tel</label>
+                    </div>
+                    <div class="table_cell table_cell_right">
+                        {{{item.shop.tel | displayTel}}}
+                    </div>
+                </div>
+                <div class="table_row">
+                    <div class="table_cell table_cell_left">
                         <label>Budget</label>
                     </div>
                     <div class="table_cell table_cell_right">

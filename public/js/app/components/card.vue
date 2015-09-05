@@ -12,15 +12,16 @@
                     </div>
                     <div class="card_right">
                         <div class="card_favorite" v-class="icon_favorite: favorited, icon_favorite_blank: !favorited" v-on="click: favorite"></div>
-                        <div class="card_price">{{price | price}}</div>
                     </div>
                 </div>
+                <div class="card_priceRange">{{priceRange | displayPriceRange}}</div>
             </div>
         </div>
     </a>
 </template>
 
 <script lang="babel">
+import constants from '../../../../controllers/constants'
 import util from '../../common/util'
 import filter from '../filters/filter'
 

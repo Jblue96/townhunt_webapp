@@ -64,6 +64,13 @@ var filter = {
         return value
     },
 
+    displayTel(tel) {
+        if (!tel) {
+            return '-'
+        }
+        return tel
+    },
+
     displayBudget(budget) {
         if (!budget) {
             return '-'
@@ -78,6 +85,19 @@ var filter = {
                 return 'Yes'
             case 'no':
                 return 'No'
+            default:
+                return '-'
+        }
+    },
+
+    displaySmoking(value) {
+        switch (value) {
+            case 'yes': 
+                return 'Yes'
+            case 'no':
+                return 'No'
+            case 'sectionalized':
+                return 'Sectionalized'
             default:
                 return '-'
         }
@@ -120,6 +140,10 @@ var filter = {
         return results.join('<br>')
     },
 
+    displayPriceRange(value, labels) {
+        return labels['constants_PriceRange_' + value] || value
+    },
+
     displayShopHolidays(array, labels) {
         if (!array || array.length === 0) {
             return '-'
@@ -148,7 +172,7 @@ var filter = {
                 _labels.push('Genre: ' + where.category['$regex'])
             }
             if (where.priceRange) {
-                _labels.push('Price Range: ' + where.priceRange)
+                _labels.push('Price Range: ' + filter.displayPriceRange(where.priceRange, labels))
             }
             for (var prop in where) {
                 // temp to check having time conditions

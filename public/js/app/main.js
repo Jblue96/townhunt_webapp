@@ -85,7 +85,7 @@ var app = new Vue({
         this.$on('toggleMenu', (opened) => {
             this.isMenuOpened = opened
         })
-        util.getSlideOut().on('close', () => {
+        util.getSlideOut().on('beforeclose', () => {
           this.$emit('toggleMenu', false)
         })
     },
