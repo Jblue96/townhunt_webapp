@@ -205,11 +205,11 @@ export default {
         },
 
         onClickShareFB() {
-          util.shareFB(config.baseUrl + '/detail/' + this.item.objectId)
+          util.shareFB(config.baseUrl + '/#/detail/' + this.item.objectId)
         },
 
         onClickShareTW() {
-          util.shareTW(config.baseUrl + '/detail/' + this.item.objectId, this.item.name)
+          util.shareTW(config.baseUrl + '/#/detail/' + this.item.objectId, this.item.name)
         }
     }
 }
