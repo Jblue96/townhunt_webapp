@@ -66,13 +66,8 @@ var Component = {
       this.queryParams = $.extend(this.queryParams, urlQueryParser.getUrlSearchQueryParams())
       // initial load
       this.clear()
-      // render and select first item
-      var initRender = (coords) => {
-        // if area is specified as a query, show the area as initial location
-        var queryArea = this.queryParams.where.area
-        var initialPos = queryArea && constants.getAreaLocation(queryArea) || coords
-        // move to center position
-        this._map.setCenter(initialPos).then(() => {
+
+      var postRender = () => {
           // set zoom
           this._map.setZoom(this.zoom)
           this.loadByCenterLocation()
@@ -81,8 +76,21 @@ var Component = {
           $(window).on("resize.map", this.resize.bind(this))
           this._myLocationInterval = setInterval(() => {
             this.updateCurrentLocation(true/*noMove*/)
-          }, 10000)
-        })
+          }, 10000)          
+      }
+      
+      // render and select first item
+      var initRender = (coords) => {
+        // if area is specified as a query, show the area as initial location
+        var queryArea = this.queryParams.where.area
+        var initialPos = queryArea && constants.getAreaLocation(queryArea) || coords
+        if (initialPos) {
+          // move to center position
+          this._map.setCenter(initialPos).then(postRender)
+        } else {
+          // for GPS disabled
+          postRender()
+        }
       }
       // set current position by default
       this.updateCurrentLocation().then(initRender, initRender)
@@ -216,6 +224,11 @@ var Component = {
           } else {
             return this.setCurrentLocationMarker(coords)
           }
+        }, () => {
+          // fail to get current location
+          return new Promise((resolve, reject) => {
+            reject()
+          })
         })
       },
 

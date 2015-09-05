@@ -169,7 +169,7 @@ var filter = {
                 _labels.push('Area: ' + where.area)
             }
             if (where.category && where.category['$regex']) {
-                _labels.push('Genre: ' + where.category['$regex'])
+                _labels.push('Genre: ' + filter.displayCategory(where.category['$regex'], labels))
             }
             if (where.priceRange) {
                 _labels.push('Price Range: ' + filter.displayPriceRange(where.priceRange, labels))
@@ -199,8 +199,15 @@ var filter = {
     },
 
     displayCategory(categoryStr, labels) {
-        // TODO: split with comma
-        return categoryStr
+        if (!categoryStr) {
+            return ''
+        }
+        var newArr = [],
+            arr = categoryStr.split(',')
+        arr.forEach(function (key) {
+            newArr.push(labels['constants_Genre_' + key] || key)
+        })
+        return newArr.join(', ')
     }
 
 }

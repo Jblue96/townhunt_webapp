@@ -60,7 +60,8 @@ var DEFAULT_VALUE = '_default'
 export default {
     data() {
       var areas = constants.getKeyLabel('Area_JP_tokyo', 'value', 'text')
-      var categories = constants.getKeyLabel('Genre', 'value', 'text')
+      // show only top genre
+      var categories = constants.getKeyLabel('Genre', 'value', 'text', 21)
       var priceRanges = constants.getKeyLabel('PriceRange', 'value', 'text')
       return {
         options: {
