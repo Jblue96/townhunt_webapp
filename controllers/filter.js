@@ -68,7 +68,20 @@ var filter = {
         if (!tel) {
             return '-'
         }
-        return tel
+        // 03-5485-0025 (+81-3-5485-0025) 
+        var arr = tel.split(' ')
+        if (arr.length == 1) {
+            return tel
+        } else {
+            var newArr = []
+            arr.forEach(function(str) {
+                if (str) {
+                    newArr.push(str)
+                }
+            })
+            var link = newArr[0].replace(/-/g, '')
+            return '<a href="tel:' + link + '">' + newArr[0] + '</a> ' + newArr[1]
+        }
     },
 
     displayBudget(budget) {
