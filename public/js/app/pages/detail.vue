@@ -29,10 +29,10 @@
                     </div>
                 </div>
                 <div class="detail_right">
-                    <div class="detail_sns_wrap">
+                    <!--div class="detail_sns_wrap">
                         <a href="javascript:;" class="icon_sns_fb" v-on="click: onClickShareFB"></a>
                         <a href="javascript:;" class="icon_sns_tw" v-on="click: onClickShareTW"></a>
-                    </div>
+                    </div-->
                 </div>
                 <div class="detail_nowOpened">
                     {{item | displayNowOpened}}

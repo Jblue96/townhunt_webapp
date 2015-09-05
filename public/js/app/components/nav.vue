@@ -27,12 +27,12 @@
       <li v-if="me"><a v-on="click: move('#/logout')">Logout</a></li-->
     </ul>
   </div>
-  <section>
+  <!--section>
     <div class="nav_sns_wrap">
       <a href="javascript:;" class="icon_sns_fb" v-on="click: onClickShareFB"></a>
       <a href="javascript:;" class="icon_sns_tw" v-on="click: onClickShareTW"></a>
     </div>
-  </section>
+  </section-->
 </template>
 
 <script lang="babel">
