@@ -14,11 +14,10 @@ module.exports = {
       console.log('no messages or no constant in constants.js')
       return
     }
-    if (!limit) { limit = -1 }
     var that = this,
       arr = []
     this[constantName].forEach(function(id) {
-      if (limit >= 0 && arr.length < limit) {
+      if (!limit || (limit >= 0 && arr.length < limit)) {
         var obj = {}
         obj[keyProp || 'id'] = id
         obj[labelProp || 'label'] = that._messages['constants_' + constantName + '_' + id] || id
