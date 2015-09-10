@@ -32,11 +32,16 @@ import filter from './filters/filter'
 import $ from 'npm-zepto'
 import {} from '../lib/zepto.deparam'
 import {} from '../lib/zepto.height'
+// fast click
+import FastClick from 'fastclick'
 
 // setup Vue
 Vue.config.debug = config.debug
 // setup constants
 constants.init(config.labels)
+// setup fastclick
+new FastClick(document.body);
+
 
 var app = new Vue({
 

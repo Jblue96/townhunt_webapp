@@ -50,7 +50,7 @@ var filter = {
 
     dislayImageUrl(item) {
         var image = item.images && item.images.length && item.images[item.defaultImageIndex || 0]
-        return (image && image.url) || '/img/no_image.png'
+        return (image && image.url) || '/img/logo.png'
     },
 
     displayArea(area, labels) {
@@ -61,7 +61,11 @@ var filter = {
         if (value === null) {
             return '-'
         }
-        return value
+        var html = []
+        for (var i=0; i<value -0; i++) {
+            html.push('<div class="icon_star"></div>')
+        }
+        return html.join('')
     },
 
     displayTel(tel) {
@@ -205,7 +209,7 @@ var filter = {
       // check current time is between start time and end time
       if (item[nowInfo.startColumn] <= nowInfo.diplayTime
        && item[nowInfo.endColumn] >= nowInfo.diplayTime) {
-        return 'Open Now'
+        return '<div class="icon_open_now"></div>'
       } else{
         return ''
       }

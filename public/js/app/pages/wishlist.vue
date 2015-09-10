@@ -4,10 +4,10 @@
         <component-card v-repeat="items" track-by="objectId"></component-card>
       </div>
       <div class="wishlist_no_result" v-show="!hasNext && items.length == 0">
-        No Results
+        No Favorites
       </div>
       <div class="loading_more" v-if="hasNext">
-        Loading...
+        <div class="icon_loading"></div>
       </div>
   </div>
 </template>

@@ -23,9 +23,9 @@
                     <div class="detail_area">
                         <span>{{item.area | displayArea}}</span>
                     </div>
-                    <div>
-                        <span>Michelin</span>
-                        <span>{{item.shop.michelin | michelin}}</span>
+                    <div class="detail_michelin" v-if="item.shop.michelin">
+                        <span class="detail_michelin_label">Michelin</span>
+                        <span>{{{item.shop.michelin | michelin}}}</span>
                     </div>
                 </div>
                 <div class="detail_right">
@@ -35,7 +35,7 @@
                     </div-->
                 </div>
                 <div class="detail_nowOpened">
-                    {{item | displayNowOpened}}
+                    {{{item | displayNowOpened}}}
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@
         </div>
     </div>
     <div class="loading_page" v-if="showLoading">
-        Loading...
+        <div class="icon_loading"></div>
     </div>
   </div>
 </template>

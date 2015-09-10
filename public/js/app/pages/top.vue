@@ -10,7 +10,7 @@
         No Results
       </div>
       <div class="loading_more" v-if="hasNext">
-        Loading...
+        <div class="icon_loading"></div>
       </div>
   </div>
 </template>
