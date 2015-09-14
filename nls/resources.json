@@ -1,4 +1,37 @@
 {
+    "meta_title": "TownHunt Tokyo",
+    "meta_description": "TownHunt Tokyo is your mobile concierge for discovering the best local restaurants in Tokyo.",
+    "meta_keywords": "Japan, Tokyo, ramen, restaurants, travel, sushi, japanese, jiro, shibuya, Shinjuku, Roppongi, ginza",
+
+    "common_edit": "Edit",
+    "common_save": "Save",
+
+    "title_header_login": "Login",
+    "title_header_top": "Tokyo",
+    "title_header_queries": "Filter",
+    "title_header_detail": "Shop Detail",
+    "title_header_favorites": "My Favorites",
+    "title_header_mypage": "Account",
+    "title_header_payment_order": "Request Ticket",
+    "title_header_success": "Thank you",
+    "title_header_request_list": "My Bookings",
+    "title_header_request_detail": "Booking Detail",
+
+    "nav_explore": "Explore",
+    "nav_favorites": "Favorites",
+    "nav_about": "About",
+    "nav_wishlist": "Wish List",
+    "nav_earn": "Earn Credit",
+    "nav_settings": "Settings",
+    "nav_bookings": "My Bookings",
+    "nav_login": "Login",
+    "nav_logout": "Logout",
+
+    "about_title": "TownHunt Tokyo",
+    "about_desc1": "TownHunt is your mobile concierge for discovering the best local places - currently restaurants and bars - instantly.",
+    "about_desc2": "We curated only the top 100 well reviewed Japanese restaurants in 4 most popular areas in Tokyo: Shibuya, Shinjuku, Roppongi and Ginza/Shinbashi.",
+    
+
     "constants_Types_food-and-drinks": "Food & Drinks",
     "constants_Types_shows": "Shows",
     "constants_Types_luxury": "Luxury",

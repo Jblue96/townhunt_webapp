@@ -2,34 +2,58 @@
     Retina用のmixinなど
 */
 
+retina_spriteWidth($sprite, $scale = null)
+  width retina($sprite[4], $scale)
+
+retina_spriteHeight($sprite, $scale = null)
+  height retina($sprite[5], $scale)
+
+retina_spritePosition($sprite, $scale = null)
+  background-position retina($sprite[2], $scale) retina($sprite[3], $scale)
+
+retina_spriteSize($sprite, $scale = null)
+  background-size retina($sprite[6], $scale) retina($sprite[7], $scale)
+
+retina_sprite($sprite, $scale = null)
+  spriteImage($sprite, $scale)
+  retina_spritePosition($sprite, $scale)
+  retina_spriteWidth($sprite, $scale)
+  retina_spriteHeight($sprite, $scale)
+  retina_spriteSize($sprite, $scale)
+
+retina($x, $scale = null)
+  if $scale == null
+      $scale = 2
+  ceil($x / $scale)
+
 /* SpriteをRetina対応 */
-retina($x)
-  $s = $x / 5.5
-  floor($s)
+// retina($x)
+//   $s = $x / 5.5
+//   floor($s)
 
-sprite($args)
-  background-image url($args[8])
-  background-position retina($args[2]) retina($args[3])+1
-  background-repeat no-repeat
-  background-size retina($args[6]) retina($args[7])
-  width retina($args[4])+1
-  height retina($args[5])+1
-  display block
+// sprite($args)
+//   background-image url($args[8])
+//   background-position retina($args[2]) retina($args[3])+1
+//   background-repeat no-repeat
+//   background-size retina($args[6]) retina($args[7])
+//   width retina($args[4])+1
+//   height retina($args[5])+1
+//   display block
 
-// Desktop用 Retina DisplayでのBorder .5pxを実現するmixin
-retinaScreen = s("screen and (-webkit-min-device-pixel-ratio:2),(min-resolution: 2dppx)")
+// // Desktop用 Retina DisplayでのBorder .5pxを実現するmixin
+// retinaScreen = s("screen and (-webkit-min-device-pixel-ratio:2),(min-resolution: 2dppx)")
 
 
-retinaBorder($DOMPath)
-  if $objectName
+// retinaBorder($DOMPath)
+//   if $objectName
     
-    /* Retina */
-    @media retinaScreen
-      {$DOMPath}
-        border-width 0.99px
-        // 0.5pxだとSafari 7.0以下でborderがみえなくなる
+//     /* Retina */
+//     @media retinaScreen
+//       {$DOMPath}
+//         border-width 0.99px
+//         // 0.5pxだとSafari 7.0以下でborderがみえなくなる
 
-    /* Chromeは.5pxを四捨五入するので… */
-    .chrome
-      {$DOMPath}
-        border-width 1px
+//     /* Chromeは.5pxを四捨五入するので… */
+//     .chrome
+//       {$DOMPath}
+//         border-width 1px

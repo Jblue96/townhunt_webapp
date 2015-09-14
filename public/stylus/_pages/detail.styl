@@ -28,27 +28,20 @@
         border-bottom 2px solid #666
 
         &:before 
+            retina_sprite($sprite_map, 64 / 20)
             content " "
             display inline-block
             position absolute
-            top 20px
+            top 22px
             left 10px
-            width 24px
-            height 24px
-            background url(../img/icons/map.png);
-            background-size contain
 
         &:after 
+            retina_sprite($sprite_forward)
             content " "
             display inline-block
             position absolute
             top 24px
             right 8px
-            width 16px
-            height 16px
-            background url(../img/icons/forward.png);
-            background-size contain
-
         
         .detail_location_link
             display inline-block

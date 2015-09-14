@@ -12,6 +12,7 @@
 import config from '../../common/config'
 import cache from '../../common/cache'
 import util from '../../common/util'
+import labels from '../../common/labels'
 
 export default {
 
@@ -91,33 +92,11 @@ export default {
       }
     },
 
-    // iconDefaultRight() {
-    //   if(config.loginUser) {
-    //     // set login user profile image
-    //     var me = cache.get('me')
-    //     var label = `<img src="${me.imageUrl}"/>`
-    //     return {
-    //       icon: 'icon_profile',
-    //       label: label,
-    //       callback() {
-    //         location.href = '#/mypage/top'
-    //       }
-    //     }
-    //   }else{
-    //     return {
-    //       label: 'Login',
-    //       callback() {
-    //         location.href = '#/login'
-    //       }
-    //     }
-    //   }
-    // },
-
     updateHeader(componentId) {
       var that = this
       switch(componentId){
         case 'page-login':
-          this.center = { title: 'Login' }
+          this.center = { title: labels.title_header_login }
           this.left = { icon: 'none' }
           this.right = {
             icon: 'icon_close',
@@ -125,17 +104,17 @@ export default {
           }
           break
         case 'page-top':
-          this.center = { title: 'Tokyo' }
+          this.center = { title: labels.title_header_top }
           this.left = this.iconDefaultLeft()
           this.right = this.iconMap()
           break
         case 'page-map':
-          this.center = { title: 'Tokyo' }
+          this.center = { title: labels.title_header_top }
           this.left = this.iconDefaultLeft()
           this.right = this.iconList()
           break
         case 'page-queries':
-          this.center = { title: 'Filter' }
+          this.center = { title: labels.title_header_queries }
           this.left = {
             icon: 'icon_back',
             callback: this.back
@@ -143,8 +122,7 @@ export default {
           this.right = this.iconNone()
           break
         case 'page-detail':
-          this.center = { title: 'Detail Info' }
-          // this.left = this.iconDefaultLeft()
+          this.center = { title: labels.title_header_detail }
           this.left = {
             icon: 'icon_back',
             callback: this.back
@@ -152,26 +130,22 @@ export default {
           this.right = this.iconNone()
           break
         case 'page-wishlist':
-          this.center = { title: 'My Favorites' }
+          this.center = { title: labels.title_header_favorites }
           this.left = this.iconDefaultLeft()
           this.right = this.iconNone()
           break
         case 'page-mypage-top':
-          this.center = { title: 'Account' }
+          this.center = { title: labels.title_header_mypage }
           this.left = this.iconDefaultLeft()
-          // this.left = {
-          //   icon: 'icon_back',
-          //   callback: this.back
-          // }
           this.right = {
-            label: 'Edit',
+            label: labels.common_edit,
             callback() {
               location.href = '#/mypage/edit'
             }
           }
           break
         case 'page-mypage-edit':
-          this.center = { title: 'Account' }
+          this.center = { title: labels.title_header_mypage }
           this.left = {
             icon: 'icon_back',
             callback() {
@@ -179,14 +153,14 @@ export default {
             }
           }
           this.right = {
-            label: 'Save',
+            label: labels.common_save,
             callback() {
               that.onSave(componentId)
             }
           }
           break
         case 'page-payment-order':
-          this.center = { title: 'Request Ticket' }
+          this.center = { title: labels.title_header_payment_order }
           this.left = {
             icon: 'icon_back',
             callback: this.back
@@ -194,12 +168,12 @@ export default {
           this.right = this.iconNone()
           break
         case 'page-payment-success':
-          this.center = { title: 'Thank You' }
+          this.center = { title: labels.title_header_success }
           this.left = this.iconDefaultLeft()
           this.right = this.iconNone()
           break
         case 'page-request-list':
-          this.center = { title: 'My Bookings' }
+          this.center = { title: labels.title_header_request_list }
           this.left = {
             icon: 'icon_back',
             callback() {
@@ -209,7 +183,7 @@ export default {
           this.right = this.iconNone()
           break
         case 'page-request-detail':
-          this.center = { title: 'My Bookings' }
+          this.center = { title: labels.title_header_request_detail }
           this.left = {
             icon: 'icon_back',
             callback() {
@@ -219,7 +193,7 @@ export default {
           this.right = this.iconNone()
           break
         default:
-            this.center = {title: 'Tokyo'}
+            this.center = {title: labels.title_header_top}
             this.left = this.iconDefaultLeft()
             this.right = this.iconNone()
             break

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import {Router} from 'director'
 import config from '../common/config'
+import labels from '../common/labels'
 import util from '../common/util'
 import cache from '../common/cache'
 import localStorage from '../common/localStorage'
@@ -38,7 +39,7 @@ import FastClick from 'fastclick'
 // setup Vue
 Vue.config.debug = config.debug
 // setup constants
-constants.init(config.labels)
+constants.init(labels)
 // setup fastclick
 new FastClick(document.body);
 

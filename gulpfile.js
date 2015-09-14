@@ -10,6 +10,8 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var webpack = require('gulp-webpack');
 var webpackConfig = require('./webpack.config.js');
+var spritesmith = require('gulp.spritesmith');
+var plumber = require('gulp-plumber');
 
 var port = process.env.PORT || 8080;
 var reloadPort = process.env.RELOAD_PORT || 35729;
@@ -27,6 +29,22 @@ gulp.task('stylus', function(){
   .pipe(minifyCss({keepSpecialComments: 0}))
   .pipe(rename({extname: '.css'}))
   .pipe(gulp.dest('public/css/'));
+});
+
+gulp.task('sprite', function() {
+  var spriteData = gulp.src('./public/img/_sprites/**/*.png')
+    .pipe(plumber())
+    .pipe(spritesmith({
+      imgName: '../img/sprites.png',
+      cssName: 'sprites.styl',
+      cssFormat: 'stylus',
+      padding: 10,
+      cssVarMap: function (sprite) {
+        sprite.name = 'sprite-' + sprite.name;
+      }
+    }));
+  spriteData.img.pipe(gulp.dest('./public/img/'))
+  spriteData.css.pipe(gulp.dest('./public/stylus/_mixins/'))
 });
 
 gulp.task('build', function () {
