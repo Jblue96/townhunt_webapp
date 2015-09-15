@@ -33,7 +33,7 @@ module.exports = {
 };
 ```
 
-### Install and run iojs
+### Install and run node
 ```
 npm start
 ```

@@ -4,7 +4,7 @@
   "description": "booked",
   "main": "app.js",
   "scripts": {
-    "start": "iojs ./bin/www"
+    "start": "node ./bin/www"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/tejitak/booked",
   "engines": {
-    "iojs": "v3.0.0",
+    "node": "v4.0.0",
     "npm": "2.13.5"
   },
   "dependencies": {
