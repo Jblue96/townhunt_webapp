@@ -1,4 +1,4 @@
-Booked
+Townhunt WebApp
 ==============
 
 ## Front-end Dev Setup
