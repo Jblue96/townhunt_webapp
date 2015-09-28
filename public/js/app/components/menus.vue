@@ -1,0 +1,81 @@
+<template>
+    <div class="component__menus">
+        <div class="menu_tab_bar">
+          <a href="javascript:;" v-on="click: onClickMenuType(menu_type)" v-repeat="menus" v-class="selected: selectedMenuType ">
+            {{menu_name_en}}
+          </a>
+        </div>
+        <div class="menu_main" v-if="selectedMenu">
+          <div class="menu_section_wrap" v-repeat="selectedMenu.section_items">
+            <div class="menu_section_name">{{section_name_en}} / {{section_name_ja}}</div>
+            <div class="menu_content_wrap" v-repeat="contents">
+              <component-menu-item item="{{$data}}" currency="{{selectedMenu.currency}}"></component-menu-item>
+            </div>
+          </div>
+        </div>
+    </div>
+</template>
+
+<script lang="babel">
+import constants from '../../../../controllers/constants'
+import util from '../../common/util'
+import filter from '../filters/filter'
+import componentMenuItem from './menuItem.vue'
+
+   // "menus": [
+   //    {  
+   //       "currency": {
+   //          "name":"JPY",
+   //          "symbol":"¥"
+   //       },
+   //       "menu_type": "dinner",
+   //       "section_items": [
+   //          {
+   //             "section_type": "",
+   //             "contents": []
+   //          }
+   //       ],
+   //       "option_groups": []
+   //    }
+   // ],
+export default {
+
+  props: ['menus'],
+
+  data() {
+    return {
+      selectedMenuType: '',  
+      menus: []
+    }
+  },
+
+  components: {
+    'component-menu-item': componentMenuItem
+  },
+
+  computed: {
+    selectedMenu() {
+      if (!this.selectedMenuType) {
+        return null
+      }
+      var result = util.detect(this.menus, (menu) => {
+        return this.selectedMenuType === menu.menu_type
+      })
+      return result
+    }
+  },
+
+  created() {
+    this.selectedMenuType = this.menus[0] && this.menus[0].menu_type || ''
+  },
+
+
+  methods: {
+
+    onClickMenuType(menuType) {
+      this.selectedMenuType = menuType
+    }
+
+  }
+}
+</script>

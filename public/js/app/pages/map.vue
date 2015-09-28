@@ -26,7 +26,6 @@ import cache from '../../common/cache'
 import mapUtil from '../../common/mapUtil'
 import urlQueryParser from '../../common/urlQueryParser'
 import constants from '../../../../controllers/constants'
-// import componentCategories from '../components/categories.vue'
 import componentSearchInfo from '../components/searchInfo.vue'
 import componentMapCard from '../components/mapCard.vue'
 import pageTop from '../pages/top.vue'
@@ -50,7 +49,6 @@ var Component = {
     },
 
     components: {
-      // 'component-categories': componentCategories
       'component-search-info': componentSearchInfo,
       'component-map-card': componentMapCard
     },

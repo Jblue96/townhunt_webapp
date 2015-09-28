@@ -1,3 +1,4 @@
+'use strict'
 var Parse = require('node-parse-api').Parse;
  
 module.exports = {

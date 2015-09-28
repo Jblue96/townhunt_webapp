@@ -7,14 +7,33 @@ export default {
   _ref: {
     // login user info
     me: null,
+
     // callback URL after login success
     loginCallbackUrl: null,
+
     // URL histories to move by back button
     histories: ['#/'],
+
     // current selected detail offer
     detail: null,
-    // current selected request detail
-    requestDetail: null,
+
+    // current selected request detail in my history
+    requestHistoryDetail: null,
+
+    // reserveRequest for submit data
+    // {
+    //   "date": "2015-10-05",
+    //   "menuType": "lunch",
+    //   "time": "13:00",
+    //   "numberOfPersons": 3,
+    //   "user": {
+    //     "name": "Takuya Tejima",
+    //     "email": "tejitak@indie-inc.com"
+    //   },
+    //   "special": "Order birthday cakes"
+    // }
+    reserveRequest: null,
+
     // force reload with ignoring keep-alive
     _forceReload: {
       'page-top': true

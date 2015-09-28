@@ -30,5 +30,7 @@ Vue.filter('displaySearchInfo', (where) => {
 Vue.filter('displayCategory', (categoryStr) => {
     return filter.displayCategory(categoryStr, labels)
 })
-
+Vue.filter('displayMenuType', (menuType) => {
+    return filter.displayMenuType(menuType, labels)
+})
 export default filter

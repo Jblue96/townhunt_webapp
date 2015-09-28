@@ -1,7 +1,7 @@
 <template>
   <div class="page__detail">
     <div v-if="initialized">
-        <div class="detail_banner swiper-container">
+        <div class="detail_banner swiper-container detail_banner_swiper">
             <ul class="swiper-wrapper">
                 <li v-repeat="item.images" class="swiper-slide detail_banner_bg" v-style="background-image: 'url(' + url + ')'"></li>
             </ul>
@@ -196,7 +196,7 @@ export default {
         initSwiper() {
             // TODO: temp to attach after DOM is inserted by initialized flag
             setTimeout(() => {
-              util.initBannerSwiper($(this.$el).find('.swiper-container'))
+              util.initBannerSwiper($(this.$el).find('.detail_banner_swiper'))
             }, 25)
         },
 

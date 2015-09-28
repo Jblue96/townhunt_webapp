@@ -1,3 +1,4 @@
+'use strict'
 var constants = require('./constants')
 
 var filter = {
@@ -225,8 +226,14 @@ var filter = {
             newArr.push(labels['constants_Genre_' + key] || key)
         })
         return newArr.join(', ')
-    }
+    },
 
+    displayMenuTye(menuType, labels) {
+        if (!menuType) {
+            return ''
+        }
+        return labels['menu_type_' + menuType] || menuType
+    }
 }
 
 module.exports = filter

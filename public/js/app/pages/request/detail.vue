@@ -52,7 +52,7 @@ export default {
 
     created() {
         // check exisiting item
-        var detail = cache.get('requestDetail')
+        var detail = cache.get('requestHistoryDetail')
         if(detail){
             this.item = detail
         }
