@@ -1,5 +1,6 @@
 import $ from 'npm-zepto'
 import Slideout from '../lib/slideout'
+import Swiper from '../lib/swiper.jquery'
 import config from './config'
 import cache from './cache'
 import localStorage from './localStorage'
@@ -199,6 +200,17 @@ var util = {
         if (element.scrollTop == to) return;
         util.scrollTo(element, to, duration - 10);
       }, 10);
+    },
+
+    initBannerSwiper($banners) {
+      var size = $banners.find('li').size()
+      new Swiper($banners, {
+          wrapperClass: "swiper-wrapper",
+          slideClass: "swiper-slide",
+          loop: size > 1,
+          autoplay: 4000,
+          autoplayDisableOnInteraction: false,
+      })
     }
 }
 

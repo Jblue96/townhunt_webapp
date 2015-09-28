@@ -192,6 +192,38 @@ export default {
           }
           this.right = this.iconNone()
           break
+        case 'page-menu':
+          this.center = { title: labels.title_header_menu }
+          this.left = {
+            icon: 'icon_back',
+            callback: this.back
+          }
+          this.right = this.iconNone()
+          break
+        case 'page-reserve-date-form':
+          this.center = { title: labels.title_header_reserve_date_form }
+          this.left = {
+            icon: 'icon_back',
+            callback: this.back
+          }
+          this.right = this.iconNone()
+          break
+        case 'page-reserve-user-form':
+          this.center = { title: labels.title_header_reserve_user_form }
+          this.left = {
+            icon: 'icon_back',
+            callback: this.back
+          }
+          this.right = this.iconNone()
+          break
+        case 'page-reserve-confirmation':
+          this.center = { title: labels.title_header_reserve_confirmation }
+          this.left = {
+            icon: 'icon_back',
+            callback: this.back
+          }
+          this.right = this.iconNone()
+          break
         default:
             this.center = {title: labels.title_header_top}
             this.left = this.iconDefaultLeft()

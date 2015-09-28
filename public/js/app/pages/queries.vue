@@ -42,7 +42,7 @@
 
     </div>
     <div class="queries_footer">
-        <div class="queries_btn btn_large" v-on="click: submit">Filter</div>
+        <div class="btn_submit_queries btn_large" v-on="click: submit">Filter</div>
     </div>
   </div>
 
