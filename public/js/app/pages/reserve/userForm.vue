@@ -17,15 +17,15 @@
         <div>
           <div>Name</div>
           <div>
-            <input v-model="reserveRequest.user.email"></div>
+            <input v-model="reserveRequestUser.name"></div>
           </div>
           <div>Email</div>
           <div>
-            <input v-model="reserveRequest.user.name"></div>
+            <input v-model="reserveRequestUser.email"></div>
           </div>
         </div>
         <div>
-          <textarea v-model="reserveRequest.special" placeholder="Special Request (Food allegies, birthday etc.)"></textarea>
+          <textarea v-model="reserveRequestUser.special" placeholder="Special Request (Food allegies, birthday etc.)"></textarea>
         </div>
       </div>
     </div>
@@ -49,10 +49,7 @@ export default {
           initialized: true,
           showLoading: false,
           item: {},
-          reserveRequest: {
-            user: {},
-            special: ""
-          }
+          reserveRequestUser: this.initialData()
         }
     },
 
@@ -60,15 +57,15 @@ export default {
         // check exisiting item
         var detail = cache.get('detail')
         // check reserve request object cache
-        var reserveRequestCache = cache.get('reserveRequest')
-        if (detail && reserveRequestCache) {
+        var reserveRequestDateCache = cache.get('reserveRequestDate')
+        if (detail && reserveRequestDateCache) {
           // TODO: temp workaround to scrollTop
           setTimeout(() => {
               this.initialized = true
               this.item = detail
               this.initSwiper()
           }, 25)
-          this.reserveRequest = reserveRequestCache
+          this.reserveRequestUser = cache.get('reserveRequestUser') || this.initialData()
         } else {
           // TODO: handling direct access
           location.href = '#/'
@@ -80,6 +77,15 @@ export default {
     },
 
     methods: {
+        initialData() {
+          return {
+            "id": "",
+            "name": "",
+            "email": "",
+            "special": ""
+          }
+        },
+
         initSwiper() {
             // TODO: temp to attach after DOM is inserted by initialized flag
             setTimeout(() => {
@@ -89,17 +95,17 @@ export default {
 
         next() {
           // TODO: validation
-          if (util.trim(this.reserveRequest.user.name) === "") {
+          if (util.trim(this.reserveRequestUser.name) === "") {
             alert('Please input your name')
             return
           }
-          if (util.trim(this.reserveRequest.user.email) === "") {
+          if (util.trim(this.reserveRequestUser.email) === "") {
             alert('Please input your email')
             return
           }
-          console.log(JSON.stringify(this.reserveRequest))
+          console.log(JSON.stringify(this.reserveRequestUser))
           // store into cache
-          cache.set('reserveRequest', this.reserveRequest)
+          cache.set('reserveRequestUser', this.reserveRequestUser)
           location.href = '#/reserve/confirm'
 
         }

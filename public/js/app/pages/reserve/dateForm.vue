@@ -15,19 +15,19 @@
       </div>
       <div class="reserve_date_form">
         <div>
-          <component-slide-select type="date" options="{{dateOptions}}" selectedValue="reserveRequest.date"></component-slide-select>
+          <component-slide-select type="date" options="{{dateOptions}}"></component-slide-select>
         </div>
         <hr/>
         <div>
-          <component-slide-select type="menuType" options="{{menuTypeOptions}}" selectedValue="reserveRequest.menuType"></component-slide-select>
+          <component-slide-select type="menuType" options="{{menuTypeOptions}}"></component-slide-select>
         </div>
         <hr/>
         <div>
-          <component-slide-select type="time" options="{{timeOptions}}" selectedValue="reserveRequest.time"></component-slide-select>
+          <component-slide-select type="time" options="{{timeOptions}}"></component-slide-select>
         </div>
         <hr/>
         <div>
-          <component-slide-select type="numberOfPersons" options="{{numberOfPersonsOptions}}" selectedValue="reserveRequest.numberOfPersons"></component-slide-select>
+          <component-slide-select type="numberOfPersons" options="{{numberOfPersonsOptions}}"></component-slide-select>
         </div>
       </div>
     </div>
@@ -53,18 +53,7 @@ export default {
           initialized: false,
           showLoading: false,
           item: {},
-          reserveRequest: {
-            "date": "",
-            "menuType": "",
-            "time": "",
-            "numberOfPersons": -1,
-            "user": {
-              "id": "",
-              "name": "",
-              "email": ""
-            },
-            "special": ""
-          }
+          reserveRequestDate: this.initialData()
         }
     },
 
@@ -108,7 +97,7 @@ export default {
 
       timeOptions() {
         // TOOD: check item.openHours
-        if (this.reserveRequest.menuType == 'lunch') {
+        if (this.reserveRequestDate.menuType == 'lunch') {
           var arr = [
             "11:00",
             "11:30",
@@ -176,23 +165,8 @@ export default {
           }, 25)
 
           // check reserve request object cache
-          var reserveRequestCache = cache.get('reserveRequest')
-          if (reserveRequestCache) {
-            this.reserveRequest = reserveRequestCache
-          } else {
-            // setup initial data
-            var defaultDate = this.$options.computed.dateOptions.apply(this)[0]
-            this.reserveRequest.date = defaultDate && defaultDate.value || ""
-
-            var defaultMenuType = this.$options.computed.menuTypeOptions.apply(this)[0]
-            this.reserveRequest.menuType = defaultMenuType && defaultMenuType.value || ""
-
-            var defaultTime = this.$options.computed.timeOptions.apply(this)[0]
-            this.reserveRequest.time = defaultTime && defaultTime.value || ""
-
-            var defaultNumberOfPersons = this.$options.computed.numberOfPersonsOptions.apply(this)[0]
-            this.reserveRequest.numberOfPersons = defaultNumberOfPersons && defaultNumberOfPersons || ""
-          }
+          // if no exist, set blank to update cache rendering
+          this.reserveRequestDate = cache.get('reserveRequestDate') || this.initialData()
         } else {
           // TODO: handling direct access
           location.href = '#/'
@@ -204,6 +178,15 @@ export default {
     },
 
     methods: {
+        initialData() {
+          return {
+            "date": "",
+            "menuType": "",
+            "time": "",
+            "numberOfPersons": -1
+          }
+        },
+
         initSwiper() {
             // TODO: temp to attach after DOM is inserted by initialized flag
             setTimeout(() => {
@@ -212,14 +195,18 @@ export default {
         },
 
         onSelectOption(selectedObj) {
-          console.log(selectedObj)
-          this.reserveRequest[selectedObj.type] = selectedObj.selectedValue
+          this.reserveRequestDate[selectedObj.type] = selectedObj.selectedValue
         },
 
         next() {
-          console.log(JSON.stringify(this.reserveRequest))
+          // validate
+          if (!this.reserveRequestDate.time) {
+            alert('Please specify the time')
+            return
+          }
+          console.log(JSON.stringify(this.reserveRequestDate))
           // store into cache
-          cache.set('reserveRequest', this.reserveRequest)
+          cache.set('reserveRequestDate', this.reserveRequestDate)
           location.href = '#/reserve/user_form'
         }
     }

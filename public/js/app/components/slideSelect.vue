@@ -18,15 +18,16 @@ import filter from '../filters/filter'
 
 export default {
 
-  props: ['type', 'options', 'selectedValue'],
+  props: ['type', 'options'],
 
   data() {
     return {
       type: '',
-      selectedValue: '',
+      selectedValue: "",
       // set safe to enable html
       // [{label: "", value: "", safe: true}]
-      options: []
+      options: [],
+      defaultSelectedIndex: 0
     }
   },
 
@@ -35,6 +36,10 @@ export default {
     setTimeout(() => {
       this.initSwiper()
     }, 25)
+    // initial selection
+    if (this.defaultSelectedIndex >= 0 && this.options[this.defaultSelectedIndex]) {
+      this.onClickOption(this.options[this.defaultSelectedIndex])
+    }
   },
 
   methods: {

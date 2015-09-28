@@ -14,7 +14,34 @@
         </div>
       </div>
       <div class="reserve_confirm">
-      confirm
+      <div>
+        <div>
+          {{reserveRequestDate.date}}
+        </div>
+        <div>
+          {{reserveRequestDate.menuType}}
+        </div>
+        <div>
+          {{reserveRequestDate.time}}
+        </div>
+        <div>
+          {{reserveRequestDate.numberOfPersons}}
+        </div>
+      </div>
+        <div>
+          <div>Name</div>
+          <div>
+            {{reserveRequestUser.name}}
+          </div>
+          <div>Email</div>
+          <div>
+            {{reserveRequestUser.email}}
+          </div>
+          <div>Special Request</div>
+          <div>
+            {{reserveRequestUser.special}}
+          </div>
+        </div>
       </div>
     </div>
     <div v-if="!initialized"></div>
@@ -33,22 +60,30 @@ export default {
         return {
           initialized: false,
           showLoading: false,
-          item: {}
+          item: {},
+          reserveRequestDate: {},
+          reserveRequestUser: {}
         }
     },
 
     attached() {
         // check exisiting item
         var detail = cache.get('detail')
-        if(detail){
+        // check reserve request object cache
+        var reserveRequestDateCache = cache.get('reserveRequestDate')
+        var reserveRequestUserCache = cache.get('reserveRequestUser')
+        if (detail && reserveRequestDateCache && reserveRequestUserCache) {
             // TODO: temp workaround to scrollTop
             setTimeout(() => {
                 this.initialized = true
                 this.item = detail
                 this.initSwiper()
             }, 25)
+            this.reserveRequestDate = reserveRequestDateCache
+            this.reserveRequestUser = reserveRequestUserCache
             // delete caches for requests
-            cache.set('reserveRequest', null)
+            cache.set('reserveRequestDate', null)
+            cache.set('reserveRequestUser', null)
         }else{
           // TODO: handling direct access
           location.href = '#/'
@@ -65,7 +100,7 @@ export default {
             setTimeout(() => {
               util.initBannerSwiper($(this.$el).find('.detail_banner_swiper'))
             }, 25)
-        },
+        }
     }
 }
 </script>

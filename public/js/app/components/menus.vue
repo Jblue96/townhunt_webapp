@@ -1,7 +1,7 @@
 <template>
     <div class="component__menus">
         <div class="menu_tab_bar">
-          <a href="javascript:;" v-on="click: onClickMenuType(menu_type)" v-repeat="menus" v-class="selected: selectedMenuType ">
+          <a href="javascript:;" v-on="click: onClickMenuType(menu_type)" v-repeat="menus" v-class="selected: selectedMenuType == menu_type">
             {{menu_name_en}}
           </a>
         </div>
