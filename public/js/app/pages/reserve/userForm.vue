@@ -15,17 +15,16 @@
       </div>
       <div class="reserve_user_form">
         <div>
-          <div>Name</div>
-          <div>
-            <input v-model="reserveRequestUser.name"></div>
+          <div class="reserve_user_form_input">
+            <input v-model="reserveRequestUser.name" placeholder="Name"></div>
           </div>
-          <div>Email</div>
-          <div>
-            <input v-model="reserveRequestUser.email"></div>
+          <div class="reserve_user_form_input">
+            <input v-model="reserveRequestUser.email" placeholder="Email"></div>
           </div>
         </div>
-        <div>
-          <textarea v-model="reserveRequestUser.special" placeholder="Special Request (Food allegies, birthday etc.)"></textarea>
+        <hr>
+        <div class="reserve_user_form_input">
+          <textarea v-model="reserveRequestUser.special" rows="4" placeholder="Special Request (Food allegies, birthday etc.)"></textarea>
         </div>
       </div>
     </div>

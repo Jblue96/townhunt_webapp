@@ -15,19 +15,19 @@
       </div>
       <div class="reserve_date_form">
         <div>
-          <component-slide-select type="date" options="{{dateOptions}}"></component-slide-select>
+          <component-slide-select type="date" options="{{dateOptions}}" selectedValue="{{@ reserveRequestDate.date}}"></component-slide-select>
         </div>
         <hr/>
         <div>
-          <component-slide-select type="menuType" options="{{menuTypeOptions}}"></component-slide-select>
+          <component-slide-select type="menuType" options="{{menuTypeOptions}}" selectedValue="{{@ reserveRequestDate.menuType}}"></component-slide-select>
         </div>
         <hr/>
         <div>
-          <component-slide-select type="time" options="{{timeOptions}}"></component-slide-select>
+          <component-slide-select type="time" options="{{timeOptions}}" selectedValue="{{@ reserveRequestDate.time}}"></component-slide-select>
         </div>
         <hr/>
         <div>
-          <component-slide-select type="numberOfPersons" options="{{numberOfPersonsOptions}}"></component-slide-select>
+          <component-slide-select type="numberOfPersons" options="{{numberOfPersonsOptions}}" selectedValue="{{@ reserveRequestDate.numberOfPersons}}"></component-slide-select>
         </div>
       </div>
     </div>
@@ -140,7 +140,7 @@ export default {
       },
 
       numberOfPersonsOptions() {
-        return $.map([1,2,3,4,5,6,7,8], function(n, i){
+        return $.map([1,2,3,4,5,6,7,8,9,10,11,12], function(n, i){
           return {
             label: n,
             value: n
@@ -162,11 +162,19 @@ export default {
               this.initialized = true
               this.item = detail
               this.initSwiper()
+
+              // check reserve request object cache
+              // if no exist, set blank to update cache rendering
+              // execute after this.item is set
+              setTimeout(() => {
+                this.reserveRequestDate = cache.get('reserveRequestDate') || this.initialData()
+                // this.$broadcast('selectValue_date', {value: this.reserveRequestDate.date, defaultSelectedIndex: 0})
+                // this.$broadcast('selectValue_menuType', {value: this.reserveRequestDate.menuType, defaultSelectedIndex: 0})
+                // this.$broadcast('selectValue_time', {value: this.reserveRequestDate.time, defaultSelectedIndex: 0})
+                // this.$broadcast('selectValue_numberOfPersons', {value: this.reserveRequestDate.numberOfPersons, defaultSelectedIndex: 0})
+              }, 25)
           }, 25)
 
-          // check reserve request object cache
-          // if no exist, set blank to update cache rendering
-          this.reserveRequestDate = cache.get('reserveRequestDate') || this.initialData()
         } else {
           // TODO: handling direct access
           util.redirect('#/')
@@ -180,10 +188,10 @@ export default {
     methods: {
         initialData() {
           return {
-            "date": "",
-            "menuType": "",
-            "time": "",
-            "numberOfPersons": -1
+            "date": util.today(),
+            "menuType": "lunch",
+            "time": "11:00",
+            "numberOfPersons": 1
           }
         },
 
@@ -196,6 +204,15 @@ export default {
 
         onSelectOption(selectedObj) {
           this.reserveRequestDate[selectedObj.type] = selectedObj.selectedValue
+          // temp workaround to reflect depedencies data to UI
+          if (selectedObj.type === 'menuType') {
+            setTimeout(() => {
+                // also update time
+                var times = this.$options.computed.timeOptions.apply(this)
+                this.reserveRequestDate.time = times[0] && times[0].value || ''
+                this.$broadcast('selectValue_time', {value: this.reserveRequestDate.time})
+            }, 50)
+          }
         },
 
         next() {

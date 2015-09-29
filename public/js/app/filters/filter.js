@@ -2,6 +2,7 @@ import Vue from 'vue'
 import labels from '../../common/labels'
 import filter from '../../../../controllers/filter'
 
+Vue.filter('numberFormat', filter.numberFormat)
 Vue.filter('price', filter.price)
 Vue.filter('address',  filter.address)
 Vue.filter('type', filter.type)

@@ -1,9 +1,12 @@
 <template>
     <div class="component__menus">
         <div class="menu_tab_bar">
-          <a href="javascript:;" v-on="click: onClickMenuType(menu_type)" v-repeat="menus" v-class="selected: selectedMenuType == menu_type">
-            {{menu_name_en}}
-          </a>
+          <span class="menu_tab_bar_item" v-repeat="menus" v-class="selected: selectedMenuType == menu_type">
+            <span class="menu_tab_bar_separator" v-if="$index > 0"></span>
+            <a href="javascript:;" v-on="click: onClickMenuType(menu_type)">
+              {{menu_name_en}}
+            </a>
+          </span>
         </div>
         <div class="menu_main" v-if="selectedMenu">
           <div class="menu_section_wrap" v-repeat="selectedMenu.section_items">

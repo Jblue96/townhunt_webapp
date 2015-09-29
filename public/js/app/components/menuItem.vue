@@ -1,7 +1,10 @@
 <template>
     <div class="component__menu_item">
-      <div>{{item.name_en}}</div>
-      <div>{{item.price}}</div>
+      <div class="menu_item_row">
+        <div class="menu_item_name">{{item.name_en}}</div>
+        <div class="menu_item_price">{{currency.symbol}}{{item.price | numberFormat}}</div>
+      </div>
+      <div class="menu_item_desc">{{item.description_en}}</div>
     </div>
 </template>
 

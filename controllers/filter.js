@@ -21,6 +21,10 @@ var filter = {
         }
     },
 
+    numberFormat(num) {
+        return num && num.toLocaleString()
+    },
+
     price(price) {
         if (!price) {
             return ''

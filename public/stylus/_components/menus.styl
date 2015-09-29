@@ -1,12 +1,58 @@
 .component__menus
+  text-align center
 
   .menu_tab_bar
-    a
-      text-decoration none
-    
-    a.selected
-      border-bottom 2px solid #fff
-      
-      
+    line-height 40px
 
-      
+    .menu_tab_bar_separator
+      margin-right 20px
+      border-left 2px solid #fff
+
+    .menu_tab_bar_item
+      margin 0 10px
+      font-size 16px
+
+      &.selected a
+        font-weight bold
+        border-bottom 2px solid #fff
+
+      a
+        text-decoration none
+        color #fff
+    
+  .menu_section_wrap
+    .menu_section_name
+      &:before
+        content "- "
+        display inline
+                
+      &:after
+        content " -"
+        display inline
+
+        
+.component__menu_item
+  margin 12px
+  
+  .menu_item_row
+    margin 4px 0
+    clearfix()
+
+    .menu_item_name
+      float left
+      width 50%
+      text-align left
+
+      &:before
+        content "- "
+        display inline
+
+    .menu_item_price
+      float left
+      width 50%
+      text-align right
+
+  .menu_item_desc
+    font-style italic
+    font-weight lighter
+    text-align left

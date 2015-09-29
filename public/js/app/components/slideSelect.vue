@@ -18,7 +18,7 @@ import filter from '../filters/filter'
 
 export default {
 
-  props: ['type', 'options'],
+  props: ['type', 'options', 'selectedValue'],
 
   data() {
     return {
@@ -26,9 +26,17 @@ export default {
       selectedValue: "",
       // set safe to enable html
       // [{label: "", value: "", safe: true}]
-      options: [],
-      defaultSelectedIndex: 0
+      options: []
+      // defaultSelectedIndex: 0
     }
+  },
+
+  created() {
+    this.$on('selectValue_' + this.type, this.selectValue.bind(this))
+    // initial selection
+    // if (this.defaultSelectedIndex >= 0 && this.options[this.defaultSelectedIndex]) {
+    //   this.onClickOption(this.options[this.defaultSelectedIndex])
+    // }
   },
 
   attached() {
@@ -36,10 +44,6 @@ export default {
     setTimeout(() => {
       this.initSwiper()
     }, 25)
-    // initial selection
-    if (this.defaultSelectedIndex >= 0 && this.options[this.defaultSelectedIndex]) {
-      this.onClickOption(this.options[this.defaultSelectedIndex])
-    }
   },
 
   methods: {
@@ -55,6 +59,15 @@ export default {
           selectedValue: this.selectedValue,
           option: option
         })
+    },
+
+    selectValue(obj) {
+      // if (obj.value === '' && obj.defaultSelectedIndex !== undefined && this.options[obj.defaultSelectedIndex]) {
+      //   // select first option
+      //   this.selectedValue = this.options[obj.defaultSelectedIndex].value
+      // } else {
+        this.selectedValue = obj.value
+      // }
     }
   }
 }
