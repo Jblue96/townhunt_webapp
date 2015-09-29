@@ -59,7 +59,7 @@ export default {
             }, 25)
         }else{
           // TODO: handling direct access
-          location.href = '#/'
+          util.redirect('#/')
         }
     },
 
@@ -76,7 +76,7 @@ export default {
         },
 
         reserve() {
-          location.href = '#/reserve/date_form/' + this.item.objectId
+          util.redirect('#/reserve/date_form/' + this.item.objectId)
         }
 
     }

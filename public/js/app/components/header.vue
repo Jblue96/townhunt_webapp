@@ -63,7 +63,7 @@ export default {
       return {
         icon: 'icon_back',
         callback() {
-          location.href = '#/'
+          util.redirect('#/')
         }
       }
     },
@@ -78,7 +78,7 @@ export default {
       return {
         icon: 'icon_map',
         callback() {
-          location.href = '#/map'
+          util.redirect('#/map')
         }
       }
     },
@@ -87,7 +87,7 @@ export default {
       return {
         icon: 'icon_list',
         callback() {
-          location.href = '#/'
+          util.redirect('#/')
         }
       }
     },
@@ -140,7 +140,7 @@ export default {
           this.right = {
             label: labels.common_edit,
             callback() {
-              location.href = '#/mypage/edit'
+              util.redirect('#/mypage/edit')
             }
           }
           break
@@ -149,7 +149,7 @@ export default {
           this.left = {
             icon: 'icon_back',
             callback() {
-              location.href = '#/mypage/top'
+              util.redirect('#/mypage/top')
             }
           }
           this.right = {
@@ -177,7 +177,7 @@ export default {
           this.left = {
             icon: 'icon_back',
             callback() {
-              location.href = '#/'
+              util.redirect('#/')
             }
           }
           this.right = this.iconNone()
@@ -187,7 +187,7 @@ export default {
           this.left = {
             icon: 'icon_back',
             callback() {
-              location.href = '#/request/list'
+              util.redirect('#/request/list')
             }
           }
           this.right = this.iconNone()
@@ -243,11 +243,15 @@ export default {
       // remove current url from history
       histories.pop()
       var url = histories.pop()
+      if (!url) {
+        util.redirect('#/')
+        return
+      }
       // skip login screen for back
       while(url == '#/login'){
         url = histories.pop()
       }
-      location.href = url
+      util.redirect(url)
     },
 
     onChangeCountry() {

@@ -185,10 +185,6 @@ export default {
             })
         },
 
-        onClickPayment() {
-            location.href = '#/payment/order'
-        },
-
         favorite(){
             util.toggleFavorite(this.item)
         },
@@ -209,11 +205,11 @@ export default {
         },
 
         menu() {
-          location.href = '#/menu/' + this.item.objectId
+          util.redirect('#/menu/' + this.item.objectId)
         },
 
         reserve() {
-          location.href = '#/reserve/date_form/' + this.item.objectId
+          util.redirect('#/reserve/date_form/' + this.item.objectId)
         }
     }
 }

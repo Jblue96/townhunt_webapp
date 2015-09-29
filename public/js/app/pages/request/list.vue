@@ -43,7 +43,7 @@ export default {
       onClickItem(id) {
         // store to cache
         cache.set('requestHistoryDetail', util.getItemById(this.items, id))
-        location.href = '#/request/detail/' + id
+        util.redirect('#/request/detail/' + id)
       }
 
     }

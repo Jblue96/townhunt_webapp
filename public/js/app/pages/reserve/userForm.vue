@@ -68,7 +68,7 @@ export default {
           this.reserveRequestUser = cache.get('reserveRequestUser') || this.initialData()
         } else {
           // TODO: handling direct access
-          location.href = '#/'
+          util.redirect('#/')
         }
     },
 
@@ -106,7 +106,7 @@ export default {
           console.log(JSON.stringify(this.reserveRequestUser))
           // store into cache
           cache.set('reserveRequestUser', this.reserveRequestUser)
-          location.href = '#/reserve/confirm'
+          util.redirect('#/reserve/confirm')
 
         }
     }

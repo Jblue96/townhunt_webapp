@@ -199,7 +199,7 @@ var router = app.router = Router(routes).configure({
                 return false
             }
         }
-        cache.get('histories').push(current)
+        // cache.get('histories').push(current)
     }
 })
 

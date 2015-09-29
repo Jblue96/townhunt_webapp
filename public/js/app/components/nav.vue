@@ -58,7 +58,7 @@ export default {
   methods: {
     move(href) {
       util.getSlideOut().close()
-      location.href = href
+      util.redirect(href)
     },
 
     onClickShareFB() {

@@ -169,7 +169,7 @@ export default {
           this.reserveRequestDate = cache.get('reserveRequestDate') || this.initialData()
         } else {
           // TODO: handling direct access
-          location.href = '#/'
+          util.redirect('#/')
         }
     },
 
@@ -207,7 +207,7 @@ export default {
           console.log(JSON.stringify(this.reserveRequestDate))
           // store into cache
           cache.set('reserveRequestDate', this.reserveRequestDate)
-          location.href = '#/reserve/user_form'
+          util.redirect('#/reserve/user_form')
         }
     }
 }

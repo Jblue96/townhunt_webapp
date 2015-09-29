@@ -252,7 +252,7 @@ var Component = {
       onSelectMapCard(id) {
         // set to response cache
         cache.set('detail', util.getItemById(this.items, id))
-        location.href = '#/detail/' + id
+        util.redirect('#/detail/' + id)
       },
 
       resize() {

@@ -86,7 +86,7 @@ export default {
             cache.set('reserveRequestUser', null)
         }else{
           // TODO: handling direct access
-          location.href = '#/'
+          util.redirect('#/')
         }
     },
 

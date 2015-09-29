@@ -21,6 +21,11 @@ var util = {
       return str.replace(/\n/g, '');
     },
 
+    redirect(path) {
+      cache.get('histories').push(path)
+      location.href = path
+    },
+
     // filter an item from list by id prop
     getItemById(items, targetId, idProp) {
       var results = $.grep(items, (item) => {
