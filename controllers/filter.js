@@ -1,3 +1,5 @@
+'use strict'
+var moment = require('moment')
 var constants = require('./constants')
 
 var filter = {
@@ -18,6 +20,10 @@ var filter = {
               endColumn: queryPrefix + daysOfWeek + '_end'
             }
         }
+    },
+
+    numberFormat(num) {
+        return num && num.toLocaleString()
     },
 
     price(price) {
@@ -225,6 +231,25 @@ var filter = {
             newArr.push(labels['constants_Genre_' + key] || key)
         })
         return newArr.join(', ')
+    },
+
+    displayMenuTye(menuType, labels) {
+        if (!menuType) {
+            return ''
+        }
+        return labels['menu_type_' + menuType] || menuType
+    },
+
+    displayReserveDate(reserveDate, labels) {
+        // date: 2015-09-30, time: 19:00
+        // format with ISO 8601 e.g. 2015-09-17T19:00 -> Wed Sep 30 7pm
+        // moment("2015-09-17T19:00", moment.ISO_8601).isValid();
+        var m = moment(reserveDate.date + 'T' + reserveDate.time)
+        return m.format('ddd MMM Do hA')
+    },
+
+    displayReservePersons(numOfPersons, labels) {
+        return numOfPersons < 2 ? numOfPersons + ' person' : numOfPersons + ' persons'
     }
 
 }

@@ -16,6 +16,7 @@
 
 <script lang="babel">
 import config from '../../../common/config'
+import util from '../../../common/util'
 
 export default {
     data() {
@@ -35,7 +36,7 @@ export default {
         // TODO: update info via POST API
 
         // move back to mypage
-        location.href = "#/mypage/top"
+        util.redirect('#/mypage/top')
       })
     },
 

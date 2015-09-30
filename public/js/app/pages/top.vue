@@ -21,7 +21,6 @@ import util from '../../common/util'
 import config from '../../common/config'
 import cache from '../../common/cache'
 import urlQueryParser from '../../common/urlQueryParser'
-// import componentCategories from '../components/categories.vue'
 import componentCard from '../components/card.vue'
 import componentSearchInfo from '../components/searchInfo.vue'
 
@@ -41,7 +40,6 @@ export default {
     },
 
     components: {
-      // 'component-categories': componentCategories,
       'component-card': componentCard,
       'component-search-info': componentSearchInfo
     },
@@ -133,7 +131,7 @@ export default {
       onSelectCard(id) {
         // set to response cache
         cache.set('detail', util.getItemById(this.items, id))
-        location.href = '#/detail/' + id
+        util.redirect('#/detail/' + id)
       }
 
     }

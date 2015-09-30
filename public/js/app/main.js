@@ -26,6 +26,11 @@ import pagePaymentOrder from './pages/payment/order.vue'
 import pagePaymentSuccess from './pages/payment/success.vue'
 import pageRequestList from './pages/request/list.vue'
 import pageRequestDetail from './pages/request/detail.vue'
+import pageMenu from './pages/menu.vue'
+import pageReserveDateForm from './pages/reserve/dateForm.vue'
+import pageReserveUserForm from './pages/reserve/userForm.vue'
+import pageReserveConfirm from './pages/reserve/confirm.vue'
+
 // filter
 import filter from './filters/filter'
 // zepto patch
@@ -65,7 +70,11 @@ var app = new Vue({
         'page-payment-order': pagePaymentOrder,
         'page-payment-success': pagePaymentSuccess,
         'page-request-list': pageRequestList,
-        'page-request-detail': pageRequestDetail
+        'page-request-detail': pageRequestDetail,
+        'page-menu': pageMenu,
+        'page-reserve-date-form': pageReserveDateForm,
+        'page-reserve-user-form': pageReserveUserForm,
+        'page-reserve-confirm': pageReserveConfirm
     },
 
     data: {
@@ -162,7 +171,19 @@ var routes = {
     },
     '/request/detail/:id': function(id) {
         onRoute('page-request-detail')
-    }
+    },
+    '/menu/:id': function(id) {
+        onRoute('page-menu')
+    },
+    '/reserve/date_form/:id': function(id) {
+        onRoute('page-reserve-date-form')
+    },
+    '/reserve/user_form': function() {
+        onRoute('page-reserve-user-form')
+    },
+    '/reserve/confirm': function() {
+        onRoute('page-reserve-confirm')
+    },
 }
 
 var NEED_LOGIN_PAGES = ['mypage', 'payment', 'request']
@@ -178,7 +199,7 @@ var router = app.router = Router(routes).configure({
                 return false
             }
         }
-        cache.get('histories').push(current)
+        // cache.get('histories').push(current)
     }
 })
 

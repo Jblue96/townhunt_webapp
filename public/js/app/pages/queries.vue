@@ -42,7 +42,7 @@
 
     </div>
     <div class="queries_footer">
-        <div class="queries_btn btn_large" v-on="click: submit">Filter</div>
+        <div class="btn_submit_queries btn_large" v-on="click: submit">Filter</div>
     </div>
   </div>
 
@@ -51,6 +51,7 @@
 <script lang="babel">
 import config from '../../common/config'
 import cache from '../../common/cache'
+import util from '../../common/util'
 import urlQueryParser from '../../common/urlQueryParser'
 import filter from '../filters/filter'
 import constants from '../../../../controllers/constants'
@@ -159,9 +160,9 @@ export default {
         var histories = cache.get('histories')
         var prev = histories[histories.length - 2] || '#/'
         if (filtered) {
-          location.href = '?search=' + JSON.stringify(this.queryParams) + prev
+          util.redirect('?search=' + JSON.stringify(this.queryParams) + prev)
         } else {
-          location.href = '?' + prev
+          util.redirect('?' + prev)
         }
       }
     }

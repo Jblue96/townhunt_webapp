@@ -6,6 +6,7 @@
 
 <script lang="babel">
 import urlQueryParser from '../../common/urlQueryParser'
+import util from '../../common/util'
 
 export default {
   data() {
@@ -24,7 +25,7 @@ export default {
 
   methods: {
     onClick() {
-        location.href = '#/queries'
+        util.redirect('#/queries')
     }
   }
 }

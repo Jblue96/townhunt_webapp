@@ -1,3 +1,4 @@
+'use strict'
 var resourceBundle = require('../controllers/resourceBundle');
 var constants = require('../controllers/constants');
 var filter = require('../controllers/filter');
