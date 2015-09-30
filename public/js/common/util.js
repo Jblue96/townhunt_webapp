@@ -139,6 +139,15 @@ var util = {
         }
     },
 
+    pluck(arr, key) {
+      if (!arr || arr.length === 0) { return [] }
+      var newArr = []
+      arr.forEach((obj) => {
+        newArr.push(obj[key])
+      })
+      return newArr
+    },
+
     me() {
       return new Promise((resolve, reject) => {
         // TODO: temp for server-side favorites

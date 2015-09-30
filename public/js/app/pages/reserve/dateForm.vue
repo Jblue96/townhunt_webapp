@@ -6,28 +6,29 @@
           <li v-repeat="item.images" class="swiper-slide detail_banner_bg" v-style="background-image: 'url(' + url + ')'"></li>
         </ul>
       </div>
-      <div class="detail_summary">
+      <div class="reserve_summary">
         <div class="detail_table">
             <div class="detail_middle">
                 <div class="detail_title">{{item.name}}</div>
             </div>
         </div>
       </div>
+      <hr>
       <div class="reserve_date_form">
         <div>
-          <component-slide-select type="date" options="{{dateOptions}}" selectedValue="{{@ reserveRequestDate.date}}"></component-slide-select>
+          <component-slide-select prop="date" options="{{dateOptions}}" results="{{@ reserveRequestDate}}"></component-slide-select>
         </div>
         <hr/>
         <div>
-          <component-slide-select type="menuType" options="{{menuTypeOptions}}" selectedValue="{{@ reserveRequestDate.menuType}}"></component-slide-select>
+          <component-slide-select prop="menuType" options="{{menuTypeOptions}}" results="{{@ reserveRequestDate}}"></component-slide-select>
         </div>
         <hr/>
         <div>
-          <component-slide-select type="time" options="{{timeOptions}}" selectedValue="{{@ reserveRequestDate.time}}"></component-slide-select>
+          <component-slide-select prop="time" options="{{timeOptions}}" results="{{@ reserveRequestDate}}"></component-slide-select>
         </div>
         <hr/>
         <div>
-          <component-slide-select type="numberOfPersons" options="{{numberOfPersonsOptions}}" selectedValue="{{@ reserveRequestDate.numberOfPersons}}"></component-slide-select>
+          <component-slide-select prop="numberOfPersons" options="{{numberOfPersonsOptions}}" results="{{@ reserveRequestDate}}" title="Person"></component-slide-select>
         </div>
       </div>
     </div>
@@ -162,18 +163,11 @@ export default {
               this.initialized = true
               this.item = detail
               this.initSwiper()
-
-              // check reserve request object cache
-              // if no exist, set blank to update cache rendering
-              // execute after this.item is set
-              setTimeout(() => {
-                this.reserveRequestDate = cache.get('reserveRequestDate') || this.initialData()
-                // this.$broadcast('selectValue_date', {value: this.reserveRequestDate.date, defaultSelectedIndex: 0})
-                // this.$broadcast('selectValue_menuType', {value: this.reserveRequestDate.menuType, defaultSelectedIndex: 0})
-                // this.$broadcast('selectValue_time', {value: this.reserveRequestDate.time, defaultSelectedIndex: 0})
-                // this.$broadcast('selectValue_numberOfPersons', {value: this.reserveRequestDate.numberOfPersons, defaultSelectedIndex: 0})
-              }, 25)
           }, 25)
+
+          // check reserve request object cache
+          // if no exist, set blank to update cache rendering
+          this.reserveRequestDate = cache.get('reserveRequestDate') || this.initialData()
 
         } else {
           // TODO: handling direct access
@@ -203,22 +197,26 @@ export default {
         },
 
         onSelectOption(selectedObj) {
-          this.reserveRequestDate[selectedObj.type] = selectedObj.selectedValue
-          // temp workaround to reflect depedencies data to UI
-          if (selectedObj.type === 'menuType') {
-            setTimeout(() => {
-                // also update time
-                var times = this.$options.computed.timeOptions.apply(this)
-                this.reserveRequestDate.time = times[0] && times[0].value || ''
-                this.$broadcast('selectValue_time', {value: this.reserveRequestDate.time})
-            }, 50)
+          // update default time when 
+          if (selectedObj.prop === 'menuType') {
+            var times = this.timeOptions
+            this.reserveRequestDate.time = times[0] && times[0].value || ''
           }
         },
 
+        validate() {
+          var errors = []
+          if (util.trim(this.reserveRequestDate.time) === "") {
+            errors.push({message: 'Please specify the time'})
+            return errors
+          }
+          return errors
+        },
+
         next() {
-          // validate
-          if (!this.reserveRequestDate.time) {
-            alert('Please specify the time')
+          var errors = this.validate()
+          if (errors.length > 0) {
+            alert(util.pluck(errors, 'message').join('\n'))
             return
           }
           console.log(JSON.stringify(this.reserveRequestDate))

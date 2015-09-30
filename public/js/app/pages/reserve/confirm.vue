@@ -6,43 +6,34 @@
           <li v-repeat="item.images" class="swiper-slide detail_banner_bg" v-style="background-image: 'url(' + url + ')'"></li>
         </ul>
       </div>
-      <div class="detail_summary">
-        <div class="detail_table">
-            <div class="detail_middle">
-                <div class="detail_title">{{item.name}}</div>
-            </div>
-        </div>
-      </div>
+      <div class="reserve_summary">Your Reservation Detail</div>
+      <hr>
       <div class="reserve_confirm">
-      <div>
-        <div>
-          {{reserveRequestDate.date}}
-        </div>
-        <div>
-          {{reserveRequestDate.menuType}}
-        </div>
-        <div>
-          {{reserveRequestDate.time}}
-        </div>
-        <div>
-          {{reserveRequestDate.numberOfPersons}}
-        </div>
-      </div>
-        <div>
-          <div>Name</div>
-          <div>
-            {{reserveRequestUser.name}}
+        <div class="component_table">
+          <div class="table_row">
+            <div class="table_cell table_cell_left"><label>Date</label></div>
+            <div class="table_cell table_cell_right">{{reserveRequestDate | displayReserveDate}}</div>
           </div>
-          <div>Email</div>
-          <div>
-            {{reserveRequestUser.email}}
+          <div class="table_row">
+            <div class="table_cell table_cell_left"><label>Seats</label></div>
+            <div class="table_cell table_cell_right">{{reserveRequestDate.numberOfPersons | displayReservePersons}}</div>
           </div>
-          <div>Special Request</div>
-          <div>
-            {{reserveRequestUser.special}}
+          <div class="table_row">
+            <div class="table_cell table_cell_left"><label>Name</label></div>
+            <div class="table_cell table_cell_right">{{reserveRequestUser.name}}</div>
+          </div>
+          <div class="table_row">
+            <div class="table_cell table_cell_left"><label>Email</label></div>
+            <div class="table_cell table_cell_right">{{reserveRequestUser.email}}</div>
+          </div>
+          <div class="table_row">
+            <div class="table_cell table_cell_left"><label>Request</label></div>
+            <div class="table_cell table_cell_right">{{reserveRequestUser.special ? reserveRequestUser.special : '-'}}</div>
           </div>
         </div>
       </div>
+      <hr>
+      <div class="reserve_summary">Confirmation email was sent to your email address.</div>
     </div>
     <div v-if="!initialized"></div>
   </div>

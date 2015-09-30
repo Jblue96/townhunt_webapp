@@ -34,4 +34,11 @@ Vue.filter('displayCategory', (categoryStr) => {
 Vue.filter('displayMenuType', (menuType) => {
     return filter.displayMenuType(menuType, labels)
 })
+Vue.filter('displayReserveDate', (reserveDate) => {
+    return filter.displayReserveDate(reserveDate, labels)
+})
+Vue.filter('displayReservePersons', (numOfPersons) => {
+    return filter.displayReservePersons(numOfPersons, labels)
+})
+
 export default filter

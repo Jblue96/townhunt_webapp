@@ -1,5 +1,5 @@
 <template>
-    <div class="component__menus">
+    <div class="component__menus" v-show="initialized">
         <div class="menu_tab_bar">
           <span class="menu_tab_bar_item" v-repeat="menus" v-class="selected: selectedMenuType == menu_type">
             <span class="menu_tab_bar_separator" v-if="$index > 0"></span>
@@ -47,6 +47,7 @@ export default {
 
   data() {
     return {
+      initialized: false,
       selectedMenuType: '',  
       menus: []
     }
@@ -68,10 +69,14 @@ export default {
     }
   },
 
-  created() {
+  attached() {
     this.selectedMenuType = this.menus[0] && this.menus[0].menu_type || ''
+    this.initialized = true
   },
 
+  detached() {
+    this.initialized = false
+  },
 
   methods: {
 
