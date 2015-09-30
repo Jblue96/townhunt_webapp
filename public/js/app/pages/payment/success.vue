@@ -22,6 +22,7 @@
 
 <script lang="babel">
 import cache from '../../../common/cache'
+import util from '../../../common/util'
 
 export default {
     data() {
@@ -42,7 +43,7 @@ export default {
 
     methods: {
       onClickDone() {
-        location.href = '#/'
+        util.redirect('#/')
       }
     }
 }

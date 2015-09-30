@@ -2,6 +2,7 @@ import Vue from 'vue'
 import labels from '../../common/labels'
 import filter from '../../../../controllers/filter'
 
+Vue.filter('numberFormat', filter.numberFormat)
 Vue.filter('price', filter.price)
 Vue.filter('address',  filter.address)
 Vue.filter('type', filter.type)
@@ -29,6 +30,15 @@ Vue.filter('displaySearchInfo', (where) => {
 })
 Vue.filter('displayCategory', (categoryStr) => {
     return filter.displayCategory(categoryStr, labels)
+})
+Vue.filter('displayMenuType', (menuType) => {
+    return filter.displayMenuType(menuType, labels)
+})
+Vue.filter('displayReserveDate', (reserveDate) => {
+    return filter.displayReserveDate(reserveDate, labels)
+})
+Vue.filter('displayReservePersons', (numOfPersons) => {
+    return filter.displayReservePersons(numOfPersons, labels)
 })
 
 export default filter

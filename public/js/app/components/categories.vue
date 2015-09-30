@@ -7,7 +7,7 @@
 </template>
 
 <script lang="babel">
-import Swiper from '../../lib/swiper.jquery'
+import util from '../../common/util'
 import constants from '../../../../controllers/constants'
 
 export default {
@@ -16,6 +16,7 @@ export default {
 
   data() {
     return {
+      selectedType: '',
       types: constants.getgetKeyLabel('Type')
     }
   },
@@ -28,14 +29,7 @@ export default {
 
     initialize() {
       // free horizontal scroll
-      new Swiper(this.$el, {
-          freeMode: true,
-          freeModeMomentumBounce: false,
-          freeModeMomentumRatio: 0.6,
-          wrapperClass: "swiper-wrapper",
-          slideClass: "swiper-slide",
-          slidesPerView: "auto"
-      })
+      util.initHorizontalSwiper(this.$el)
     },
 
     onClickType(type) {

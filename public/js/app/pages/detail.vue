@@ -1,7 +1,7 @@
 <template>
   <div class="page__detail">
     <div v-if="initialized">
-        <div class="detail_banner swiper-container">
+        <div class="detail_banner swiper-container detail_banner_swiper">
             <ul class="swiper-wrapper">
                 <li v-repeat="item.images" class="swiper-slide detail_banner_bg" v-style="background-image: 'url(' + url + ')'"></li>
             </ul>
@@ -101,6 +101,10 @@
             <p>{{item.description}}</p>
         </div>
     </div>
+    <div class="detail_footer" v-if="initialized">
+        <div class="btn_submit_menu btn_large" v-on="click: menu">MENU</div>
+        <div class="btn_submit_reserve btn_large" v-on="click: reserve">REQUEST RESERVE</div>
+    </div>
     <div class="loading_page" v-if="showLoading">
         <div class="icon_loading"></div>
     </div>
@@ -181,10 +185,6 @@ export default {
             })
         },
 
-        onClickPayment() {
-            location.href = '#/payment/order'
-        },
-
         favorite(){
             util.toggleFavorite(this.item)
         },
@@ -192,15 +192,7 @@ export default {
         initSwiper() {
             // TODO: temp to attach after DOM is inserted by initialized flag
             setTimeout(() => {
-                var $banners = $(this.$el).find('.swiper-container'),
-                    size = $banners.find('li').size()
-                new Swiper($banners, {
-                    wrapperClass: "swiper-wrapper",
-                    slideClass: "swiper-slide",
-                    loop: size > 1,
-                    autoplay: 4000,
-                    autoplayDisableOnInteraction: false,
-                })
+              util.initBannerSwiper($(this.$el).find('.detail_banner_swiper'))
             }, 25)
         },
 
@@ -210,6 +202,14 @@ export default {
 
         onClickShareTW() {
           util.shareTW(config.baseUrl + '/#/detail/' + this.item.objectId, this.item.name)
+        },
+
+        menu() {
+          util.redirect('#/menu/' + this.item.objectId)
+        },
+
+        reserve() {
+          util.redirect('#/reserve/date_form/' + this.item.objectId)
         }
     }
 }

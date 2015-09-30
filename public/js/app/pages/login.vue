@@ -48,7 +48,7 @@ export default {
         // TODO: call API
         util.me().then(() => {
           // TODO: set sessionToken
-          location.href = cache.get('loginCallbackUrl') || '#/'
+          util.redirect(cache.get('loginCallbackUrl') || '#/')
         }, () => {
         })
       }

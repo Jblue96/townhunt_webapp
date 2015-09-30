@@ -19,6 +19,7 @@
 </template>
 
 <script lang="babel">
+import util from '../../../common/util'
 import cache from '../../../common/cache'
 
 export default {
@@ -42,7 +43,7 @@ export default {
           // TODO: open 3rd party payment sdk
 
           // specify callback
-          location.href = "#/payment/success"
+          util.redirect("#/payment/success")
         }
       }
     }

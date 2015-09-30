@@ -1,5 +1,7 @@
 import $ from 'npm-zepto'
+import moment from 'moment'
 import Slideout from '../lib/slideout'
+import Swiper from '../lib/swiper.jquery'
 import config from './config'
 import cache from './cache'
 import localStorage from './localStorage'
@@ -11,6 +13,17 @@ var util = {
 
     escapeHTML(text) {
       return text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    },
+
+    trim(str) {
+      if (str === null) { str = '' }
+      str = str.trim()
+      return str.replace(/\n/g, '');
+    },
+
+    redirect(path) {
+      cache.get('histories').push(path)
+      location.href = path
     },
 
     // filter an item from list by id prop
@@ -86,6 +99,17 @@ var util = {
       util._requests = {}
     },
 
+    detect(list, iterator) {
+      var r = null
+      list.forEach((obj) => {
+        var result = iterator(obj)
+        if (result) {
+          r = obj
+        }
+      })
+      return r
+    },
+
     throttle(callback, limit) {
       var wait = false
       return function () {
@@ -113,6 +137,15 @@ var util = {
                 count = 0
             }, delay || 500)
         }
+    },
+
+    pluck(arr, key) {
+      if (!arr || arr.length === 0) { return [] }
+      var newArr = []
+      arr.forEach((obj) => {
+        newArr.push(obj[key])
+      })
+      return newArr
     },
 
     me() {
@@ -199,7 +232,77 @@ var util = {
         if (element.scrollTop == to) return;
         util.scrollTo(element, to, duration - 10);
       }, 10);
+    },
+
+    initBannerSwiper($banners) {
+      var size = $banners.find('li').size()
+      new Swiper($banners, {
+          wrapperClass: "swiper-wrapper",
+          slideClass: "swiper-slide",
+          loop: size > 1,
+          autoplay: 4000,
+          autoplayDisableOnInteraction: false,
+      })
+    },
+
+    initHorizontalSwiper(el) {
+      new Swiper(el, {
+          freeMode: true,
+          freeModeMomentumBounce: false,
+          freeModeMomentumRatio: 0.6,
+          wrapperClass: "swiper-wrapper",
+          slideClass: "swiper-slide",
+          slidesPerView: "auto"
+      })
+    },
+
+    convetDateToLongValue(obj) {
+        // obj: {value: "2014-07-17", hour: "20", minutes: "10"}
+        if(!obj || !obj.value){ return null; }
+        // format with ISO 8601 e.g. 2014-07-17T00:00
+        // moment("2014-07-17T00:00", moment.ISO_8601).isValid();
+        // (new moment()).valueOf() <-> new moment(1405585320000)
+        var dateValue = obj.value;
+        if(obj.hour){
+            dateValue += "T" + obj.hour;
+            if(obj.minutes){
+                dateValue += ":" + obj.minutes;
+            }
+        }
+        var m = moment(dateValue, moment.ISO_8601);
+        return m.isValid() ? m.valueOf() : null;
+    },
+
+    convertLongValueToDateInfo(longValue) {
+        // ISO format (YYYY-MM-DDTHH:mm:ssZ) is not compatible with datetime-local input
+        var m = new moment(longValue);
+        return {
+            value: m.format("YYYY-MM-DD"),
+            hour: m.format("HH"),
+            minutes: m.format("mm"),
+            iso: m.format("YYYY-MM-DDTHH:mm"),
+            // Jan Feb ... Nov Dec
+            month: m.format('MMM'),
+            // 1st 2nd ... 30th 31st
+            dayOfMonth: m.format('Do'),
+            // Sun Mon ... Fri Sat
+            dayOfWeek: m.format('ddd'),
+            longValue: longValue
+        }
+    },
+
+    today() {
+        var m = new moment();
+        return m.format("YYYY-MM-DD");
+    },
+
+    tomorrow(isoValue) {
+        isoValue = isoValue || this.today();
+        var m = moment(isoValue, moment.ISO_8601);
+        m.add(1, 'days');
+        return m.format("YYYY-MM-DD");
     }
+
 }
 
 export default util
