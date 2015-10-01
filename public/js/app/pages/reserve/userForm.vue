@@ -1,28 +1,36 @@
 <template>
   <div class="page__reserve">
     <div v-if="initialized">
-      <div class="detail_banner swiper-container detail_banner_swiper">
+      <div class="detail_banner swiper-container swiper_banner">
         <ul class="swiper-wrapper">
           <li v-repeat="item.images" class="swiper-slide detail_banner_bg" v-style="background-image: 'url(' + url + ')'"></li>
         </ul>
+        <div class="swiper_banner_title_wrap">
+            <div class="swiper_banner_title_table">
+                <div class="swiper_banner_title">
+                    <h3>{{item.name}}</h3>
+                    <div class="swiper_banner_desc"></div>
+                </div>
+            </div>
+        </div>
       </div>
       <div class="reserve_summary">
         <div>{{reserveRequestDate | displayReserveDate}}</div>
         <div>{{reserveRequestDate.numberOfPersons | displayReservePersons}}</div>
       </div>
       <hr>
-      <div class="reserve_user_form">
-        <div class="reserve_user_form_title">Your Information</div>  
+      <div class="reserve_form">
+        <div class="reserve_form_title">Your Information</div>  
         <div>
-          <div class="reserve_user_form_input">
-            <input v-model="reserveRequestUser.name" placeholder="Name">
+          <div class="reserve_form_row">
+            <input type="text" v-model="reserveRequestUser.name" placeholder="Name">
           </div>
-          <div class="reserve_user_form_input">
-            <input v-model="reserveRequestUser.email" placeholder="Email">
+          <div class="reserve_form_row">
+            <input type="text" v-model="reserveRequestUser.email" placeholder="Email">
           </div>
         </div>
         <hr>
-        <div class="reserve_user_form_input">
+        <div class="reserve_form_row">
           <textarea v-model="reserveRequestUser.special" rows="4" placeholder="Special Request (Food allegies, birthday etc.)"></textarea>
         </div>
       </div>
@@ -89,7 +97,7 @@ export default {
         initSwiper() {
             // TODO: temp to attach after DOM is inserted by initialized flag
             setTimeout(() => {
-              util.initBannerSwiper($(this.$el).find('.detail_banner_swiper'))
+              util.initBannerSwiper($(this.$el).find('.swiper_banner'))
             }, 25)
         },
 
