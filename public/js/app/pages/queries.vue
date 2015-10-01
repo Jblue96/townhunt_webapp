@@ -1,38 +1,38 @@
 <template>
   <div class="page__queries">
-    <div class="queries_form">
-      <div class="queries_item_wrap">
-        <div class="queries_item_label">
+    <div class="reserve_form">
+      <div class="reserve_form_row">
+        <div>
           <label>Location</label>
         </div>
         <div clas="queries_item_select">
           <select v-model="values.area" options="options.areas"></select>
         </div>
       </div>
-      <div class="queries_item_wrap">
-        <div class="queries_item_label">
+      <div class="reserve_form_row">
+        <div>
           <label>Genre</label>
         </div>
         <div clas="queries_item_select">
           <select v-model="values.category" options="options.categories"></select>
         </div>
       </div>
-      <div class="queries_item_wrap">
-        <div class="queries_item_label">
+      <div class="reserve_form_row">
+        <div>
           <label>Price Range</label>
         </div>
         <div clas="queries_item_select">
           <select v-model="values.priceRange" options="options.priceRanges"></select>
         </div>
       </div>
-      <div class="queries_item_wrap">
-        <div class="queries_item_label">
+      <div class="reserve_form_row">
+        <div>
           <label>Open Now</label>
           <input type="checkbox" v-model="values.nowOpened">
         </div>
       </div>
-      <div class="queries_item_wrap">
-        <div class="queries_item_label">
+      <div class="reserve_form_row">
+        <div>
           <label>Keyword</label>
         </div>
         <div clas="queries_item_input">
